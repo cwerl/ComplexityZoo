@@ -4,8 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import de.cwerl.complexityzoo.model.ComplexityClass;
 import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
 
 @Controller
@@ -19,5 +24,20 @@ public class ComplexityClassController {
         model.addAttribute("title", "All complexity classes");
         model.addAttribute("classes", complexityClassRepository.findAll());
         return "classes/list";
+    }
+
+    @PostMapping(path="/add")
+    public String addNewClass(@RequestParam String name, Model model) {
+        ComplexityClass c = new ComplexityClass();
+        c.setName(name);
+        complexityClassRepository.save(c);
+        model.addAttribute("newclass", c);
+        return "redirect:/classes";
+    }
+
+    @RequestMapping(value="/delete/{id}", method = RequestMethod.DELETE)
+    public String deleteClass(@PathVariable Integer id, Model model) {
+        complexityClassRepository.deleteById(id);
+        return "redirect:/classes";
     }
 }

@@ -5,10 +5,26 @@
    <th:block th:fragment="content">
         <th:block th:each="class : ${classes}">
             <p th:text="${class.name}"></p>
+            <form action="#" th:action="@{'/classes/delete/{id}'(id=${class.id})}" th:method="delete" >
+                <button type="submit" class="btn btn-danger">
+                    Delete
+                </button>
+            </form>
         </th:block>
         <th:block th:if="${classes.isEmpty()}">
             <p class="alert alert-secondary">Empty</p>
         </th:block>
+
+        <form th:action="@{/classes/add}" th:object="${newclass}" method="post">
+            <div class="form-floating">
+                <input type="text" maxlength="255" class="form-control" id="floatingName"
+                    placeholder="name" name="name" required autofocus>
+                <label for="floatingInputUsername">Name</label>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                Save
+            </button>
+        </form>
    </th:block>
 </body>
 
