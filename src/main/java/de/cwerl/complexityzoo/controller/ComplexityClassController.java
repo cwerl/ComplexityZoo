@@ -26,6 +26,13 @@ public class ComplexityClassController {
         return "classes/list";
     }
 
+    @GetMapping(path="/{id}")
+    public String getClass(Model model, @PathVariable Integer id) {
+        ComplexityClass c = complexityClassRepository.getById(id);
+        model.addAttribute("title", c.getName());
+        return "classes/view";
+    }
+
     @PostMapping(path="/add")
     public String addNewClass(@RequestParam String name, Model model) {
         ComplexityClass c = new ComplexityClass();
