@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:include="fragments/layout :: page">
+
+<body>
+   <th:block th:fragment="content">
+        <th:block th:each="class : ${classes}">
+            <p th:text="${class.name}"></p>
+        </th:block>
+        <th:block th:if="${classes.isEmpty()}">
+            <p class="alert alert-secondary">Empty</p>
+        </th:block>
+   </th:block>
+</body>
+
+</html>
