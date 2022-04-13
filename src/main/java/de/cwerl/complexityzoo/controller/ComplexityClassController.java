@@ -44,7 +44,7 @@ public class ComplexityClassController {
         return "redirect:/classes";
     }
 
-    @RequestMapping(value="/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value="/{id}/delete", method = RequestMethod.DELETE)
     public String deleteClass(@PathVariable Integer id, Model model) {
         complexityClassRepository.deleteById(id);
         return "redirect:/classes";
