@@ -1,5 +1,7 @@
 package de.cwerl.complexityzoo.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +37,7 @@ public class ComplexityClassController {
     }
 
     @PostMapping(path="/add")
-    public String addNewClass(@RequestParam String name, @RequestParam String description, Model model) {
+    public String addNewClass(@Valid @RequestParam String name, @RequestParam String description, Model model) {
         ComplexityClass c = new ComplexityClass();
         c.setName(name);
         c.setDescription(description);
