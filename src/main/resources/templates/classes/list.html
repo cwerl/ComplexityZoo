@@ -2,46 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org" th:include="fragments/layout :: page">
 
 <body>
-   <th:block th:fragment="content">
-       <p>
-    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        Add
-      </button>
-    </p>
-    <div class="collapse" id="collapseExample">
-      <div class="card card-body">
-        <form th:action="@{/classes/add}" th:object="${newclass}" method="post">
-            <div class="form-floating">
-                <input type="text" maxlength="255" class="form-control" id="inputName"
-                    placeholder="Name" name="name" required autofocus>
-                <label for="inputName">Name</label>
-            </div>
-            <div class="form-floating">
-                <textarea class="form-control" placeholder="Description" name="description" id="inputDescription" style="height: 100px"></textarea>
-                <label for="inputDescription">Description</label>
-              </div>
-            <button type="submit" class="btn btn-primary">
-                Save
+    <th:block th:fragment="content">
+        <form class="input-group mb-3" th:action="@{/classes/search}">
+            <button class="btn btn-search border-end-0" type="submit" id="button-addon2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="" viewBox="0 0 20 20" fill="currentColor"
+                    height="1.5rem">
+                    <path fill-rule="evenodd"
+                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                        clip-rule="evenodd" />
+                </svg>
             </button>
+            <input type="search" class="form-control border-start-0" id="search" placeholder="Search"
+                aria-label="Search" aria-describedby="search-bar" th:name="q" th:value="${query}">
         </form>
-      </div>
-    </div>
+        <p>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+                aria-expanded="false" aria-controls="collapseExample">
+                Add
+            </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form th:action="@{/classes/add}" th:object="${newclass}" method="post">
+                    <div class="form-floating">
+                        <input type="text" maxlength="255" class="form-control" id="inputName" placeholder="Name"
+                            name="name" required autofocus>
+                        <label for="inputName">Name</label>
+                    </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Description" name="description"
+                            id="inputDescription" style="height: 100px"></textarea>
+                        <label for="inputDescription">Description</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        Save
+                    </button>
+                </form>
+            </div>
+        </div>
         <th:block th:each="class : ${classes}">
             <a th:href="@{'/classes/' + ${class.id}}">
                 <span th:text="${class.name}"></span>
             </a>
-            <form action="#" th:action="@{'/classes/{id}/delete'(id=${class.id})}" th:method="delete" >
+            <form action="#" th:action="@{'/classes/{id}/delete'(id=${class.id})}" th:method="delete">
                 <button type="submit" class="btn btn-danger">
                     Delete
                 </button>
             </form>
         </th:block>
         <th:block th:if="${classes.isEmpty()}">
-            <p class="alert alert-secondary">Empty</p>
+            <p class="alert alert-secondary">No complexity classes found.</p>
         </th:block>
-
-        
-   </th:block>
+    </th:block>
 </body>
 
 </html>
