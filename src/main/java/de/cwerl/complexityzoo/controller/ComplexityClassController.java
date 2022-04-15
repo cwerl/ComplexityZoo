@@ -24,7 +24,7 @@ public class ComplexityClassController {
     @GetMapping(path="")
     public String getAllClasses(Model model) {
         model.addAttribute("title", "All complexity classes");
-        model.addAttribute("classes", complexityClassRepository.findAll());
+        model.addAttribute("classes", complexityClassRepository.findAllByOrderByNameAsc());
         return "classes/list";
     }
 
@@ -57,7 +57,7 @@ public class ComplexityClassController {
         if(q == null || q.isEmpty()) {
             return "redirect:/classes";
         }
-        model.addAttribute("title", "All complexity classes");
+        model.addAttribute("title", "Complexity classes containing \"" + q + "\"");
         model.addAttribute("classes", complexityClassRepository.searchClass(q));
         model.addAttribute("query", q);
         return "classes/list";
