@@ -51,4 +51,15 @@ public class ComplexityClassController {
         complexityClassRepository.deleteById(id);
         return "redirect:/classes";
     }
+
+    @RequestMapping(value="/search")
+    public String searchClass(@RequestParam String q, Model model) {
+        if(q == null || q.isEmpty()) {
+            return "redirect:/classes";
+        }
+        model.addAttribute("title", "All complexity classes");
+        model.addAttribute("classes", complexityClassRepository.searchClass(q));
+        model.addAttribute("query", q);
+        return "classes/list";
+    }
 }
