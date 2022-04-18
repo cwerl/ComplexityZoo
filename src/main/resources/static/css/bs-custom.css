@@ -19,14 +19,56 @@
     border-color: #2650f6;
 }
 
+.btn-primary:hover{
+    box-shadow: 0 .2rem 1rem #a2b8ec;
+}
+
 .btn-secondary {
     color: #2650f6;
-    background-color: rgba(124,147,221,.2);
-    border-color: rgba(124,147,221,.2);
+    background-color: #e5eaf7;
+    border-color: #e5eaf7;
+}
+
+.btn-secondary:hover {
+    color: #2650f6;
+    background-color: #c7d5f7;
+    border-color: #c7d5f7;
+    box-shadow: 0 .2rem 1rem #c6d7ff;
 }
 
 .btn-danger {
     color: #dc3545;
-    background-color: rgba(220,53,69,.2);
-    border-color: rgba(220,53,69,.2);
+    background-color: #f8d7da;
+    border-color: #f8d7da;
+}
+
+.btn-danger:hover {
+    color: #dc3545;
+    background-color: #f4abb1;
+    border-color: #f4abb1;
+    box-shadow: 0 .2rem 1rem #ffc8cd;
+}
+
+/* ALERTS */
+.alert-success {
+    background-color: #effcf6;
+    border-color: #9ed7bc;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    border-width: .25rem;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    border-width: .25rem;
+}
+
+/* BETTER ROUNDED BORDERS */
+.card, .form-control, .btn, .modal-content, .alert {
+    border-radius: .5rem;
 }

@@ -39,11 +39,13 @@ public class ComplexityClassController {
     @PostMapping(path="/add")
     public String addNewClass(@Valid @RequestParam String name, @RequestParam String description, Model model) {
         ComplexityClass c = new ComplexityClass();
+        if(complexityClassRepository.existsByNameIgnoreCase(name)) {
+            return "redirect:/classes/" + complexityClassRepository.findByNameIgnoreCase(name).getId() + "?redir";
+        }
         c.setName(name);
         c.setDescription(description);
         complexityClassRepository.save(c);
-        model.addAttribute("newclass", c);
-        return "redirect:/classes";
+        return "redirect:/classes/" + c.getId() + "?success";
     }
 
     @RequestMapping(value="/{id}/delete", method = RequestMethod.DELETE)
