@@ -68,7 +68,14 @@
     border-width: .25rem;
 }
 
-/* BETTER ROUNDED BORDERS */
+
+/* FORMS */
+.form-control:focus {
+    border-color: #ced4da;
+    box-shadow: none;
+}
+
+/* BETTER ROUNDED CORNERS */
 .card, .form-control, .btn, .modal-content, .alert {
     border-radius: .5rem;
 }

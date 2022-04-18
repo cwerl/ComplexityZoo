@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:include="fragments/layout :: page">
+
+<body>
+  <th:block th:fragment="content">
+    <p class="alert alert-danger" th:if="${param.error}">This name already exists.</p>
+    <form th:action="@{/classes/{id}/edit(id=${class.id})}" th:object="${class}" method="post">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="name" placeholder="Complexity class name"
+          th:field="*{name}">
+        <label for="name">Name</label>
+      </div>
+      <div class="form-floating mb-3">
+        <textarea class="form-control" id="description" placeholder="Complexity class description"
+          th:field="*{description}" style="height: 10rem">
+            </textarea>
+        <label for="description">Description</label>
+      </div>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+  </th:block>
+</body>
+
+</html>

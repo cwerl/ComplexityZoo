@@ -4,17 +4,19 @@
 <body>
     <th:block th:fragment="content">
         <!-- Search bar -->
-        <form class="input-group mb-3" th:action="@{/classes/search}">
-            <button class="btn btn-search border-end-0" type="submit" id="button-addon2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" height="1.5rem">
-                    <path fill-rule="evenodd"
-                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clip-rule="evenodd" />
-                </svg>
-            </button>
-            <input type="search" class="form-control border-start-0 shadow-none" id="search" placeholder="Search"
-                aria-label="Search" aria-describedby="search-bar" th:name="q" th:value="${query}">
-        </form>
+        <div class="bg-white sticky-top">
+            <form class="input-group mb-3" th:action="@{/classes/search}">
+                <button class="btn btn-search border-end-0" type="submit" id="button-addon2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" height="1.5rem">
+                        <path fill-rule="evenodd"
+                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <input type="search" class="form-control border-start-0" id="search" placeholder="Search"
+                    aria-label="Search" aria-describedby="search-bar" th:name="q" th:value="${query}">
+            </form>
+        </div>
 
         <!-- Create new complexity class -->
         <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal">
@@ -35,7 +37,7 @@
                             </div>
                             <div class="form-floating">
                                 <textarea class="form-control" placeholder="Description" name="description"
-                                    id="inputDescription" style="height: 100px"></textarea>
+                                    id="inputDescription" style="height: 200px"></textarea>
                                 <label for="inputDescription">Description</label>
                             </div>
                         </div>
