@@ -76,6 +76,6 @@
 }
 
 /* BETTER ROUNDED CORNERS */
-.card, .form-control, .btn, .modal-content, .alert {
+.card, .form-control, .btn, .modal-content, .alert, .selectize-control.single .selectize-input, .selectize-control.single .selectize-input input {
     border-radius: .5rem;
 }

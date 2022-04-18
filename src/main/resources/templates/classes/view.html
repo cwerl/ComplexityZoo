@@ -6,6 +6,10 @@
       <p class="alert alert-success" th:if="${param.success}">Successfully created complexity class. Edit it here or <a th:href="@{/classes}">go back</a> to add more.</p>
       <p class="alert alert-danger" th:if="${param.redir}">You've been redirected here because a class with this name already exists.</p>
       <p th:text="${class.description}"></p>
+      <h5>Problems</h5>
+      <th:block th:each="problem : ${class.problems}">
+         <p th:text="${problem.name}"></p>
+      </th:block>
       <a class="btn btn-secondary" th:href="@{/classes/{id}/edit(id=${class.id})}">Edit</a>
    </th:block>
 </body>

@@ -1,21 +1,19 @@
 package de.cwerl.complexityzoo.model;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-public class ComplexityClass {
-
+public class Problem {
+    
     @Getter @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,8 +25,7 @@ public class ComplexityClass {
 
     @Getter @Setter
     private String description;
-    
-    @Getter @Setter
-    @OneToMany(mappedBy = "complexityClass", cascade = CascadeType.REMOVE)
-    List<Problem> problems;
+
+    @Getter @Setter @ManyToOne @NotNull
+    private ComplexityClass complexityClass;
 }
