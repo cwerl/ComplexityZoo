@@ -48,7 +48,7 @@ public class ComplexityClassController {
         return "redirect:/classes/" + c.getId() + "?success";
     }
 
-    @RequestMapping(path="/{id}/edit")
+    @GetMapping(path="/{id}/edit")
     public String editClass(Model model, @PathVariable Integer id) {
         ComplexityClass c = complexityClassRepository.getById(id);
         model.addAttribute("class", c);
@@ -57,7 +57,7 @@ public class ComplexityClassController {
     }
 
     @PostMapping(value="/{id}/edit")
-    public String saveClass(Model model, ComplexityClass c, String description, @PathVariable Integer id) {
+    public String saveClass(Model model, ComplexityClass c, @PathVariable Integer id) {
         if (!c.getName().equalsIgnoreCase(complexityClassRepository.getById(id).getName()) && complexityClassRepository.existsByNameIgnoreCase(c.getName())) {
             return "redirect:/classes/" + id + "/edit?error";
         }

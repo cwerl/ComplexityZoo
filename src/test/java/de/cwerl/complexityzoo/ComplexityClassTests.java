@@ -30,6 +30,7 @@ public class ComplexityClassTests {
 
 	// Attribute keywords
 	private static final String ATTR_CLASSLIST = "classes";
+	private static final String ATTR_CLASS = "class";
 	private static final String ATTR_ID = "id";
 	private static final String ATTR_CLASSNAME = "name";
 	private static final String ATTR_DESCR = "description";
@@ -108,5 +109,27 @@ public class ComplexityClassTests {
 			hasProperty(ATTR_CLASSNAME, is(c2.getName()))
 		))))
 		.andExpect(status().isOk());
+	}
+
+	@Test
+	@Transactional
+	public void editClassTest() throws Exception {
+		ComplexityClass c = new ComplexityClass();
+		c.setName("nOld");
+		c.setDescription("dOld");
+		classRepository.save(c);
+
+		this.mockMvc.perform(get("/classes/{id}/edit", c.getId()))
+		.andExpect(model().attribute(ATTR_CLASS, allOf(
+			hasProperty(ATTR_CLASSNAME, is("nOld")),
+			hasProperty(ATTR_DESCR, is("dOld"))
+			)));
+		this.mockMvc.perform(post("/classes/{id}/edit", c.getId()).param(ATTR_CLASSNAME, "nNew").param(ATTR_DESCR, "dNew"));
+
+		this.mockMvc.perform(get("/classes/{id}/edit", c.getId()))
+		.andExpect(model().attribute(ATTR_CLASS, allOf(
+			hasProperty(ATTR_CLASSNAME, is("nNew")),
+			hasProperty(ATTR_DESCR, is("dNew"))
+			)));
 	}
 }
