@@ -51,7 +51,7 @@ public class ComplexityClassTests {
 	@Transactional
     public void createClassTest() throws Exception {
         this.mockMvc.perform(
-            post("/classes/add")
+            post("/classes/new/save")
 			.param(ATTR_CLASSNAME, "name")
 			.param(ATTR_DESCR, "description")
 		);
