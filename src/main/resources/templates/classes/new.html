@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:include="fragments/layout :: page">
+
+<body>
+    <th:block th:fragment="content">
+        <form th:action="@{/classes/new/save}" th:object="${newclass}" method="post">
+            <div class="form-floating mb-3">
+                <input type="text" maxlength="255" class="form-control" id="inputName" placeholder="Name" name="name"
+                    required autofocus>
+                <label for="inputName">Name</label>
+            </div>
+            <textarea class="form-control" placeholder="Description" name="description"
+                id="description-editor"></textarea>
+            <th:block th:replace="tinyeditors :: description-editor"></th:block>
+        </form>
+    </th:block>
+</body>
+
+</html>

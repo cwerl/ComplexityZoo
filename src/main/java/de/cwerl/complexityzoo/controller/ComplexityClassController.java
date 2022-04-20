@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import de.cwerl.complexityzoo.SuggestionParser;
 import de.cwerl.complexityzoo.model.ComplexityClass;
 import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
 
@@ -23,8 +24,9 @@ public class ComplexityClassController {
 
     @GetMapping(path="")
     public String getAllClasses(Model model) {
-        model.addAttribute("title", "All complexity classes");
+        model.addAttribute("title", "Browse complexity classes");
         model.addAttribute("classes", complexityClassRepository.findAllByOrderByNameAsc());
+        model.addAttribute("classSuggestions", SuggestionParser.parse(complexityClassRepository.findAll(), "Complexity Class"));
         return "classes/list";
     }
 
@@ -36,8 +38,15 @@ public class ComplexityClassController {
         return "classes/view";
     }
 
-    @PostMapping(path="/add")
-    public String addNewClass(@Valid @RequestParam String name, @RequestParam String description, Model model) {
+    @GetMapping(path="/new")
+    public String createNewClass(Model model) {
+        model.addAttribute("title", "Create new complexity class");
+        return "classes/new";
+    }
+
+
+    @PostMapping(path="/new/save")
+    public String saveNewClass(@Valid @RequestParam String name, @RequestParam String description, Model model) {
         ComplexityClass c = new ComplexityClass();
         if(complexityClassRepository.existsByNameIgnoreCase(name)) {
             return "redirect:/classes/" + complexityClassRepository.findByNameIgnoreCase(name).getId() + "?redir";
@@ -52,6 +61,7 @@ public class ComplexityClassController {
     public String editClass(Model model, @PathVariable Integer id) {
         ComplexityClass c = complexityClassRepository.getById(id);
         model.addAttribute("class", c);
+        model.addAttribute("classSuggestions", SuggestionParser.parse(complexityClassRepository.findAll(), "Complexity Class"));
         model.addAttribute("title", "Edit complexity class " + c.getName());
         return "classes/edit";
     }

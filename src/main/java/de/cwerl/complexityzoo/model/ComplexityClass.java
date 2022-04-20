@@ -1,5 +1,6 @@
 package de.cwerl.complexityzoo.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,5 +23,6 @@ public class ComplexityClass {
     private String name;
 
     @Getter @Setter
+    @Column(length = 5000)
     private String description;
 }
