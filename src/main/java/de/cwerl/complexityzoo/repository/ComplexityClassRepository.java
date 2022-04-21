@@ -19,4 +19,6 @@ public interface ComplexityClassRepository extends JpaRepository<ComplexityClass
     public Boolean existsByNameIgnoreCase(String name);
 
     public ComplexityClass findByNameIgnoreCase(String name);
+
+    public ComplexityClass findNameById(Integer id);
 }
