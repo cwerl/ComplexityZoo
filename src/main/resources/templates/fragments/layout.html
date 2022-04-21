@@ -15,7 +15,8 @@
 
     <!-- To automatically render math in text elements, include the auto-render extension: -->
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
-	<script src="https://cdn.tiny.cloud/1/apaoefjy1qgmjg5tk6jaqo92pes6fus6jmxji3ypt6hr2ign/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+	
+	<script th:src="@{/webjars/tinymce/6.0.1/tinymce.min.js}" referrerpolicy="origin"></script>
 	
 	<!-- To render code blocks: -->
 	<link rel="stylesheet" type="text/css" th:href="@{/css/prism.css}">
