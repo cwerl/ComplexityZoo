@@ -11,8 +11,9 @@
                 plugins: 'code, importcss, lists, codesample',
                 content_css: '/css/custom.css',
                 menubar: '',
-                toolbar: 'undo redo | blocks bold italic | bullist numlist outdent indent | codesample',
+                toolbar: 'undo redo | blocks bold italic | bullist numlist outdent indent | codesample | code',
                 noneditable_class: 'mention',
+                convert_urls: false,
                 height: 450,
                 setup: (editor) => {
                     const onAction = (autocompleteApi, rng, value) => {
@@ -69,10 +70,6 @@
         <p class="alert alert-secondary mt-3">
             To mention complexity classes or problems, start typing the corresponding name beginning with <span class="badge badge-key">@</span>. You can even type LaTeX math expressions by surrounding them with <span class="badge badge-key">$</span> or <span class="badge badge-key">$$</span>.
         </p>
-        <div class="float-end mb-3">
-            <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
-            <button type="submit" class="btn btn-primary ms-2">Save</button>
-        </div>
     </th:block>
 </body>
 

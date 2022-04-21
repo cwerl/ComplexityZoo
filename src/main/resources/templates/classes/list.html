@@ -31,11 +31,6 @@
                             th:text="${T(org.apache.commons.lang3.StringUtils).abbreviate(class.description, 100)}"></p>
                         <div class="d-inline-flex">
                             <a class="btn btn-secondary" th:href="@{'/classes/' + ${class.id}}">Details</a>
-                            <form action="#" th:action="@{'/classes/{id}/delete'(id=${class.id})}" th:method="delete">
-                                <button type="submit" class="btn btn-danger ms-2">
-                                    Delete
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>

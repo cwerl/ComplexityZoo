@@ -66,17 +66,15 @@ public class ComplexityClassController {
         return "classes/edit";
     }
 
-    @PostMapping(value="/{id}/edit")
+    @PostMapping(value="/{id}/edit/save")
     public String saveClass(Model model, ComplexityClass c, @PathVariable Integer id) {
-        if (!c.getName().equalsIgnoreCase(complexityClassRepository.getById(id).getName()) && complexityClassRepository.existsByNameIgnoreCase(c.getName())) {
-            return "redirect:/classes/" + id + "/edit?error";
-        }
         c.setId(id);
+        c.setName(complexityClassRepository.getById(id).getName());
         complexityClassRepository.save(c);
         return "redirect:/classes/" + id;
     }
 
-    @RequestMapping(value="/{id}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value="/{id}/edit/delete", method = RequestMethod.DELETE)
     public String deleteClass(@PathVariable Integer id, Model model) {
         complexityClassRepository.deleteById(id);
         return "redirect:/classes";

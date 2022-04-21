@@ -20,3 +20,20 @@
     background-color: #808080;
     border-bottom: .2rem solid #595959;
 }
+
+.btn-menu {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.btn-menu > form > button {
+    width: 100%;
+}
+
+@media (min-width: 576px) {
+    .btn-menu {
+        justify-content: flex-end;
+        flex-direction: row;
+    }
+}
