@@ -77,7 +77,7 @@ public class ComplexityClassTests {
 		classRepository.save(c2);
 
         this.mockMvc.perform(
-            MockMvcRequestBuilders.delete("/classes/{id}/delete", c1.getId())
+            MockMvcRequestBuilders.delete("/classes/{id}/edit/delete", c1.getId())
 		).andExpect(status().is(302));
 
 		this.mockMvc.perform(get("/classes"))
@@ -115,21 +115,20 @@ public class ComplexityClassTests {
 	@Transactional
 	public void editClassTest() throws Exception {
 		ComplexityClass c = new ComplexityClass();
-		c.setName("nOld");
-		c.setDescription("dOld");
+		c.setName("name");
+		c.setDescription("old");
 		classRepository.save(c);
 
 		this.mockMvc.perform(get("/classes/{id}/edit", c.getId()))
 		.andExpect(model().attribute(ATTR_CLASS, allOf(
-			hasProperty(ATTR_CLASSNAME, is("nOld")),
-			hasProperty(ATTR_DESCR, is("dOld"))
+			hasProperty(ATTR_DESCR, is("old"))
 			)));
-		this.mockMvc.perform(post("/classes/{id}/edit", c.getId()).param(ATTR_CLASSNAME, "nNew").param(ATTR_DESCR, "dNew"));
+			
+		this.mockMvc.perform(post("/classes/{id}/edit/save", c.getId()).param(ATTR_DESCR, "new"));
 
-		this.mockMvc.perform(get("/classes/{id}/edit", c.getId()))
+		this.mockMvc.perform(get("/classes/{id}", c.getId()))
 		.andExpect(model().attribute(ATTR_CLASS, allOf(
-			hasProperty(ATTR_CLASSNAME, is("nNew")),
-			hasProperty(ATTR_DESCR, is("dNew"))
+			hasProperty(ATTR_DESCR, is("new"))
 			)));
 	}
 }
