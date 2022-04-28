@@ -3,21 +3,36 @@
 
 <body>
   <th:block th:fragment="content">
-    <p class="alert alert-danger" th:if="${param.error}">This name already exists.</p>
-    <form th:action="@{/classes/{id}/edit(id=${class.id})}" th:object="${class}" method="post">
-      <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="name" placeholder="Complexity class name"
-          th:field="*{name}">
-        <label for="name">Name</label>
+    <form th:action="@{/classes/{id}/edit/save(id=${class.id})}" th:object="${class}" method="post">
+      <textarea id="description-editor" placeholder="Complexity class description" th:field="*{description}">
+      </textarea>
+      <th:block th:replace="fragments/tinyeditors :: description-editor"></th:block>
+      <div class="btn-menu mb-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletionModal">
+          Delete
+        </button>
       </div>
-      <div class="form-floating mb-3">
-        <textarea class="form-control" id="description" placeholder="Complexity class description"
-          th:field="*{description}" style="height: 10rem">
-            </textarea>
-        <label for="description">Description</label>
-      </div>
-      <button type="submit" class="btn btn-primary">Save</button>
     </form>
+
+    <!-- Deletion modal -->
+    <div class="modal fade" id="deletionModal" tabindex="-1" aria-labelledby="deletionModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p>Do you really want to delete complexity class "<span th:text="${class.name}"></span>"? This step can't be undone.</p>
+            <div class="btn-menu">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <form action="#" th:action="@{'edit/delete'(id=${class.id})}" th:method="delete">
+                <button type="submit" class="btn btn-danger">Delete complexity class</button>
+              </form>
+            </div>
+          </div>
+            
+        </div>
+      </div>
+    </div>
   </th:block>
 </body>
 

@@ -59,6 +59,14 @@
     border-width: .25rem;
 }
 
+.alert-secondary {
+    background-color: #f3f3f3;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    border-width: .25rem;
+}
+
 .alert-danger {
     background-color: #f8d7da;
     border-color: #dc3545;
@@ -68,14 +76,22 @@
     border-width: .25rem;
 }
 
-
-/* FORMS */
-.form-control:focus {
-    border-color: #ced4da;
-    box-shadow: none;
-}
-
 /* BETTER ROUNDED CORNERS */
 .card, .form-control, .btn, .modal-content, .alert {
     border-radius: .5rem;
+}
+
+/* TINYMCE */
+.tox-tinymce {
+    border: 1px solid #ced4da !important;
+    border-radius: .5rem !important;
+}
+
+.tox:not(.tox-tinymce-inline) .tox-editor-header {
+    box-shadow: none !important;
+    border-bottom: 1px solid #ced4da !important;
+}
+
+.tox:not([dir=rtl]) .tox-toolbar__group:not(:last-of-type) {
+    border-right: 1px solid #ced4da !important;
 }

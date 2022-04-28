@@ -14,7 +14,7 @@ public interface ComplexityClassRepository extends JpaRepository<ComplexityClass
     public List<ComplexityClass> searchClass(String q);
 
     @Query("SELECT c FROM ComplexityClass c ORDER BY LOWER(name)")
-    public List<ComplexityClass> findAllByOrderByNameAsc();
+    public List<ComplexityClass> findAllOrdered();
 
     public Boolean existsByNameIgnoreCase(String name);
 

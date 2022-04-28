@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <th:block th:fragment="description-editor">
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const specialChars = /*[[${classSuggestions}]]*/ [];
+            tinymce.init({
+                selector: 'textarea#description-editor',
+                plugins: 'code, importcss, lists, codesample',
+                content_css: '/css/custom.css',
+                menubar: '',
+                toolbar: 'undo redo | blocks bold italic | bullist numlist outdent indent | codesample',
+                noneditable_class: 'mention',
+                convert_urls: false,
+                height: 450,
+                setup: (editor) => {
+                    const onAction = (autocompleteApi, rng, value) => {
+                        editor.selection.setRng(rng);
+                        editor.insertContent(value + ' ');
+                        autocompleteApi.hide();
+                    };
+
+                    const getMatchedChars = (pattern) => {
+                        return specialChars.filter(char => char.text.toLowerCase().indexOf(pattern
+                            .toLowerCase()) !== -1);
+                    };
+
+                    /**
+                     * An autocompleter that allows you to insert special characters.
+                     * Items are built using the CardMenuItem.
+                     */
+                    editor.ui.registry.addAutocompleter('specialchars_cardmenuitems', {
+                        ch: '@',
+                        minChars: 1,
+                        columns: 1,
+                        width: 100,
+                        highlightOn: ['char_name'],
+                        onAction: onAction,
+                        fetch: (pattern) => {
+                            return new Promise((resolve) => {
+                                const results = getMatchedChars(pattern).map(char => ({
+                                    type: 'cardmenuitem',
+                                    value: char.value,
+                                    label: char.text,
+                                    items: [{
+                                        type: 'cardcontainer',
+                                        direction: 'horizontal',
+                                        items: [{
+                                                type: 'cardtext',
+                                                text: char.text,
+                                                name: 'char_name'
+                                            },
+                                            {
+                                                type: 'cardtext',
+                                                text: char.type
+                                            }
+                                        ]
+                                    }]
+                                }));
+                                resolve(results);
+                            });
+                        }
+                    });
+                }
+            });
+            /*]]>*/
+        </script>
+        <p class="alert alert-secondary mt-3">
+            To mention complexity classes or problems, start typing the corresponding name beginning with <span class="badge badge-key">@</span>. You can even type LaTeX math expressions by surrounding them with <span class="badge badge-key">$</span> or <span class="badge badge-key">$$</span>.
+        </p>
+    </th:block>
+</body>
+
+</html>
