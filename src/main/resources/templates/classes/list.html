@@ -5,16 +5,12 @@
     <th:block th:fragment="content">
         <!-- Search bar -->
         <div class="bg-white sticky-top">
-            <form class="input-group mb-3" th:action="@{/classes/search}">
-                <button class="btn btn-search border-end-0" type="submit" id="button-addon2">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" height="1.5rem">
-                        <path fill-rule="evenodd"
-                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </button>
-                <input type="search" class="form-control border-start-0" id="search" placeholder="Search"
+            <form class="mb-3 d-flex gap-2" th:action="@{/classes/search}">
+                <input type="search" class="form-control" id="search" placeholder="Complexity class name"
                     aria-label="Search" aria-describedby="search-bar" th:name="q" th:value="${query}">
+                    <button class="btn btn-primary" type="submit" id="button-addon2">
+                        Search
+                    </button>
             </form>
         </div>
 
@@ -22,13 +18,13 @@
         <a class="btn btn-primary mb-3" th:href="@{/classes/new}">Create</a>
 
         <!-- Complexity class list -->
-        <div class="row row-cols-1 row-cols-lg-3 g-3">
+        <div class="row row-cols-1 row-cols-lg-3 g-3" th:unless="${classes.isEmpty()}">
             <div class="col" th:each="class : ${classes}">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${class.name}"></h5>
                         <p class="card-text text-secondary"
-                            th:text="${T(org.apache.commons.lang3.StringUtils).abbreviate(class.description, 100)}"></p>
+                            th:utext="${class.description}"></p>
                         <div class="d-inline-flex">
                             <a class="btn btn-secondary" th:href="@{'/classes/' + ${class.id}}">Details</a>
                         </div>

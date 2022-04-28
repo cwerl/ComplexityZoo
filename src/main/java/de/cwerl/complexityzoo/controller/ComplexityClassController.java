@@ -25,7 +25,7 @@ public class ComplexityClassController {
     @GetMapping(path="")
     public String getAllClasses(Model model) {
         model.addAttribute("title", "Browse complexity classes");
-        model.addAttribute("classes", complexityClassRepository.findAllByOrderByNameAsc());
+        model.addAttribute("classes", complexityClassRepository.findAllOrdered());
         model.addAttribute("classSuggestions", SuggestionParser.parse(complexityClassRepository.findAll(), "Complexity Class"));
         return "classes/list";
     }
