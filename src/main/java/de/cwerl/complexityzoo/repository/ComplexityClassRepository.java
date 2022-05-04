@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import de.cwerl.complexityzoo.model.ComplexityClass;
 
 @Repository
-public interface ComplexityClassRepository extends JpaRepository<ComplexityClass, Integer> {
+public interface ComplexityClassRepository extends JpaRepository<ComplexityClass, Long> {
     @Query("SELECT c FROM ComplexityClass c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', ?1, '%')) ORDER BY LOWER(name)")
     public List<ComplexityClass> searchClass(String q);
 

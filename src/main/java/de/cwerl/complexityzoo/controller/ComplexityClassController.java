@@ -31,7 +31,7 @@ public class ComplexityClassController {
     }
 
     @GetMapping(path="/{id}")
-    public String getClass(Model model, @PathVariable Integer id) {
+    public String getClass(Model model, @PathVariable long id) {
         ComplexityClass c = complexityClassRepository.getById(id);
         model.addAttribute("title", c.getName());
         model.addAttribute("class", c);
@@ -49,16 +49,16 @@ public class ComplexityClassController {
     public String saveNewClass(@Valid @RequestParam String name, @RequestParam String description, Model model) {
         ComplexityClass c = new ComplexityClass();
         if(complexityClassRepository.existsByNameIgnoreCase(name)) {
-            return "redirect:/classes/" + complexityClassRepository.findByNameIgnoreCase(name).getId() + "?redir";
+            return "redirect:/classes/" + complexityClassRepository.findByNameIgnoreCase(name).getClassId() + "?redir";
         }
         c.setName(name);
         c.setDescription(description);
         complexityClassRepository.save(c);
-        return "redirect:/classes/" + c.getId() + "?success";
+        return "redirect:/classes/" + c.getClassId() + "?success";
     }
 
     @GetMapping(path="/{id}/edit")
-    public String editClass(Model model, @PathVariable Integer id) {
+    public String editClass(Model model, @PathVariable long id) {
         ComplexityClass c = complexityClassRepository.getById(id);
         model.addAttribute("class", c);
         model.addAttribute("classSuggestions", SuggestionParser.parse(complexityClassRepository.findAll(), "Complexity Class"));
@@ -67,15 +67,15 @@ public class ComplexityClassController {
     }
 
     @PostMapping(value="/{id}/edit/save")
-    public String saveClass(Model model, ComplexityClass c, @PathVariable Integer id) {
-        c.setId(id);
+    public String saveClass(Model model, ComplexityClass c, @PathVariable long id) {
+        c.setClassId(id);
         c.setName(complexityClassRepository.getById(id).getName());
         complexityClassRepository.save(c);
         return "redirect:/classes/" + id;
     }
 
     @RequestMapping(value="/{id}/edit/delete", method = RequestMethod.DELETE)
-    public String deleteClass(@PathVariable Integer id, Model model) {
+    public String deleteClass(@PathVariable long id, Model model) {
         complexityClassRepository.deleteById(id);
         return "redirect:/classes";
     }

@@ -2,6 +2,10 @@ a {
     text-decoration: none;
 }
 
+body {
+    background-color: #f6f6f6;
+}
+
 input[type="search"] {
     padding-left: 3rem;
     background: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" height="1.5rem"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>') no-repeat left;
@@ -11,6 +15,11 @@ input[type="search"] {
 .badge-key {
     background-color: #808080;
     border-bottom: .2rem solid #595959;
+}
+
+.badge-rel {
+    background-color: #eddfff;
+    color: #8426ff;
 }
 
 .btn-menu {
