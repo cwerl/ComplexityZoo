@@ -20,7 +20,7 @@ public class ComplexityClass {
     @Getter @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long classId;
+    private long id;
 
     @Getter @Setter
     @NotBlank(message = "Name is mandatory")

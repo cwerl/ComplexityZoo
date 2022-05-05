@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <th:block th:fragment="dialog">
+        <form th:action="@{/classes/{id}/new-relation/save(id=${class.id})}" method="post">
+            <span><span th:text="${class.name}"></span> is</span>
+                <select name="type">
+                    <option value="1">equal to</option>
+                    <option value="2">a subset of</option>
+                    <option value="3">a proper subset of</option>
+                    <option value="4">a superset of</option>
+                    <option value="5">a proper superset of</option>
+                </select>
+                <select name="secondClassId">
+                    <th:block th:each="secondClass : ${relationCandidates}">
+                        <option th:value="${secondClass.id}" th:text="${secondClass.name}"></option>
+                    </th:block>
+                </select>
+                <input type="url" name="description">
+                <button type="submit">Save</button>
+        </form>
+    </th:block>
+</body>
+
+</html>

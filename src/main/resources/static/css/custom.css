@@ -22,6 +22,11 @@ input[type="search"] {
     color: #8426ff;
 }
 
+.badge-prob {
+    background-color: #ffeac9;
+    color: #ffac26;
+}
+
 .btn-menu {
     display: flex;
     flex-direction: column;

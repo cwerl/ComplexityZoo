@@ -14,7 +14,7 @@ public class SuggestionParser {
             TinyMCESuggestion suggestion = new TinyMCESuggestion();
             suggestion.setText(complexityClass.getName());
             suggestion.setType(type);
-            suggestion.setValue("<a href=\"../classes/" + complexityClass.getClassId() + "\">"+ complexityClass.getName() +"</a>");
+            suggestion.setValue("<a href=\"../classes/" + complexityClass.getId() + "\">"+ complexityClass.getName() +"</a>");
             classStrings.add(suggestion);
         }
         return classStrings;

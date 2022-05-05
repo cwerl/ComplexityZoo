@@ -43,7 +43,7 @@ public class ComplexityClassTests {
 		classRepository.save(c);
 
 		this.mockMvc.perform(
-			get("/classes/{id}", c.getClassId()))
+			get("/classes/{id}", c.getId()))
 			.andExpect(status().isOk());
 	}
 
@@ -77,15 +77,15 @@ public class ComplexityClassTests {
 		classRepository.save(c2);
 
         this.mockMvc.perform(
-            MockMvcRequestBuilders.delete("/classes/{id}/edit/delete", c1.getClassId())
+            MockMvcRequestBuilders.delete("/classes/{id}/edit/delete", c1.getId())
 		).andExpect(status().is(302));
 
 		this.mockMvc.perform(get("/classes"))
 		.andExpect(model().attribute(ATTR_CLASSLIST, not(hasItem(
-			hasProperty(ATTR_ID, is(c1.getClassId()))
+			hasProperty(ATTR_ID, is(c1.getId()))
 		))))
 		.andExpect(model().attribute(ATTR_CLASSLIST, hasItem(
-			hasProperty(ATTR_ID, is(c2.getClassId()))
+			hasProperty(ATTR_ID, is(c2.getId()))
 		)))
 		.andExpect(status().isOk());
     }
@@ -119,14 +119,14 @@ public class ComplexityClassTests {
 		c.setDescription("old");
 		classRepository.save(c);
 
-		this.mockMvc.perform(get("/classes/{id}/edit", c.getClassId()))
+		this.mockMvc.perform(get("/classes/{id}/edit", c.getId()))
 		.andExpect(model().attribute(ATTR_CLASS, allOf(
 			hasProperty(ATTR_DESCR, is("old"))
 			)));
 			
-		this.mockMvc.perform(post("/classes/{id}/edit/save", c.getClassId()).param(ATTR_DESCR, "new"));
+		this.mockMvc.perform(post("/classes/{id}/edit/save", c.getId()).param(ATTR_DESCR, "new"));
 
-		this.mockMvc.perform(get("/classes/{id}", c.getClassId()))
+		this.mockMvc.perform(get("/classes/{id}", c.getId()))
 		.andExpect(model().attribute(ATTR_CLASS, allOf(
 			hasProperty(ATTR_DESCR, is("new"))
 			)));

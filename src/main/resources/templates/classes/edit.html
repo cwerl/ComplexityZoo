@@ -3,7 +3,7 @@
 
 <body>
   <th:block th:fragment="content">
-    <form th:action="@{/classes/{id}/edit/save(id=${class.classId})}" th:object="${class}" method="post">
+    <form th:action="@{/classes/{id}/edit/save(id=${class.id})}" th:object="${class}" method="post">
       <textarea id="description-editor" placeholder="Complexity class description" th:field="*{description}">
       </textarea>
       <th:block th:replace="fragments/tinyeditors :: description-editor"></th:block>
@@ -21,15 +21,17 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body">
-            <p>Do you really want to delete complexity class "<span th:text="${class.name}"></span>"? This step can't be undone.</p>
+            <h5 class="modal-title">Delete complexity class</h5>
+            <span>Do you really want to delete complexity class <span class="fw-bold" th:text="${class.name}"></span>? This step can't be undone.</span>
+          </div>
+          <div class="modal-footer">
             <div class="btn-menu">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <form action="#" th:action="@{'edit/delete'(id=${class.classId})}" th:method="delete">
-                <button type="submit" class="btn btn-danger">Delete complexity class</button>
+              <form action="#" th:action="@{'edit/delete'(id=${class.id})}" th:method="delete">
+                <button type="submit" class="btn btn-danger">Confirm</button>
               </form>
             </div>
           </div>
-            
         </div>
       </div>
     </div>
