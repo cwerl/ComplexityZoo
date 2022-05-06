@@ -13,19 +13,30 @@ input[type="search"] {
     border-bottom: .2rem solid #595959;
 }
 
+.badge-rel {
+    background-color: #eddfff;
+    color: #8426ff;
+}
+
+.badge-prob {
+    background-color: #ffeac9;
+    color: #ffac26;
+}
+
 .btn-menu {
+    justify-content: flex-end;
     display: flex;
-    flex-direction: column;
     gap: .5rem;
 }
 
-.btn-menu>form>button {
-    width: 100%;
+.class-list-description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
 
-@media (min-width: 576px) {
-    .btn-menu {
-        justify-content: flex-end;
-        flex-direction: row;
-    }
+.btn-sm {
+    padding: .1rem .3rem;
+    line-height: 1.4;
 }

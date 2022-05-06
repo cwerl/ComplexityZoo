@@ -4,9 +4,13 @@
 <body>
   <th:block th:fragment="content">
     <form th:action="@{/classes/{id}/edit/save(id=${class.id})}" th:object="${class}" method="post">
+
+      <!-- Description input -->
       <textarea id="description-editor" placeholder="Complexity class description" th:field="*{description}">
       </textarea>
       <th:block th:replace="fragments/tinyeditors :: description-editor"></th:block>
+
+      <!-- Buttons -->
       <div class="btn-menu mb-3">
         <button type="submit" class="btn btn-primary">Save</button>
         <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
@@ -20,16 +24,29 @@
     <div class="modal fade" id="deletionModal" tabindex="-1" aria-labelledby="deletionModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
+
+          <!-- Modal header -->
+          <div class="modal-header d-flex align-items-center justify-content-center">
+            <span class="badge bg-danger fs-2"><i class="bi bi-trash3"></i></span>
+            <h5 class="modal-title ms-3">Delete complexity class</h5>
+          </div>
+
+          <!-- Warning text -->
           <div class="modal-body">
-            <p>Do you really want to delete complexity class "<span th:text="${class.name}"></span>"? This step can't be undone.</p>
+            <span>Do you really want to delete <span class="fw-bold" th:text="${class.name}"></span>? This will also
+              delete every existing relation to the complexity class.</span>
+            <span>Deletions can't be undone.</span>
+          </div>
+
+          <!-- Buttons -->
+          <div class="modal-footer">
             <div class="btn-menu">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
               <form action="#" th:action="@{'edit/delete'(id=${class.id})}" th:method="delete">
-                <button type="submit" class="btn btn-danger">Delete complexity class</button>
+                <button type="submit" class="btn btn-danger">Confirm</button>
               </form>
             </div>
           </div>
-            
         </div>
       </div>
     </div>

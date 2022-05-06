@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.cwerl.complexityzoo.SuggestionParser;
+import de.cwerl.complexityzoo.model.CTCRelation;
+import de.cwerl.complexityzoo.model.CTCRelationType;
 import de.cwerl.complexityzoo.model.ComplexityClass;
+import de.cwerl.complexityzoo.repository.CTCRelationRepository;
 import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
 
 @Controller
@@ -22,31 +25,54 @@ public class ComplexityClassController {
     @Autowired
     private ComplexityClassRepository complexityClassRepository;
 
+    @Autowired
+    private CTCRelationRepository ctcRelationRepository;
+
     @GetMapping(path="")
     public String getAllClasses(Model model) {
         model.addAttribute("title", "Browse complexity classes");
         model.addAttribute("classes", complexityClassRepository.findAllOrdered());
-        model.addAttribute("classSuggestions", SuggestionParser.parse(complexityClassRepository.findAll(), "Complexity Class"));
         return "classes/list";
     }
 
     @GetMapping(path="/{id}")
-    public String getClass(Model model, @PathVariable Integer id) {
+    public String getClass(Model model, @PathVariable long id) {
         ComplexityClass c = complexityClassRepository.getById(id);
         model.addAttribute("title", c.getName());
         model.addAttribute("class", c);
+        model.addAttribute("relationCandidates", ctcRelationRepository.findAllRelationCandidatesOrdered(id));
+        model.addAttribute("relations", ctcRelationRepository.getAllRelations(id));
         return "classes/view";
+    }
+    
+    @PostMapping(value="/{firstClassId}/new-relation/save")
+    public String newRelationSave(@PathVariable long firstClassId, @RequestParam long secondClassId, @RequestParam CTCRelationType type, @RequestParam String description) {
+        if(!(ctcRelationRepository.existsByClassPair(firstClassId, secondClassId) || firstClassId == secondClassId)) {
+            CTCRelation relation = new CTCRelation();
+            relation.setFirstClass(complexityClassRepository.getById(firstClassId));
+            relation.setSecondClass(complexityClassRepository.getById(secondClassId));
+            relation.setType(type);
+            relation.setDescription(description);
+            ctcRelationRepository.save(relation);
+        }
+        return "redirect:/classes/{firstClassId}";
+    }
+
+    @RequestMapping(value="/{classId}/relation/{relationId}/delete", method = RequestMethod.DELETE)
+    public String deleteRelation(@PathVariable long classId, @PathVariable long relationId) {
+        ctcRelationRepository.deleteById(relationId);
+        return "redirect:/classes/{classId}";
     }
 
     @GetMapping(path="/new")
     public String createNewClass(Model model) {
         model.addAttribute("title", "Create new complexity class");
+        model.addAttribute("classSuggestions", SuggestionParser.parse(complexityClassRepository.findAll(), "Complexity Class"));
         return "classes/new";
     }
 
-
     @PostMapping(path="/new/save")
-    public String saveNewClass(@Valid @RequestParam String name, @RequestParam String description, Model model) {
+    public String saveNewClass(@Valid @RequestParam String name, @RequestParam String description) {
         ComplexityClass c = new ComplexityClass();
         if(complexityClassRepository.existsByNameIgnoreCase(name)) {
             return "redirect:/classes/" + complexityClassRepository.findByNameIgnoreCase(name).getId() + "?redir";
@@ -58,7 +84,7 @@ public class ComplexityClassController {
     }
 
     @GetMapping(path="/{id}/edit")
-    public String editClass(Model model, @PathVariable Integer id) {
+    public String editClass(Model model, @PathVariable long id) {
         ComplexityClass c = complexityClassRepository.getById(id);
         model.addAttribute("class", c);
         model.addAttribute("classSuggestions", SuggestionParser.parse(complexityClassRepository.findAll(), "Complexity Class"));
@@ -67,7 +93,7 @@ public class ComplexityClassController {
     }
 
     @PostMapping(value="/{id}/edit/save")
-    public String saveClass(Model model, ComplexityClass c, @PathVariable Integer id) {
+    public String saveClass(ComplexityClass c, @PathVariable long id) {
         c.setId(id);
         c.setName(complexityClassRepository.getById(id).getName());
         complexityClassRepository.save(c);
@@ -75,7 +101,7 @@ public class ComplexityClassController {
     }
 
     @RequestMapping(value="/{id}/edit/delete", method = RequestMethod.DELETE)
-    public String deleteClass(@PathVariable Integer id, Model model) {
+    public String deleteClass(@PathVariable long id) {
         complexityClassRepository.deleteById(id);
         return "redirect:/classes";
     }
