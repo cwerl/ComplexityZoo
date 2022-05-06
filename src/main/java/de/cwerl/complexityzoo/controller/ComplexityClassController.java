@@ -46,40 +46,14 @@ public class ComplexityClassController {
     }
     
     @PostMapping(value="/{firstClassId}/new-relation/save")
-    public String newRelationSave(@PathVariable long firstClassId, @RequestParam long secondClassId, @RequestParam int type, @RequestParam String description) {
+    public String newRelationSave(@PathVariable long firstClassId, @RequestParam long secondClassId, @RequestParam CTCRelationType type, @RequestParam String description) {
         if(ctcRelationRepository.existsByClassPair(firstClassId, secondClassId)) {
             return "redirect:/classes/{firstClassId}";
         }
         CTCRelation relation = new CTCRelation();
-        ComplexityClass firstClass = complexityClassRepository.getById(firstClassId);
-        ComplexityClass secondClass = complexityClassRepository.getById(secondClassId);
-        switch(type) {
-            case 1:
-                relation.setFirstClass(firstClass);
-                relation.setSecondClass(secondClass);
-                relation.setType(CTCRelationType.EQUAL_TO);
-                break;
-            case 2:
-                relation.setFirstClass(firstClass);
-                relation.setSecondClass(secondClass);
-                relation.setType(CTCRelationType.SUBSET_OF);
-                break;
-            case 3:
-                relation.setFirstClass(firstClass);
-                relation.setSecondClass(secondClass);
-                relation.setType(CTCRelationType.PROPER_SUBSET_OF);
-                break;
-            case 4:
-                relation.setFirstClass(firstClass);
-                relation.setSecondClass(secondClass);
-                relation.setType(CTCRelationType.SUPERSET_OF);
-                break;
-            case 5:
-                relation.setFirstClass(firstClass);
-                relation.setSecondClass(secondClass);
-                relation.setType(CTCRelationType.PROPER_SUPERSET_OF);
-                break;
-        }
+        relation.setFirstClass(complexityClassRepository.getById(firstClassId));
+        relation.setSecondClass(complexityClassRepository.getById(secondClassId));
+        relation.setType(type);
         relation.setDescription(description);
         ctcRelationRepository.save(relation);
         return "redirect:/classes/{firstClassId}";

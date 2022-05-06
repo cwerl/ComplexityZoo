@@ -18,18 +18,7 @@
 
          <div class="col">
             <h3><span class="badge badge-rel"><i class="bi bi-diagram-2"></i></span> Relations to other classes</h3>
-            <ul class="list-group">
-               <li class="list-group-item d-flex align-items-center justify-content-between" th:each="relation : ${relations}">
-                  <div>
-                  <span th:text="${relation.firstClass.name}"></span>
-                  <span th:text="${relation.type}"></span>
-                  <span th:text="${relation.secondClass.name}"></span>
-               </div>
-                  <form action="#" th:action="@{'{classId}/relation/{relationId}/delete'(classId=${class.id}, relationId=${relation.id})}" th:method="delete">
-                     <button type="submit" class="btn btn-danger ms-1">Delete</button>
-                   </form>
-               </li>
-            </ul>
+            <th:block th:replace="classes/relation-list :: list"></th:block>
 
             <button type="button" class="btn btn-primary float-end mt-3" data-bs-toggle="modal"
                data-bs-target="#relationModal">
