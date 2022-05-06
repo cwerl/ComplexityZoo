@@ -47,19 +47,18 @@ public class ComplexityClassController {
     
     @PostMapping(value="/{firstClassId}/new-relation/save")
     public String newRelationSave(@PathVariable long firstClassId, @RequestParam long secondClassId, @RequestParam CTCRelationType type, @RequestParam String description) {
-        if(ctcRelationRepository.existsByClassPair(firstClassId, secondClassId)) {
-            return "redirect:/classes/{firstClassId}";
+        if(!(ctcRelationRepository.existsByClassPair(firstClassId, secondClassId) || firstClassId == secondClassId)) {
+            CTCRelation relation = new CTCRelation();
+            relation.setFirstClass(complexityClassRepository.getById(firstClassId));
+            relation.setSecondClass(complexityClassRepository.getById(secondClassId));
+            relation.setType(type);
+            relation.setDescription(description);
+            ctcRelationRepository.save(relation);
         }
-        CTCRelation relation = new CTCRelation();
-        relation.setFirstClass(complexityClassRepository.getById(firstClassId));
-        relation.setSecondClass(complexityClassRepository.getById(secondClassId));
-        relation.setType(type);
-        relation.setDescription(description);
-        ctcRelationRepository.save(relation);
         return "redirect:/classes/{firstClassId}";
     }
 
-    @RequestMapping(value="{classId}/relation/{relationId}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value="/{classId}/relation/{relationId}/delete", method = RequestMethod.DELETE)
     public String deleteRelation(@PathVariable long classId, @PathVariable long relationId) {
         ctcRelationRepository.deleteById(relationId);
         return "redirect:/classes/{classId}";
@@ -71,7 +70,6 @@ public class ComplexityClassController {
         model.addAttribute("classSuggestions", SuggestionParser.parse(complexityClassRepository.findAll(), "Complexity Class"));
         return "classes/new";
     }
-
 
     @PostMapping(path="/new/save")
     public String saveNewClass(@Valid @RequestParam String name, @RequestParam String description) {
