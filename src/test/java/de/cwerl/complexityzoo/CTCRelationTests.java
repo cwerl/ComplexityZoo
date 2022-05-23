@@ -41,16 +41,18 @@ public class CTCRelationTests {
         classRepository.save(c2);
 
         this.mockMvc.perform(
-            post("/classes/{firstClassId}/new-relation/save", c1.getId())
+            post("/ctc-relations/new/save")
+            .param("firstClassId", "" + c1.getId())
             .param("secondClassId", "" + c2.getId())
             .param("type", "EQUAL_TO")
-            .param("description", "description")
+            .param("reference", "description")
+            .param("redirect", "")
         ).andExpect(status().is3xxRedirection());
 
         this.mockMvc.perform(
             get("/classes/{id}", c1.getId())
         )
-        .andExpect(model().attribute("relations", hasItem(
+        .andExpect(model().attribute("ctcRelations", hasItem(
             allOf(
                 hasProperty("firstClass", hasProperty("id", is(c1.getId()))),
                 hasProperty("secondClass", hasProperty("id", is(c2.getId())))
@@ -67,16 +69,18 @@ public class CTCRelationTests {
         classRepository.save(c);
 
         this.mockMvc.perform(
-            post("/classes/{firstClassId}/new-relation/save", c.getId())
+            post("/ctc-relations/new/save")
+            .param("firstClassId", "" + c.getId())
             .param("secondClassId", "" + c.getId())
             .param("type", "EQUAL_TO")
-            .param("description", "description")
+            .param("reference", "description")
+            .param("redirect", "")
         ).andExpect(status().is3xxRedirection());
 
         this.mockMvc.perform(
             get("/classes/{id}", c.getId())
         )
-        .andExpect(model().attribute("relations", not(hasItem(
+        .andExpect(model().attribute("ctcRelations", not(hasItem(
             allOf(
                 hasProperty("firstClass", hasProperty("id", is(c.getId()))),
                 hasProperty("secondClass", hasProperty("id", is(c.getId())))
@@ -100,12 +104,13 @@ public class CTCRelationTests {
         relationRepository.save(r);
 
         this.mockMvc.perform(
-            delete("/classes/{classId}/relation/{relationId}/delete", c1.getId(), r.getId())
+            delete("/ctc-relations/{relationId}/delete", r.getId())
+            .param("redirect", "")
         ).andExpect(status().is3xxRedirection());
 
         this.mockMvc.perform(
             get("/classes/{classId}", c1.getId())
-        ).andExpect(model().attribute("relations", not(hasItem(
+        ).andExpect(model().attribute("ctcRelations", not(hasItem(
             hasProperty("id", is(r.getId()))
         ))));
     }
