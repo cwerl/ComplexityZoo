@@ -3,14 +3,14 @@ package de.cwerl.complexityzoo.model;
 import javax.persistence.Entity;
 
 @Entity
-public class ComplexityClass extends ComplexityData {
+public class Problem extends ComplexityData {
 
     @Override
     public TinyMCESuggestion toTinyMCESuggestion() {
         TinyMCESuggestion suggestion = new TinyMCESuggestion();
         suggestion.setText(this.getName());
-        suggestion.setType("Complexity class");
-        suggestion.setValue("<a href=\"../classes/" + this.getId() + "\">"+ this.getName() +"</a>");
+        suggestion.setType("Problem");
+        suggestion.setValue("<a href=\"../problems/" + this.getId() + "\">"+ this.getName() +"</a>");
         return suggestion;
     }
 }
