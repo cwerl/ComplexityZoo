@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--
+    ${class}: current complexity class
+    ${ctcrelations}: list of complexity classes related to current complexity class
+-->
+
+<body>
+    <th:block th:fragment="class-view">
+        <ul class="list-group">
+            <li class="list-group-item d-flex align-items-center justify-content-between" th:each="ctc : ${ctcRelations}">
+                <!-- Relation type and related class item menu -->
+                <div th:if="${ctc.firstClass.id == class.id}">
+                    <th:block th:switch="${ctc.type.name()}">
+                        <span th:case="'EQUAL_TO'">$=$</span>
+                        <span th:case="'SUBSET_OF'">$\subseteq$</span>
+                        <span th:case="'PROPER_SUBSET_OF'">$\subset$</span>
+                        <span th:case="'SUPERSET_OF'">$\supseteq$</span>
+                        <span th:case="'PROPER_SUPERSET_OF'">$\supset$</span>
+                    </th:block>
+                    <a th:text="${ctc.secondClass.name}" th:href="@{'' + ${ctc.secondClass.id}}"></a>
+                </div>
+                <div th:if="${ctc.secondClass.id == class.id}">
+                    <th:block th:switch="${ctc.type.name()}">
+                        <span th:case="'EQUAL_TO'">$=$</span>
+                        <span th:case="'SUBSET_OF'">$\supseteq$</span>
+                        <span th:case="'PROPER_SUBSET_OF'">$\supset$</span>
+                        <span th:case="'SUPERSET_OF'">$\subseteq$</span>
+                        <span th:case="'PROPER_SUPERSET_OF'">$\subset$</span>
+                    </th:block>
+                    <a th:text="${ctc.firstClass.name}" th:href="@{'' + ${ctc.firstClass.id}}"></a>
+                </div>
+
+                <div class="bg-secondary rounded-pill px-2 reference-link">
+                    <i class="bi bi-file-earmark-check"></i>
+                    <a th:href="${ctc.reference}" th:text="${ctc.reference}" target="_blank"></a>
+                </div>
+
+                <!-- Buttons -->
+                <div class="btn-menu">
+                    <form action="#"
+                        th:action="@{/ctc-relations/{relationId}/delete(redirect='/classes/' + ${class.id}, relationId=${ctc.id})}"
+                        th:method="delete">
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </th:block>
+</body>
+
+</html>

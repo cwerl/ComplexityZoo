@@ -37,6 +37,17 @@ input[type="search"] {
 }
 
 .btn-sm {
-    padding: .1rem .3rem;
+    font-size: 1rem;
+    padding: .25em .4em;
     line-height: 1.4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reference-link {
+    text-overflow: ellipsis;
+    max-width: 12rem;
+    overflow: hidden;
+    white-space: nowrap;
 }

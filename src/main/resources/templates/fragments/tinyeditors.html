@@ -5,7 +5,7 @@
     <th:block th:fragment="description-editor">
         <script th:inline="javascript">
             /*<![CDATA[*/
-            const specialChars = /*[[${classSuggestions}]]*/ [];
+            const specialChars = /*[[${suggestions}]]*/ [];
             tinymce.init({
                 selector: 'textarea#description-editor',
                 plugins: 'code, importcss, lists, codesample',

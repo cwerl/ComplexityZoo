@@ -1,4 +1,4 @@
-package de.cwerl.complexityzoo.model;
+package de.cwerl.complexityzoo.model.relations;
 
 public enum CTCRelationType {
     EQUAL_TO, SUBSET_OF, PROPER_SUBSET_OF, SUPERSET_OF, PROPER_SUPERSET_OF;
