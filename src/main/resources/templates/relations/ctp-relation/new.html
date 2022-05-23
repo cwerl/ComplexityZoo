@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <th:block th:fragment="class-view">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form th:action="@{/ctp-relations/new/save(redirect= '/classes/' + ${class.id}, classId=${class.id})}"
+                    method="post">
+                    <!-- Modal header -->
+                    <div class="modal-header d-flex align-items-center justify-content-center">
+                        <span class="badge badge-prob fs-2"><i class="bi bi-braces"></i></span>
+                        <h5 class="modal-title ms-3">Add problem</h5>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="mb-3">
+
+                            <!-- Select problem -->
+                            <select id="nocreate" name="problemId" required>
+                                <option value="">Problem</option>
+                                <th:block th:each="p : ${ctpCandidates}">
+                                    <option th:value="${p.id}" th:text="${p.name}"></option>
+                                </th:block>
+                            </select>
+                        </div>
+
+                        <!-- Input for reference -->
+                        <div class="form-floating">
+                            <input type="url" maxlength="255" class="form-control" id="inputReferenceProblem"
+                                placeholder="reference" name="reference" required autofocus>
+                            <label for="inputReferenceProblem">Reference</label>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="modal-footer">
+                        <div class="btn-menu">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </th:block>
+
+    <th:block th:fragment="problem-view">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form th:action="@{/ctp-relations/new/save(redirect= '/problems/' + ${problem.id}, problemId=${problem.id})}"
+                    method="post">
+                    <!-- Modal header -->
+                    <div class="modal-header d-flex align-items-center justify-content-center">
+                        <span class="badge badge-prob fs-2"><i class="bi bi-braces"></i></span>
+                        <h5 class="modal-title ms-3">Add complexity class</h5>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="mb-3">
+
+                            <!-- Select problem -->
+                            <select id="nocreate" name="classId" required>
+                                <option value="">Complexity class</option>
+                                <th:block th:each="c : ${ctpCandidates}">
+                                    <option th:value="${c.id}" th:text="${c.name}"></option>
+                                </th:block>
+                            </select>
+                        </div>
+
+                        <!-- Input for reference -->
+                        <div class="form-floating">
+                            <input type="url" maxlength="255" class="form-control" id="inputReferenceProblem"
+                                placeholder="reference" name="reference" required autofocus>
+                            <label for="inputReferenceProblem">Reference</label>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="modal-footer">
+                        <div class="btn-menu">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </th:block>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:include="fragments/layout :: page">
+
+<body>
+    <th:block th:fragment="content">
+        <!-- Search bar -->
+        <div class="bg-white sticky-top">
+            <form class="mb-3 d-flex gap-2" th:action="@{/problems/search}">
+                <input type="search" class="form-control" id="search" placeholder="Problem name"
+                    aria-label="Search" aria-describedby="search-bar" th:name="q" th:value="${query}">
+                    <button class="btn btn-primary" type="submit" id="button-addon2">
+                        Search
+                    </button>
+            </form>
+        </div>
+
+        <!-- Create new problem -->
+        <a class="btn btn-primary mb-3" th:href="@{/problems/new}">Create</a>
+
+        <!-- Problem list -->
+        <div class="row row-cols-1 row-cols-lg-3 g-3" th:unless="${problems.isEmpty()}">
+            <div class="col" th:each="problem : ${problems}">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${problem.name}"></h5>
+                        <p class="card-text text-secondary"
+                            th:utext="${problem.description}"></p>
+                        <div class="d-inline-flex">
+                            <a class="btn btn-secondary" th:href="@{'/problems/' + ${problem.id}}">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No problems -->
+        <p class="alert alert-secondary" th:if="${problems.isEmpty()}">No problems found.</p>
+    </th:block>
+</body>
+
+</html>

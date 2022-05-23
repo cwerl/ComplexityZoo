@@ -3,36 +3,64 @@
 
 <body>
    <th:block th:fragment="content">
+      <!-- Alerts -->
       <p class="alert alert-success" th:if="${param.success}">Successfully created complexity class. Edit it here or <a
             th:href="@{/classes}">go back</a> to add more.</p>
       <p class="alert alert-secondary" th:if="${param.redir}">You've been redirected here because a class with this name
          already exists.</p>
+
+      <!-- Description -->
       <p th:utext="${class.description}"></p>
       <a class="btn btn-secondary mb-3" th:href="@{/classes/{id}/edit(id=${class.id})}">Edit</a>
-      <div class="row">
 
+      <div class="row">
+         
+         <!-- Related problems -->
          <div class="col">
-            <h3><span class="badge badge-prob"><i class="bi bi-braces"></i></span> Problems</h3>
-            <a class="btn btn-primary float-end mt-3">Add</a>
+            <div class="d-flex justify-content-between align-items-start">
+               <div>
+                  <h3><span class="badge badge-prob"><i class="bi bi-braces"></i></span> Problems</h3>
+                  <p>Problems being a part of <span th:text="${class.name}"></span>.</p>
+               </div>
+
+               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#problemModal">
+                  Add
+               </button>
+            </div>
+
+            <!-- List -->
+            <th:block th:replace="relations/ctp-relation/list :: class-view"></th:block>
+
+            <!-- New CTP relation modal -->
+            <div class="modal fade" id="problemModal" tabindex="-1" aria-labelledby="relationModalLabel"
+               aria-hidden="true">
+               <th:block th:replace="relations/ctp-relation/new :: class-view"></th:block>
+            </div>
+
          </div>
 
+         <!-- Related classes -->
          <div class="col">
-            <h3><span class="badge badge-rel"><i class="bi bi-diagram-2"></i></span> Relations to other classes</h3>
-            <th:block th:replace="classes/relation-list :: list"></th:block>
-
-            <button type="button" class="btn btn-primary float-end mt-3" data-bs-toggle="modal"
-               data-bs-target="#relationModal">
-               Add
-            </button>
-
-            <!-- New relation modal -->
-            <div class="modal fade" id="relationModal" tabindex="-1" aria-labelledby="relationModalLabel"
-               aria-hidden="true">
-               <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                     <th:block th:replace="classes/new-relation :: dialog"></th:block>
-                  </div>
+            <div class="d-flex justify-content-between align-items-start">
+               <div>
+                  <h3><span class="badge badge-rel"><i class="bi bi-diagram-2"></i></span> Related complexity classes
+                  </h3>
+                  <p>Other complexity classes that are somehow related to <span th:text="${class.name}"></span>.</p>
                </div>
+
+               <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                  data-bs-target="#classRelationModal">
+                  Add
+               </button>
+            </div>
+
+            <!-- List -->
+            <th:block th:replace="relations/ctc-relation/list :: class-view"></th:block>
+
+            <!-- New CTC relation modal -->
+            <div class="modal fade" id="classRelationModal" tabindex="-1" aria-labelledby="relationModalLabel"
+               aria-hidden="true">
+               <th:block th:replace="relations/ctc-relation/new :: class-view"></th:block>
             </div>
          </div>
       </div>

@@ -12,7 +12,4 @@ public class TinyMCESuggestion {
 
     @Getter @Setter
     private String value;
-
-    @Getter @Setter
-    private String icon;
 }

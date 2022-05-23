@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:include="fragments/layout :: page">
+
+<body>
+   <th:block th:fragment="content">
+
+      <!-- Alerts -->
+      <p class="alert alert-success" th:if="${param.success}">Successfully created problem. Edit it here or <a
+            th:href="@{/problems}">go back</a> to add more.</p>
+      <p class="alert alert-secondary" th:if="${param.redir}">You've been redirected here because a problem with this
+         name already exists.</p>
+
+      <!-- Description -->
+      <p th:utext="${problem.description}"></p>
+      <a class="btn btn-secondary mb-3" th:href="@{/problems/{id}/edit(id=${problem.id})}">Edit</a>
+
+      <div class="row">
+
+         <!-- Related classes -->
+         <div class="col">
+            <div class="d-flex justify-content-between align-items-start">
+               <div>
+                  <h3><span class="badge badge-prob"><i class="bi bi-braces"></i></span> Complexity classes</h3>
+                  <p>Complexity classes that contain <span th:text="${problem.name}"></span>.</p>
+               </div>
+               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#classModal">
+                  Add
+               </button>
+            </div>
+
+            <!-- List -->
+            <th:block th:replace="relations/ctp-relation/list :: problem-view"></th:block>
+
+            <!-- New CTP relation modal -->
+            <div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="relationModalLabel"
+               aria-hidden="true">
+               <th:block th:replace="relations/ctp-relation/new :: problem-view"></th:block>
+            </div>
+         </div>
+
+         <!-- Related problems -->
+         <div class="col">
+            <div class="d-flex justify-content-between align-items-start">
+               <div>
+                  <h3><span class="badge badge-rel"><i class="bi bi-diagram-2"></i></span> Reductions</h3>
+                  <p>Problems that <span th:text="${problem.name}"></span> can be reduced to.</p>
+               </div>
+               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ptpModal">
+                  Add
+               </button>
+            </div>
+
+            <!-- List -->
+            <th:block th:replace="relations/ptp-relation/list :: problem-view"></th:block>
+
+            <!-- New PTP relation modal -->
+            <div class="modal fade" id="ptpModal" tabindex="-1" aria-labelledby="relationModalLabel" aria-hidden="true">
+               <th:block th:replace="relations/ptp-relation/new :: problem-view"></th:block>
+            </div>
+         </div>
+      </div>
+   </th:block>
+</body>
+
+</html>
