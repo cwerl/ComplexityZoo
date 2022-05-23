@@ -1,5 +1,8 @@
 package de.cwerl.complexityzoo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,106 +16,102 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.cwerl.complexityzoo.SuggestionParser;
-import de.cwerl.complexityzoo.model.CTCRelation;
-import de.cwerl.complexityzoo.model.CTCRelationType;
 import de.cwerl.complexityzoo.model.ComplexityClass;
-import de.cwerl.complexityzoo.repository.CTCRelationRepository;
+import de.cwerl.complexityzoo.model.TinyMCESuggestion;
 import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
+import de.cwerl.complexityzoo.repository.ProblemRepository;
+import de.cwerl.complexityzoo.repository.relations.CTCRelationRepository;
+import de.cwerl.complexityzoo.repository.relations.CTPRelationRepository;
 
 @Controller
 @RequestMapping(path="/classes")
 public class ComplexityClassController {
     @Autowired
-    private ComplexityClassRepository complexityClassRepository;
+    private ComplexityClassRepository classRepository;
+
+    @Autowired
+    private ProblemRepository problemRepository;
 
     @Autowired
     private CTCRelationRepository ctcRelationRepository;
 
+    @Autowired
+    private CTPRelationRepository ctpRelationRepository;
+
     @GetMapping(path="")
-    public String getAllClasses(Model model) {
+    public String list(Model model) {
         model.addAttribute("title", "Browse complexity classes");
-        model.addAttribute("classes", complexityClassRepository.findAllOrdered());
+        model.addAttribute("classes", classRepository.findAllOrdered());
         return "classes/list";
     }
 
     @GetMapping(path="/{id}")
-    public String getClass(Model model, @PathVariable long id) {
-        ComplexityClass c = complexityClassRepository.getById(id);
+    public String view(Model model, @PathVariable long id) {
+        ComplexityClass c = classRepository.getById(id);
         model.addAttribute("title", c.getName());
         model.addAttribute("class", c);
-        model.addAttribute("relationCandidates", ctcRelationRepository.findAllRelationCandidatesOrdered(id));
-        model.addAttribute("relations", ctcRelationRepository.getAllRelations(id));
+        model.addAttribute("ctcCandidates", ctcRelationRepository.findAllRelationCandidatesOrdered(id));
+        model.addAttribute("ctpCandidates", ctpRelationRepository.findAllProblemCandidatesOrdered(id));
+        model.addAttribute("ctcRelations", ctcRelationRepository.findRelationsByComplexityClass(id));
+        model.addAttribute("ctpRelations", ctpRelationRepository.findRelationsByComplexityClass(id));
         return "classes/view";
-    }
-    
-    @PostMapping(value="/{firstClassId}/new-relation/save")
-    public String newRelationSave(@PathVariable long firstClassId, @RequestParam long secondClassId, @RequestParam CTCRelationType type, @RequestParam String description) {
-        if(!(ctcRelationRepository.existsByClassPair(firstClassId, secondClassId) || firstClassId == secondClassId)) {
-            CTCRelation relation = new CTCRelation();
-            relation.setFirstClass(complexityClassRepository.getById(firstClassId));
-            relation.setSecondClass(complexityClassRepository.getById(secondClassId));
-            relation.setType(type);
-            relation.setDescription(description);
-            ctcRelationRepository.save(relation);
-        }
-        return "redirect:/classes/{firstClassId}";
-    }
-
-    @RequestMapping(value="/{classId}/relation/{relationId}/delete", method = RequestMethod.DELETE)
-    public String deleteRelation(@PathVariable long classId, @PathVariable long relationId) {
-        ctcRelationRepository.deleteById(relationId);
-        return "redirect:/classes/{classId}";
     }
 
     @GetMapping(path="/new")
-    public String createNewClass(Model model) {
+    public String create(Model model) {
         model.addAttribute("title", "Create new complexity class");
-        model.addAttribute("classSuggestions", SuggestionParser.parse(complexityClassRepository.findAll(), "Complexity Class"));
+        List<TinyMCESuggestion> suggestions = new ArrayList<>();
+        suggestions.addAll(SuggestionParser.parse(classRepository.findAll()));
+        suggestions.addAll(SuggestionParser.parse(problemRepository.findAll()));
+        model.addAttribute("suggestions", suggestions);
         return "classes/new";
     }
 
     @PostMapping(path="/new/save")
-    public String saveNewClass(@Valid @RequestParam String name, @RequestParam String description) {
+    public String newSave(@Valid @RequestParam String name, @RequestParam String description) {
         ComplexityClass c = new ComplexityClass();
-        if(complexityClassRepository.existsByNameIgnoreCase(name)) {
-            return "redirect:/classes/" + complexityClassRepository.findByNameIgnoreCase(name).getId() + "?redir";
+        if(classRepository.existsByNameIgnoreCase(name)) {
+            return "redirect:/classes/" + classRepository.findByNameIgnoreCase(name).getId() + "?redir";
         }
         c.setName(name);
         c.setDescription(description);
-        complexityClassRepository.save(c);
+        classRepository.save(c);
         return "redirect:/classes/" + c.getId() + "?success";
     }
 
     @GetMapping(path="/{id}/edit")
-    public String editClass(Model model, @PathVariable long id) {
-        ComplexityClass c = complexityClassRepository.getById(id);
+    public String edit(Model model, @PathVariable long id) {
+        ComplexityClass c = classRepository.getById(id);
+        List<TinyMCESuggestion> suggestions = new ArrayList<>();
+        suggestions.addAll(SuggestionParser.parse(classRepository.findAll()));
+        suggestions.addAll(SuggestionParser.parse(problemRepository.findAll()));
+        model.addAttribute("suggestions", suggestions);
         model.addAttribute("class", c);
-        model.addAttribute("classSuggestions", SuggestionParser.parse(complexityClassRepository.findAll(), "Complexity Class"));
         model.addAttribute("title", "Edit complexity class " + c.getName());
         return "classes/edit";
     }
 
     @PostMapping(value="/{id}/edit/save")
-    public String saveClass(ComplexityClass c, @PathVariable long id) {
+    public String editSave(ComplexityClass c, @PathVariable long id) {
         c.setId(id);
-        c.setName(complexityClassRepository.getById(id).getName());
-        complexityClassRepository.save(c);
+        c.setName(classRepository.getById(id).getName());
+        classRepository.save(c);
         return "redirect:/classes/" + id;
     }
 
     @RequestMapping(value="/{id}/edit/delete", method = RequestMethod.DELETE)
-    public String deleteClass(@PathVariable long id) {
-        complexityClassRepository.deleteById(id);
+    public String delete(@PathVariable long id) {
+        classRepository.deleteById(id);
         return "redirect:/classes";
     }
 
     @RequestMapping(value="/search")
-    public String searchClass(@RequestParam String q, Model model) {
+    public String search(@RequestParam String q, Model model) {
         if(q == null || q.isEmpty()) {
             return "redirect:/classes";
         }
         model.addAttribute("title", "Complexity classes containing \"" + q + "\"");
-        model.addAttribute("classes", complexityClassRepository.searchClass(q));
+        model.addAttribute("classes", classRepository.searchClass(q));
         model.addAttribute("query", q);
         return "classes/list";
     }
