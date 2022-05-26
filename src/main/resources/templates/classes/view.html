@@ -9,6 +9,8 @@
       <p class="alert alert-secondary" th:if="${param.redir}">You've been redirected here because a class with this name
          already exists.</p>
 
+      <p th:text="${class.type}"></p>
+
       <!-- Description -->
       <p th:utext="${class.description}"></p>
       <a class="btn btn-secondary mb-3" th:href="@{/classes/{id}/edit(id=${class.id})}">Edit</a>

@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import de.cwerl.complexityzoo.SuggestionParser;
 import de.cwerl.complexityzoo.model.ComplexityClass;
+import de.cwerl.complexityzoo.model.ComplexityDataType;
+import de.cwerl.complexityzoo.model.NormalComplexityClass;
+import de.cwerl.complexityzoo.model.ParaComplexityClass;
 import de.cwerl.complexityzoo.model.TinyMCESuggestion;
 import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
 import de.cwerl.complexityzoo.repository.ProblemRepository;
@@ -68,10 +71,15 @@ public class ComplexityClassController {
     }
 
     @PostMapping(path="/new/save")
-    public String newSave(@Valid @RequestParam String name, @RequestParam String description) {
-        ComplexityClass c = new ComplexityClass();
+    public String newSave(@Valid @RequestParam String name, @RequestParam String description, @RequestParam ComplexityDataType type) {
         if(classRepository.existsByNameIgnoreCase(name)) {
             return "redirect:/classes/" + classRepository.findByNameIgnoreCase(name).getId() + "?redir";
+        }
+        ComplexityClass c;
+        if(type == ComplexityDataType.PARAMETERIZED) {
+            c = new ParaComplexityClass();
+        } else {
+            c = new NormalComplexityClass();
         }
         c.setName(name);
         c.setDescription(description);

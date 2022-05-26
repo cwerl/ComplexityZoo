@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import de.cwerl.complexityzoo.model.ComplexityClass;
+import de.cwerl.complexityzoo.model.NormalComplexityClass;
 import de.cwerl.complexityzoo.model.relations.CTCRelation;
 import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
 import de.cwerl.complexityzoo.repository.relations.CTCRelationRepository;
@@ -33,8 +34,8 @@ public class CTCRelationTests {
     @Test
     @Transactional
     public void createRelationTest() throws Exception {
-        ComplexityClass c1 = new ComplexityClass();
-        ComplexityClass c2 = new ComplexityClass();
+        ComplexityClass c1 = new NormalComplexityClass();
+        ComplexityClass c2 = new NormalComplexityClass();
         c1.setName("A");
         c2.setName("B");
         classRepository.save(c1);
@@ -64,7 +65,7 @@ public class CTCRelationTests {
     @Test
     @Transactional
     public void selfRelationTest() throws Exception {
-        ComplexityClass c = new ComplexityClass();
+        ComplexityClass c = new NormalComplexityClass();
         c.setName("A");
         classRepository.save(c);
 
@@ -93,10 +94,10 @@ public class CTCRelationTests {
     @Transactional
     public void deleteRelationTest() throws Exception {
         CTCRelation r = new CTCRelation();
-        ComplexityClass c1 = new ComplexityClass();
+        ComplexityClass c1 = new NormalComplexityClass();
         c1.setName("A");
         classRepository.save(c1);
-        ComplexityClass c2 = new ComplexityClass();
+        ComplexityClass c2 = new NormalComplexityClass();
         c2.setName("B");
         classRepository.save(c2);
         r.setFirstClass(c1);

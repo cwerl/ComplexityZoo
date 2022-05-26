@@ -30,6 +30,10 @@ public abstract class ComplexityData {
     @Column(length = 5000)
     private String description;
 
+    @Getter
+    @Column(name = "type", insertable = false, updatable = false, nullable = false)
+    private String type;
+
     /**
      * Setting the complexity class description after sanitizing the content.
      * @param description The complexity class description.

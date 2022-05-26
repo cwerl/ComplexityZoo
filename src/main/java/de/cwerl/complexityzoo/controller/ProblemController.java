@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.cwerl.complexityzoo.SuggestionParser;
+import de.cwerl.complexityzoo.model.ComplexityDataType;
+import de.cwerl.complexityzoo.model.NormalProblem;
+import de.cwerl.complexityzoo.model.ParaProblem;
 import de.cwerl.complexityzoo.model.Problem;
 import de.cwerl.complexityzoo.model.TinyMCESuggestion;
 import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
@@ -71,10 +74,15 @@ public class ProblemController {
     }
 
     @PostMapping(path="/new/save")
-    public String newSave(@Valid @RequestParam String name, @RequestParam String description) {
-        Problem p = new Problem();
+    public String newSave(@Valid @RequestParam String name, @RequestParam String description, @RequestParam ComplexityDataType type) {
         if(problemRepository.existsByNameIgnoreCase(name)) {
             return "redirect:/problems/" + problemRepository.findByNameIgnoreCase(name).getId() + "?redir";
+        }
+        Problem p;
+        if(type == ComplexityDataType.PARAMETERIZED) {
+            p = new ParaProblem();
+        } else {
+            p = new NormalProblem();
         }
         p.setName(name);
         p.setDescription(description);

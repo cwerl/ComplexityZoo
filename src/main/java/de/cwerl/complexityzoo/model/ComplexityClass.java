@@ -1,9 +1,15 @@
 package de.cwerl.complexityzoo.model;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 @Entity
-public class ComplexityClass extends ComplexityData {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+public abstract class ComplexityClass extends ComplexityData {
 
     @Override
     public TinyMCESuggestion toTinyMCESuggestion() {

@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import de.cwerl.complexityzoo.model.ComplexityClass;
+import de.cwerl.complexityzoo.model.Problem;
 import de.cwerl.complexityzoo.model.relations.CTCRelation;
 import de.cwerl.complexityzoo.model.relations.CTCRelationType;
 import de.cwerl.complexityzoo.model.relations.CTPRelation;
+import de.cwerl.complexityzoo.model.relations.NormalCTPRelation;
 import de.cwerl.complexityzoo.model.relations.PTPRelation;
 import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
 import de.cwerl.complexityzoo.repository.ProblemRepository;
@@ -57,9 +60,11 @@ public class RelationController {
 
     @PostMapping(value="/ctp-relations/new/save")
     public String newCTPRelationSave(@RequestParam long classId, @RequestParam long problemId, @RequestParam String reference, @RequestParam String redirect) {
-        CTPRelation relation = new CTPRelation();
-        relation.setComplexityClass(classRepository.getById(classId));
-        relation.setProblem(problemRepository.getById(problemId));
+        ComplexityClass complexityClass = classRepository.getById(classId);
+        Problem problem = problemRepository.getById(problemId);
+        CTPRelation relation = new NormalCTPRelation();
+        relation.setComplexityClass(complexityClass);
+        relation.setProblem(problem);
         relation.setReference(reference);
         ctpRepository.save(relation);
         return "redirect:" + redirect;

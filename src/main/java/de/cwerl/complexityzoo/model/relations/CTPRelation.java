@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-public class CTPRelation extends Relation {
+public abstract class CTPRelation extends Relation {
 
     @ManyToOne
     @JoinColumn(name = "class_id", referencedColumnName = "id")

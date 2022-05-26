@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.cwerl.complexityzoo.model.ComplexityClass;
+import de.cwerl.complexityzoo.model.NormalComplexityClass;
 import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
 
 @SpringBootTest
@@ -38,7 +39,7 @@ public class ComplexityClassTests {
 	@Test
 	@Transactional
 	public void viewClassTest() throws Exception {
-		ComplexityClass c = new ComplexityClass();
+		ComplexityClass c = new NormalComplexityClass();
 		c.setName("A");
 		classRepository.save(c);
 
@@ -68,11 +69,11 @@ public class ComplexityClassTests {
 	@Test
 	@Transactional
     public void deleteClassFilledDatabaseTest() throws Exception {
-		ComplexityClass c1 = new ComplexityClass();
+		ComplexityClass c1 = new NormalComplexityClass();
 		c1.setName("name1");
 		classRepository.save(c1);
 
-		ComplexityClass c2 = new ComplexityClass();
+		ComplexityClass c2 = new NormalComplexityClass();
 		c2.setName("name2");
 		classRepository.save(c2);
 
@@ -93,11 +94,11 @@ public class ComplexityClassTests {
 	@Test
 	@Transactional
 	public void searchClassTest() throws Exception {
-		ComplexityClass c1 = new ComplexityClass();
+		ComplexityClass c1 = new NormalComplexityClass();
 		c1.setName("A");
 		classRepository.save(c1);
 
-		ComplexityClass c2 = new ComplexityClass();
+		ComplexityClass c2 = new NormalComplexityClass();
 		c2.setName("B");
 		classRepository.save(c2);
 
@@ -114,7 +115,7 @@ public class ComplexityClassTests {
 	@Test
 	@Transactional
 	public void editClassTest() throws Exception {
-		ComplexityClass c = new ComplexityClass();
+		ComplexityClass c = new NormalComplexityClass();
 		c.setName("name");
 		c.setDescription("old");
 		classRepository.save(c);
