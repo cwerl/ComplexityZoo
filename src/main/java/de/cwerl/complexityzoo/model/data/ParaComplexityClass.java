@@ -1,4 +1,4 @@
-package de.cwerl.complexityzoo.model;
+package de.cwerl.complexityzoo.model.data;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

@@ -1,4 +1,6 @@
-package de.cwerl.complexityzoo.model;
+package de.cwerl.complexityzoo.model.data;
+
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import de.cwerl.complexityzoo.model.TinyMCESuggestion;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,6 +36,9 @@ public abstract class ComplexityData {
     @Getter
     @Column(name = "type", insertable = false, updatable = false, nullable = false)
     private String type;
+
+    @Getter @Setter
+    private LocalDateTime lastEdited;
 
     /**
      * Setting the complexity class description after sanitizing the content.

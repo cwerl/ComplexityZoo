@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import de.cwerl.complexityzoo.model.Problem;
+import de.cwerl.complexityzoo.model.data.Problem;
 import lombok.Getter;
 import lombok.Setter;
 

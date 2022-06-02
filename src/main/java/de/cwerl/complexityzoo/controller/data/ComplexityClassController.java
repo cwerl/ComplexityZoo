@@ -1,4 +1,4 @@
-package de.cwerl.complexityzoo.controller;
+package de.cwerl.complexityzoo.controller.data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,16 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import de.cwerl.complexityzoo.SuggestionParser;
-import de.cwerl.complexityzoo.model.ComplexityClass;
-import de.cwerl.complexityzoo.model.ComplexityDataType;
-import de.cwerl.complexityzoo.model.NormalComplexityClass;
-import de.cwerl.complexityzoo.model.ParaComplexityClass;
 import de.cwerl.complexityzoo.model.TinyMCESuggestion;
-import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
-import de.cwerl.complexityzoo.repository.ProblemRepository;
+import de.cwerl.complexityzoo.model.data.ComplexityClass;
+import de.cwerl.complexityzoo.model.data.ComplexityDataType;
+import de.cwerl.complexityzoo.model.data.NormalComplexityClass;
+import de.cwerl.complexityzoo.model.data.ParaComplexityClass;
+import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
+import de.cwerl.complexityzoo.repository.data.ProblemRepository;
 import de.cwerl.complexityzoo.repository.relations.CTCRelationRepository;
 import de.cwerl.complexityzoo.repository.relations.CTPRelationRepository;
+import de.cwerl.complexityzoo.service.SuggestionParser;
 
 @Controller
 @RequestMapping(path="/classes")
@@ -100,10 +101,9 @@ public class ComplexityClassController {
     }
 
     @PostMapping(value="/{id}/edit/save")
-    public String editSave(ComplexityClass c, @PathVariable long id) {
-        c.setId(id);
-        c.setName(classRepository.getById(id).getName());
-        classRepository.save(c);
+    @Transactional
+    public String editSave(@PathVariable long id, @RequestParam String description) {
+        classRepository.updateDescription(id, description);
         return "redirect:/classes/" + id;
     }
 

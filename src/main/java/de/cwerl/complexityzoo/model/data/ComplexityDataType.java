@@ -1,4 +1,4 @@
-package de.cwerl.complexityzoo.model;
+package de.cwerl.complexityzoo.model.data;
 
 public enum ComplexityDataType {
     NORMAL, PARAMETERIZED;

@@ -1,4 +1,4 @@
-package de.cwerl.complexityzoo.controller;
+package de.cwerl.complexityzoo.controller.data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,16 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import de.cwerl.complexityzoo.SuggestionParser;
-import de.cwerl.complexityzoo.model.ComplexityDataType;
-import de.cwerl.complexityzoo.model.NormalProblem;
-import de.cwerl.complexityzoo.model.ParaProblem;
-import de.cwerl.complexityzoo.model.Problem;
 import de.cwerl.complexityzoo.model.TinyMCESuggestion;
-import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
-import de.cwerl.complexityzoo.repository.ProblemRepository;
+import de.cwerl.complexityzoo.model.data.ComplexityDataType;
+import de.cwerl.complexityzoo.model.data.NormalProblem;
+import de.cwerl.complexityzoo.model.data.ParaProblem;
+import de.cwerl.complexityzoo.model.data.Problem;
+import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
+import de.cwerl.complexityzoo.repository.data.ProblemRepository;
 import de.cwerl.complexityzoo.repository.relations.CTPRelationRepository;
 import de.cwerl.complexityzoo.repository.relations.PTPRelationRepository;
+import de.cwerl.complexityzoo.service.SuggestionParser;
 
 @Controller
 @RequestMapping(path = "/problems")
@@ -103,10 +104,9 @@ public class ProblemController {
     }
 
     @PostMapping(value="/{id}/edit/save")
-    public String editSave(Problem p, @PathVariable long id) {
-        p.setId(id);
-        p.setName(problemRepository.getById(id).getName());
-        problemRepository.save(p);
+    @Transactional
+    public String editSave(@PathVariable long id, @RequestParam String description) {
+        problemRepository.updateDescription(id, description);
         return "redirect:/problems/" + id;
     }
 

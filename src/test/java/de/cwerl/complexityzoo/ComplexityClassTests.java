@@ -15,9 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.cwerl.complexityzoo.model.ComplexityClass;
-import de.cwerl.complexityzoo.model.NormalComplexityClass;
-import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
+import de.cwerl.complexityzoo.model.data.ComplexityClass;
+import de.cwerl.complexityzoo.model.data.NormalComplexityClass;
+import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import de.cwerl.complexityzoo.model.Problem;
+import de.cwerl.complexityzoo.model.data.Problem;
 import de.cwerl.complexityzoo.model.relations.PTPRelation;
 
 @Repository
@@ -19,6 +19,6 @@ public interface PTPRelationRepository extends JpaRepository<PTPRelation, Long> 
     @Query("SELECT DISTINCT r.type FROM PTPRelation r")
     public Set<String> findAllTypes();
 
-    @Query("SELECT p FROM Problem p WHERE NOT p.id = ?1 ORDER BY LOWER(name)")
+    @Query("SELECT p FROM Problem p WHERE NOT p.id = ?1 ORDER BY LOWER(name) AND NOT EXISTS (SELECT r FROM PTPRelation r WHERE ")
     public List<Problem> findAllRelationCandidatesOrdered(long problemId);
 }

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import de.cwerl.complexityzoo.model.ComplexityClass;
+import de.cwerl.complexityzoo.model.data.ComplexityClass;
 import de.cwerl.complexityzoo.model.relations.CTCRelation;
 
 @Repository

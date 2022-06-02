@@ -1,12 +1,13 @@
-package de.cwerl.complexityzoo.repository;
+package de.cwerl.complexityzoo.repository.data;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import de.cwerl.complexityzoo.model.Problem;
+import de.cwerl.complexityzoo.model.data.Problem;
 
 @Repository
 public interface ProblemRepository extends JpaRepository<Problem, Long> {
@@ -19,4 +20,8 @@ public interface ProblemRepository extends JpaRepository<Problem, Long> {
     public Boolean existsByNameIgnoreCase(String name);
 
     public Problem findByNameIgnoreCase(String name);
+
+    @Modifying
+    @Query("UPDATE Problem p SET p.description = ?2 WHERE p.id = ?1")
+    public void updateDescription(long id, String description);
 }

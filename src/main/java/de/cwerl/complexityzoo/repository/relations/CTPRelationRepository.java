@@ -6,8 +6,8 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import de.cwerl.complexityzoo.model.ComplexityClass;
-import de.cwerl.complexityzoo.model.Problem;
+import de.cwerl.complexityzoo.model.data.ComplexityClass;
+import de.cwerl.complexityzoo.model.data.Problem;
 import de.cwerl.complexityzoo.model.relations.CTPRelation;
 
 public interface CTPRelationRepository extends JpaRepository<CTPRelation, Long> {
