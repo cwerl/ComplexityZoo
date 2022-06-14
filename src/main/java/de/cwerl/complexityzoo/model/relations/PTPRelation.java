@@ -27,5 +27,5 @@ public class PTPRelation extends Relation {
     private Problem secondProblem;
 
     @Getter @Setter
-    String type;
+    String relationType;
 }

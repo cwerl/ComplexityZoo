@@ -30,5 +30,5 @@ public class CTCRelation extends Relation {
 
     @Getter @Setter
     @Enumerated(EnumType.STRING)
-    private CTCRelationType type;
+    private CTCRelationType relationType;
 }

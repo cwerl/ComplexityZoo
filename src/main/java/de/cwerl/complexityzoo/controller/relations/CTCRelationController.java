@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import de.cwerl.complexityzoo.model.data.ComplexityClass;
 import de.cwerl.complexityzoo.model.relations.CTCRelation;
 import de.cwerl.complexityzoo.model.relations.CTCRelationType;
 import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
@@ -27,12 +28,14 @@ public class CTCRelationController {
     CTCRelationRepository ctcRepository;
 
     @PostMapping(value="/ctc-relations/new/save")
-    public String newCTCRelationSave(@RequestParam long firstClassId, @RequestParam long secondClassId, @RequestParam CTCRelationType type, @RequestParam String reference, @RequestParam String redirect) {
+    public String newCTCRelationSave(@RequestParam long firstClassId, @RequestParam long secondClassId, @RequestParam CTCRelationType relationType, @RequestParam String reference, @RequestParam String redirect) {
         if(!(ctcRepository.existsByClassPair(firstClassId, secondClassId) || firstClassId == secondClassId)) {
+            ComplexityClass firstClass = classRepository.getById(firstClassId);
+            ComplexityClass secondClass = classRepository.getById(secondClassId);
             CTCRelation relation = new CTCRelation();
-            relation.setFirstClass(classRepository.getById(firstClassId));
-            relation.setSecondClass(classRepository.getById(secondClassId));
-            relation.setType(type);
+            relation.setFirstClass(firstClass);
+            relation.setSecondClass(secondClass);
+            relation.setRelationType(relationType);
             relation.setReference(reference);
             ctcRepository.save(relation);
         }

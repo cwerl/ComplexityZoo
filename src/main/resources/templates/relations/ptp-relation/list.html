@@ -7,7 +7,7 @@
             <li class="list-group-item d-flex align-items-center justify-content-between"
                 th:each="ptp : ${ptpRelations}">
                 <a th:href="@{'/problems/' + ${ptp.secondProblem.id}}" th:text="${ptp.secondProblem.name}"></a>
-                <span th:text="${ptp.type}"></span>
+                <span th:text="${ptp.relationType}"></span>
                 <div class="bg-secondary rounded-pill px-2 reference-link">
                     <i class="bi bi-file-earmark-check"></i>
                     <a th:href="${ptp.reference}" th:text="${ptp.reference}" target="_blank"></a>

@@ -1,10 +1,6 @@
 package de.cwerl.complexityzoo.model.relations;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -17,9 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-public abstract class CTPRelation extends Relation {
+public class CTPRelation extends Relation {
 
     @ManyToOne
     @JoinColumn(name = "class_id", referencedColumnName = "id")

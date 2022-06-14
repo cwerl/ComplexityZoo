@@ -8,8 +8,6 @@
          th:href="@{/problems}">go back</a> to add more.</p>
          <p class="alert alert-secondary" th:if="${param.redir}">You've been redirected here because a problem with this
             name already exists.</p>
-            
-      <p th:text="${problem.type}"></p>
 
       <!-- Description -->
       <p th:utext="${problem.description}"></p>

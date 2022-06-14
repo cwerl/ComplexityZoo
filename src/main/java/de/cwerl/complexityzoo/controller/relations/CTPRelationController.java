@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import de.cwerl.complexityzoo.model.data.ComplexityClass;
 import de.cwerl.complexityzoo.model.data.Problem;
-import de.cwerl.complexityzoo.model.relations.NormalCTPRelation;
-import de.cwerl.complexityzoo.model.relations.ParaCTPRelation;
+import de.cwerl.complexityzoo.model.relations.CTPRelation;
 import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
 import de.cwerl.complexityzoo.repository.data.ProblemRepository;
 import de.cwerl.complexityzoo.repository.relations.CTPRelationRepository;
@@ -28,27 +27,14 @@ public class CTPRelationController {
     @Autowired
     ProblemRepository problemRepository;
     
-    @PostMapping(value="/normal-ctp-relations/new/save")
-    public String newNormalCTPRelationSave(@RequestParam long classId, @RequestParam long problemId, @RequestParam String reference, @RequestParam String redirect) {
+    @PostMapping(value="/ctp-relations/new/save")
+    public String newCTPRelationSave(@RequestParam long classId, @RequestParam long problemId, @RequestParam String reference, @RequestParam String redirect) {
         ComplexityClass complexityClass = classRepository.getById(classId);
         Problem problem = problemRepository.getById(problemId);
-        NormalCTPRelation relation = new NormalCTPRelation();
+        CTPRelation relation = new CTPRelation();
         relation.setComplexityClass(complexityClass);
         relation.setProblem(problem);
         relation.setReference(reference);
-        ctpRepository.save(relation);
-        return "redirect:" + redirect;
-    }
-
-    @PostMapping(value="/para-ctp-relations/new/save")
-    public String newParaCTPRelationSave(@RequestParam long classId, @RequestParam long problemId, @RequestParam String reference, @RequestParam String param, @RequestParam String redirect) {
-        ComplexityClass complexityClass = classRepository.getById(classId);
-        Problem problem = problemRepository.getById(problemId);
-        ParaCTPRelation relation = new ParaCTPRelation();
-        relation.setComplexityClass(complexityClass);
-        relation.setProblem(problem);
-        relation.setReference(reference);
-        relation.setParam(param);
         ctpRepository.save(relation);
         return "redirect:" + redirect;
     }

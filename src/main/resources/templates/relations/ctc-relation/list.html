@@ -12,7 +12,7 @@
             <li class="list-group-item d-flex align-items-center justify-content-between" th:each="ctc : ${ctcRelations}">
                 <!-- Relation type and related class item menu -->
                 <div th:if="${ctc.firstClass.id == class.id}">
-                    <th:block th:switch="${ctc.type.name()}">
+                    <th:block th:switch="${ctc.relationType.name()}">
                         <span th:case="'EQUAL_TO'">$=$</span>
                         <span th:case="'SUBSET_OF'">$\subseteq$</span>
                         <span th:case="'PROPER_SUBSET_OF'">$\subset$</span>
@@ -22,7 +22,7 @@
                     <a th:text="${ctc.secondClass.name}" th:href="@{'' + ${ctc.secondClass.id}}"></a>
                 </div>
                 <div th:if="${ctc.secondClass.id == class.id}">
-                    <th:block th:switch="${ctc.type.name()}">
+                    <th:block th:switch="${ctc.relationType.name()}">
                         <span th:case="'EQUAL_TO'">$=$</span>
                         <span th:case="'SUBSET_OF'">$\supseteq$</span>
                         <span th:case="'PROPER_SUBSET_OF'">$\supset$</span>

@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import de.cwerl.complexityzoo.model.TinyMCESuggestion;
 import de.cwerl.complexityzoo.model.data.ComplexityClass;
 import de.cwerl.complexityzoo.model.data.ComplexityDataType;
-import de.cwerl.complexityzoo.model.data.NormalComplexityClass;
-import de.cwerl.complexityzoo.model.data.ParaComplexityClass;
+import de.cwerl.complexityzoo.model.data.normal.NormalComplexityClass;
+import de.cwerl.complexityzoo.model.data.para.ParaComplexityClass;
 import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
 import de.cwerl.complexityzoo.repository.data.ProblemRepository;
 import de.cwerl.complexityzoo.repository.relations.CTCRelationRepository;
@@ -54,8 +54,8 @@ public class ComplexityClassController {
         ComplexityClass c = classRepository.getById(id);
         model.addAttribute("title", c.getName());
         model.addAttribute("class", c);
-        model.addAttribute("ctcCandidates", ctcRelationRepository.findAllRelationCandidatesOrdered(id));
-        model.addAttribute("ctpCandidates", ctpRelationRepository.findAllProblemCandidatesOrdered(id));
+        model.addAttribute("ctcCandidates", ctcRelationRepository.findAllRelationCandidatesOrdered(c));
+        model.addAttribute("ctpCandidates", ctpRelationRepository.findAllProblemCandidatesOrdered(c));
         model.addAttribute("ctcRelations", ctcRelationRepository.findRelationsByComplexityClass(id));
         model.addAttribute("ctpRelations", ctpRelationRepository.findRelationsByComplexityClass(id));
         return "classes/view";
@@ -73,9 +73,9 @@ public class ComplexityClassController {
 
     @PostMapping(path="/new/save")
     public String newSave(@Valid @RequestParam String name, @RequestParam String description, @RequestParam ComplexityDataType type) {
-        if(classRepository.existsByNameIgnoreCase(name)) {
-            return "redirect:/classes/" + classRepository.findByNameIgnoreCase(name).getId() + "?redir";
-        }
+        // if(classRepository.existsByNameIgnoreCase(name)) {
+        //     return "redirect:/classes/" + classRepository.findByNameIgnoreCase(name).getId() + "?redir";
+        // }
         ComplexityClass c;
         if(type == ComplexityDataType.PARAMETERIZED) {
             c = new ParaComplexityClass();
