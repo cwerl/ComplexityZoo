@@ -58,6 +58,10 @@ public class ProblemController {
     @GetMapping(path = "/{id}")
     public String view(Model model, @PathVariable long id) {
         Problem p = problemRepository.getById(id);
+        if(p.getType().equals(ComplexityDataType.PARAMETERIZED.name())) {
+            model.addAttribute("subproblems", problemRepository.getSubProblems(id));
+            model.addAttribute("parent", problemRepository.getById(id));
+        }
         model.addAttribute("title", p.getName());
         model.addAttribute("problem", p);
         model.addAttribute("ptpRelations", ptpRepository.findRelationsByProblem(id));
@@ -119,13 +123,6 @@ public class ProblemController {
     public String delete(@PathVariable long id) {
         problemRepository.deleteById(id);
         return "redirect:/problems";
-    }
-
-    @GetMapping(value = "/{id}/params")
-    public String chooseParam(@PathVariable long id, Model model) {
-        model.addAttribute("subproblems", problemRepository.getSubProblems(id));
-        model.addAttribute("parent", problemRepository.getById(id));
-        return "problems/param-list";
     }
 
     @PostMapping(value = "/{id}/param/new/save")

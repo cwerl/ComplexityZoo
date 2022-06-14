@@ -13,7 +13,7 @@
       <p th:utext="${problem.description}"></p>
       <a class="btn btn-secondary mb-3" th:href="@{/problems/{id}/edit(id=${problem.id})}">Edit</a>
 
-      <div class="row">
+      <div class="row" th:unless="${problem.type == 'PARAMETERIZED'}">
 
          <!-- Related classes -->
          <div class="col">
@@ -58,6 +58,78 @@
             </div>
          </div>
       </div>
+      
+      <th:block th:if="${problem.type == 'PARAMETERIZED'}">
+         <div class="d-flex justify-content-between align-items-start">
+            <div>
+               <h3><span class="badge badge-prob"><i class="bi bi-alt"></i></span> Parameters</h3>
+               <p>Parameterizations of <span th:text="${problem.name}"></span>.</p>
+            </div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paraModal">
+               Add
+            </button>
+         </div>
+
+         <!-- Para list -->
+        <div class="row row-cols-1 row-cols-lg-3 g-3" th:unless="${subproblems.isEmpty()}">
+         <div class="col" th:each="problem : ${subproblems}">
+             <div class="card">
+                 <div class="card-body">
+                     <h5 class="card-title" th:text="${problem.parameter}"></h5>
+                     <p class="card-text text-secondary"
+                         th:utext="${problem.description}"></p>
+                     <div class="d-inline-flex">
+                         <a class="btn btn-secondary" th:href="@{'/problems/' + ${problem.id}}">Details</a>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+         <!-- New CTP relation modal -->
+         <div class="modal fade" id="paraModal" tabindex="-1" aria-labelledby="paraModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+               <div class="modal-content">
+                       <form th:action="@{'/problems/' + ${parent.id} + '/param/new/save'}" th:object="${newclass}" method="post">
+                       <!-- Modal header -->
+                       <div class="modal-header d-flex align-items-center justify-content-center">
+                           <span class="badge badge-rel fs-2"><i class="bi bi-alt"></i></span>
+                           <h5 class="modal-title ms-3">Add parameter</h5>
+                       </div>
+   
+                       <!-- Modal body -->
+                       <div class="modal-body">
+
+                           <div class="row g-3">
+                               <!-- Name -->
+                               <div class="col">
+                                   <div class="form-floating mb-3">
+                                       <input type="text" maxlength="255" class="form-control" id="inputParam" placeholder="Parameter"
+                                           name="parameter" required autofocus>
+                                       <label for="inputParam">Parameter</label>
+                                   </div>
+                               </div>
+                           </div>
+                           <!-- Description with TinyMCE -->
+                           <textarea class="form-control" placeholder="Parameter description" name="description"
+                               id="description-editor"></textarea>
+                           <th:block th:replace="fragments/tinyeditors :: description-editor"></th:block>
+                       </div>
+   
+                       <!-- Buttons -->
+                       <div class="modal-footer">
+                           <div class="btn-menu">
+                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                               <button type="submit" class="btn btn-primary">Save</button>
+                           </div>
+                       </div>
+                   </form>
+               </div>
+           </div>
+         </div>
+      </th:block>
+
    </th:block>
 </body>
 

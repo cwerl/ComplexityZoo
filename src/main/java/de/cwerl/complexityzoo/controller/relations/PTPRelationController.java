@@ -28,6 +28,8 @@ public class PTPRelationController {
     @PostMapping(value="/ptp-relations/new/save")
     public String newPTPRelationSave(@RequestParam long firstProblemId, @RequestParam long secondProblemId, @RequestParam String relationType, @RequestParam String reference, @RequestParam String redirect) {
         PTPRelation relation = new PTPRelation();
+        relation.setFirstProblem(problemRepository.getById(firstProblemId));
+        relation.setSecondProblem(problemRepository.getById(secondProblemId));
         relation.setRelationType(relationType);
         relation.setReference(reference);
         ptpRepository.save(relation);

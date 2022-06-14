@@ -28,7 +28,7 @@ public class ParaSubProblem extends Problem {
     @Override
     public TinyMCESuggestion toTinyMCESuggestion() {
         TinyMCESuggestion suggestion = new TinyMCESuggestion();
-        suggestion.setText(this.getName() + "(" + this.getParameter() + ")");
+        suggestion.setText(this.getName());
         suggestion.setType("Problem");
         suggestion.setValue("<a href=\"../problems/" + this.getId() + "\">"+ this.getName() +"</a>");
         return suggestion;
