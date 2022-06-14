@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:include="fragments/layout :: page">
+
+<body>
+    <th:block th:fragment="content">
+
+        <!-- Create new problem -->
+        <form th:action="@{'/problems/' + ${parent.id} + '/param/new/save'}" th:object="${newclass}" method="post">
+
+            <div class="row g-3">
+                <!-- Name -->
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input type="text" maxlength="255" class="form-control" id="inputParam" placeholder="Parameter"
+                            name="parameter" required autofocus>
+                        <label for="inputParam">Parameter</label>
+                    </div>
+                </div>
+            </div>
+            <!-- Description with TinyMCE -->
+            <textarea class="form-control" placeholder="Description" name="description"
+                id="description-editor"></textarea>
+            <th:block th:replace="fragments/tinyeditors :: description-editor"></th:block>
+
+            <!-- Buttons -->
+            <div class="btn-menu mb-3">
+                <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+
+        <!-- Problem list -->
+        <div class="row row-cols-1 row-cols-lg-3 g-3" th:unless="${subproblems.isEmpty()}">
+            <div class="col" th:each="problem : ${subproblems}">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${problem.parameter}"></h5>
+                        <p class="card-text text-secondary"
+                            th:utext="${problem.description}"></p>
+                        <div class="d-inline-flex">
+                            <a class="btn btn-secondary" th:href="@{'/problems/' + ${problem.id}}">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No problems -->
+        <p class="alert alert-secondary" th:if="${subproblems.isEmpty()}">No parameters found.</p>
+    </th:block>
+</body>
+
+</html>

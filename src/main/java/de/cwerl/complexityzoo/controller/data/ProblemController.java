@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import de.cwerl.complexityzoo.model.TinyMCESuggestion;
 import de.cwerl.complexityzoo.model.data.ComplexityDataType;
-import de.cwerl.complexityzoo.model.data.NormalProblem;
-import de.cwerl.complexityzoo.model.data.ParaProblem;
 import de.cwerl.complexityzoo.model.data.Problem;
+import de.cwerl.complexityzoo.model.data.normal.NormalProblem;
+import de.cwerl.complexityzoo.model.data.para.ParaProblem;
+import de.cwerl.complexityzoo.model.data.para.ParaSubProblem;
 import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
+import de.cwerl.complexityzoo.repository.data.ParaSubProblemRepository;
 import de.cwerl.complexityzoo.repository.data.ProblemRepository;
 import de.cwerl.complexityzoo.repository.relations.CTPRelationRepository;
 import de.cwerl.complexityzoo.repository.relations.PTPRelationRepository;
@@ -33,6 +35,9 @@ public class ProblemController {
     
     @Autowired
     private ProblemRepository problemRepository;
+
+    @Autowired
+    private ParaSubProblemRepository subProblemRepository;
 
     @Autowired
     private ComplexityClassRepository classRepository;
@@ -50,16 +55,16 @@ public class ProblemController {
         return "problems/list";
     }
 
-    @GetMapping(path="/{id}")
+    @GetMapping(path = "/{id}")
     public String view(Model model, @PathVariable long id) {
         Problem p = problemRepository.getById(id);
         model.addAttribute("title", p.getName());
         model.addAttribute("problem", p);
         model.addAttribute("ptpRelations", ptpRepository.findRelationsByProblem(id));
         model.addAttribute("ptpTypes", ptpRepository.findAllTypes());
-        model.addAttribute("ptpCandidates", ptpRepository.findAllRelationCandidatesOrdered(id));
+        model.addAttribute("ptpCandidates", ptpRepository.findAllRelationCandidatesOrdered(p));
         model.addAttribute("ctpRelations", ctpRepository.findRelationsByProblem(id));
-        model.addAttribute("ctpCandidates", ctpRepository.findAllComplexityClassCandidatesOrdered(id));
+        model.addAttribute("ctpCandidates", ctpRepository.findAllComplexityClassCandidatesOrdered(p));
         return "problems/view";
     }
 
@@ -114,6 +119,25 @@ public class ProblemController {
     public String delete(@PathVariable long id) {
         problemRepository.deleteById(id);
         return "redirect:/problems";
+    }
+
+    @GetMapping(value = "/{id}/params")
+    public String chooseParam(@PathVariable long id, Model model) {
+        model.addAttribute("subproblems", problemRepository.getSubProblems(id));
+        model.addAttribute("parent", problemRepository.getById(id));
+        return "problems/param-list";
+    }
+
+    @PostMapping(value = "/{id}/param/new/save")
+    public String newParamSave(@PathVariable long id, @RequestParam String description, @RequestParam String parameter, Model model) {
+        ParaProblem parentProblem = problemRepository.getParaById(id);
+        ParaSubProblem newProblem = new ParaSubProblem();
+        newProblem.setName(parentProblem.getName() + " (" + parameter + ")");
+        newProblem.setDescription(description);
+        newProblem.setParameter(parameter);
+        newProblem.setParentProblem(parentProblem);
+        subProblemRepository.save(newProblem);
+        return "redirect:/problems/" + newProblem.getId();
     }
 
     @RequestMapping(value="/search")
