@@ -20,6 +20,7 @@ import de.cwerl.complexityzoo.repository.relations.CTCRelationRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class CTCRelationTests {
 
     @Autowired
@@ -32,7 +33,6 @@ public class CTCRelationTests {
     private ComplexityClassRepository classRepository;
 
     @Test
-    @Transactional
     public void createRelationTest() throws Exception {
         ComplexityClass c1 = new NormalComplexityClass();
         ComplexityClass c2 = new NormalComplexityClass();
@@ -45,7 +45,7 @@ public class CTCRelationTests {
             post("/ctc-relations/new/save")
             .param("firstClassId", "" + c1.getId())
             .param("secondClassId", "" + c2.getId())
-            .param("type", "EQUAL_TO")
+            .param("relationType", "EQUAL_TO")
             .param("reference", "description")
             .param("redirect", "")
         ).andExpect(status().is3xxRedirection());
@@ -63,7 +63,6 @@ public class CTCRelationTests {
     }
 
     @Test
-    @Transactional
     public void selfRelationTest() throws Exception {
         ComplexityClass c = new NormalComplexityClass();
         c.setName("A");
@@ -73,7 +72,7 @@ public class CTCRelationTests {
             post("/ctc-relations/new/save")
             .param("firstClassId", "" + c.getId())
             .param("secondClassId", "" + c.getId())
-            .param("type", "EQUAL_TO")
+            .param("relationType", "EQUAL_TO")
             .param("reference", "description")
             .param("redirect", "")
         ).andExpect(status().is3xxRedirection());
@@ -91,7 +90,6 @@ public class CTCRelationTests {
     }
 
     @Test
-    @Transactional
     public void deleteRelationTest() throws Exception {
         CTCRelation r = new CTCRelation();
         ComplexityClass c1 = new NormalComplexityClass();
