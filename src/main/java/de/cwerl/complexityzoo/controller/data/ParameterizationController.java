@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.cwerl.complexityzoo.model.TinyMCESuggestion;
+import de.cwerl.complexityzoo.model.data.ComplexityDataType;
 import de.cwerl.complexityzoo.model.data.normal.Problem;
 import de.cwerl.complexityzoo.model.data.para.Parameterization;
 import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
@@ -65,7 +66,7 @@ public class ParameterizationController {
         model.addAttribute("ptpTypes", ptpRepository.findAllTypes());
         model.addAttribute("ptpCandidates", ptpRepository.findAllRelationCandidatesOrdered(paramId));
         model.addAttribute("ctpRelations", ctpRepository.findRelationsByProblem(paramId));
-        model.addAttribute("ctpCandidates", ctpRepository.findAllParaComplexityClassCandidatesOrdered(paramId));
+        model.addAttribute("ctpCandidates", ctpRepository.findAllComplexityClassCandidatesOrdered(paramId, ComplexityDataType.Values.PARAMETERIZED));
         return "problems/params/view";
     }
 

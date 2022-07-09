@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.cwerl.complexityzoo.model.TinyMCESuggestion;
+import de.cwerl.complexityzoo.model.data.ComplexityDataType;
 import de.cwerl.complexityzoo.model.data.normal.Problem;
 import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
 import de.cwerl.complexityzoo.repository.data.ParameterizationRepository;
@@ -62,7 +63,7 @@ public class ProblemController {
         model.addAttribute("ptpTypes", ptpRepository.findAllTypes());
         model.addAttribute("ptpCandidates", ptpRepository.findAllRelationCandidatesOrdered(id));
         model.addAttribute("ctpRelations", ctpRepository.findRelationsByProblem(id));
-        model.addAttribute("ctpCandidates", ctpRepository.findAllComplexityClassCandidatesOrdered(id));
+        model.addAttribute("ctpCandidates", ctpRepository.findAllComplexityClassCandidatesOrdered(id, ComplexityDataType.Values.NORMAL));
         return "problems/view";
     }
 
