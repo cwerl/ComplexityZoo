@@ -6,17 +6,21 @@
         <ul class="list-group">
             <li class="list-group-item d-flex align-items-center justify-content-between"
                 th:each="ptp : ${ptpRelations}">
-                <a th:href="@{'/problems/' + ${ptp.secondProblem.id}}" th:text="${ptp.secondProblem.name}"></a>
-                <span th:text="${ptp.type}"></span>
-                <div class="bg-secondary rounded-pill px-2 reference-link">
-                    <i class="bi bi-file-earmark-check"></i>
-                    <a th:href="${ptp.reference}" th:text="${ptp.reference}" target="_blank"></a>
+                <div>
+                    <span th:text="${ptp.relationType}"></span>
+                    <a th:href="@{${ptp.secondProblem.path}}" th:text="${ptp.secondProblem.name}"></a>
                 </div>
-                <form action="#"
-                    th:action="@{/ptp-relations/{relationId}/delete(redirect='/problems/' + ${problem.id}, relationId=${ptp.id})}"
-                    th:method="delete">
-                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
-                </form>
+                <div class="btn-menu">
+                    <a class="btn btn-secondary btn-sm btn-icon" th:href="${ptp.reference}" target="_blank">
+                        <i class="bi bi-file-earmark-check"></i>
+                        <span>View proof</span>
+                    </a>
+                    <form action="#"
+                        th:action="@{/ptp-relations/{relationId}/delete(redirect=${problem.path}, relationId=${ptp.id})}"
+                        th:method="delete">
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
+                    </form>
+                </div>
             </li>
         </ul>
     </th:block>

@@ -14,12 +14,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import de.cwerl.complexityzoo.model.ComplexityClass;
-import de.cwerl.complexityzoo.repository.ComplexityClassRepository;
+import de.cwerl.complexityzoo.model.data.ComplexityClass;
+import de.cwerl.complexityzoo.model.data.normal.NormalComplexityClass;
+import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class ComplexityClassTests {
 
 	@Autowired
@@ -34,11 +38,11 @@ public class ComplexityClassTests {
 	private static final String ATTR_ID = "id";
 	private static final String ATTR_CLASSNAME = "name";
 	private static final String ATTR_DESCR = "description";
+	private static final String ATTR_TYPE = "type";
 
 	@Test
-	@Transactional
 	public void viewClassTest() throws Exception {
-		ComplexityClass c = new ComplexityClass();
+		ComplexityClass c = new NormalComplexityClass();
 		c.setName("A");
 		classRepository.save(c);
 
@@ -48,12 +52,12 @@ public class ComplexityClassTests {
 	}
 
     @Test
-	@Transactional
     public void createClassTest() throws Exception {
         this.mockMvc.perform(
             post("/classes/new/save")
 			.param(ATTR_CLASSNAME, "name")
 			.param(ATTR_DESCR, "description")
+			.param(ATTR_TYPE, "NORMAL")
 		);
 		this.mockMvc.perform(get("/classes"))
 		.andExpect(model().attribute(ATTR_CLASSLIST, hasItem(
@@ -66,13 +70,12 @@ public class ComplexityClassTests {
     }
 
 	@Test
-	@Transactional
     public void deleteClassFilledDatabaseTest() throws Exception {
-		ComplexityClass c1 = new ComplexityClass();
+		ComplexityClass c1 = new NormalComplexityClass();
 		c1.setName("name1");
 		classRepository.save(c1);
 
-		ComplexityClass c2 = new ComplexityClass();
+		ComplexityClass c2 = new NormalComplexityClass();
 		c2.setName("name2");
 		classRepository.save(c2);
 
@@ -91,13 +94,12 @@ public class ComplexityClassTests {
     }
 
 	@Test
-	@Transactional
 	public void searchClassTest() throws Exception {
-		ComplexityClass c1 = new ComplexityClass();
+		ComplexityClass c1 = new NormalComplexityClass();
 		c1.setName("A");
 		classRepository.save(c1);
 
-		ComplexityClass c2 = new ComplexityClass();
+		ComplexityClass c2 = new NormalComplexityClass();
 		c2.setName("B");
 		classRepository.save(c2);
 
@@ -112,9 +114,8 @@ public class ComplexityClassTests {
 	}
 
 	@Test
-	@Transactional
 	public void editClassTest() throws Exception {
-		ComplexityClass c = new ComplexityClass();
+		ComplexityClass c = new NormalComplexityClass();
 		c.setName("name");
 		c.setDescription("old");
 		classRepository.save(c);
@@ -126,9 +127,18 @@ public class ComplexityClassTests {
 			
 		this.mockMvc.perform(post("/classes/{id}/edit/save", c.getId()).param(ATTR_DESCR, "new"));
 
-		this.mockMvc.perform(get("/classes/{id}", c.getId()))
-		.andExpect(model().attribute(ATTR_CLASS, allOf(
-			hasProperty(ATTR_DESCR, is("new"))
-			)));
+		TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+			@Override
+			public void afterCommit() {
+				try {
+					mockMvc.perform(get("/classes/{id}", c.getId()))
+					.andExpect(model().attribute(ATTR_CLASS, allOf(
+						hasProperty(ATTR_DESCR, is("new"))
+						)));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

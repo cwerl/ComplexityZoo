@@ -1,11 +1,12 @@
-package de.cwerl.complexityzoo.model;
+package de.cwerl.complexityzoo.model.data;
+
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotBlank;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
@@ -21,14 +22,12 @@ public abstract class ComplexityData {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Getter @Setter
-    @Column(unique = true)
-    @NotBlank(message = "Name is mandatory")
-    private String name;
-
     @Getter
     @Column(length = 5000)
     private String description;
+
+    @Getter @Setter
+    private LocalDateTime lastEdited;
 
     /**
      * Setting the complexity class description after sanitizing the content.
@@ -40,5 +39,5 @@ public abstract class ComplexityData {
             .preserveRelativeLinks(true));
     }
 
-    public abstract TinyMCESuggestion toTinyMCESuggestion();
+    public abstract String getPath();
 }

@@ -6,10 +6,12 @@
         <form th:action="@{/problems/new/save}" th:object="${newclass}" method="post">
 
             <!-- Name -->
-            <div class="form-floating mb-3">
-                <input type="text" maxlength="255" class="form-control" id="inputName" placeholder="Name" name="name"
-                    required autofocus>
-                <label for="inputName">Name</label>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input type="text" maxlength="255" class="form-control" id="inputName" placeholder="Name"
+                        name="name" required autofocus>
+                    <label for="inputName">Name</label>
+                </div>
             </div>
 
             <!-- Description with TinyMCE -->

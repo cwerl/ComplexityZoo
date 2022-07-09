@@ -3,9 +3,8 @@
 
 <body>
    <th:block th:fragment="content">
-      <span th:if="${isParam}">
-         Parameterization using <span th:text="${problem.parameter}"></span>.
-      </span>
+      Parameterization of <a th:text="${problem.parent.name}" th:href="@{'/problems/' + ${problem.parent.id}}"></a>
+      using <span th:text="${problem.parameter}"></span>.
 
       <!-- Alerts -->
       <p class="alert alert-success" th:if="${param.success}">Successfully created problem. Edit it here or <a
@@ -15,11 +14,11 @@
 
       <!-- Description -->
       <p th:utext="${problem.description}"></p>
-      <a class="btn btn-secondary mb-3" th:href="@{/problems/{id}/edit(id=${problem.id})}">Edit</a>
+      <a class="btn btn-secondary mb-3"
+         th:href="@{/problems/{id}/params/{paramId}/edit(id=${problem.parent.id}, paramId=${problem.id})}">Edit</a>
 
-
+      <!-- Related classes -->
       <div class="mb-3">
-         <!-- Related classes -->
          <div class="d-flex justify-content-between align-items-start py-2 sticky-top bg-light">
             <div>
                <h3><span class="badge badge-prob"><i class="bi bi-braces"></i></span> Complexity classes</h3>
@@ -57,27 +56,6 @@
          <!-- New PTP relation modal -->
          <div class="modal fade" id="ptpModal" tabindex="-1" aria-labelledby="relationModalLabel" aria-hidden="true">
             <th:block th:replace="relations/ptp-relation/new :: problem-view"></th:block>
-         </div>
-      </div>
-
-      <!-- Parameterizations -->
-      <div class="mb-3">
-         <div class="d-flex justify-content-between align-items-start py-2 sticky-top bg-light">
-            <div>
-               <h3><span class="badge badge-param"><i class="bi bi-alt"></i></span> Parameterizations</h3>
-               <span>Parameterizations of <span th:text="${problem.name}"></span>.</span>
-            </div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paraModal">
-               Add
-            </button>
-         </div>
-
-         <!-- List -->
-         <th:block th:replace="problems/params/list :: problem-view"></th:block>
-
-         <!-- New param modal -->
-         <div class="modal fade" id="paraModal" tabindex="-1" aria-labelledby="paraModalLabel" aria-hidden="true">
-            <th:block th:replace="problems/params/new :: problem-view"></th:block>
          </div>
       </div>
    </th:block>

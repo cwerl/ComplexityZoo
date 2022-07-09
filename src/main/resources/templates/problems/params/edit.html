@@ -3,7 +3,7 @@
 
 <body>
   <th:block th:fragment="content">
-    <form th:action="@{/problems/{id}/edit/save(id=${problem.id})}" th:object="${problem}" method="post">
+    <form th:action="@{${problem.path} + '/edit/save'}" th:object="${problem}" method="post">
 
       <!-- Description input -->
       <textarea id="description-editor" placeholder="Problem description" th:field="*{description}">
@@ -42,7 +42,7 @@
           <div class="modal-footer">
             <div class="btn-menu">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <form action="#" th:action="@{'edit/delete'(id=${problem.id})}" th:method="delete">
+              <form action="#" th:action="@{${problem.path} + '/edit/delete'}" th:method="delete">
                 <button type="submit" class="btn btn-danger">Confirm</button>
               </form>
             </div>
