@@ -6,16 +6,16 @@
         <ul class="list-group">
             <li class="list-group-item d-flex align-items-center justify-content-between"
                 th:each="ctp : ${ctpRelations}">
-                <a th:text="${ctp.problem.name}" th:href="@{'/problems/' + ${ctp.problem.id}}"></a>
-                <div class="bg-secondary rounded-pill px-2 reference-link">
-                    <i class="bi bi-file-earmark-check"></i>
-                    <a th:href="${ctp.reference}" th:text="${ctp.reference}" target="_blank"></a>
+                <a th:text="${ctp.problem.name}" th:href="@{${ctp.problem.path}}"></a>
+                <div class="btn-menu">
+                    <a class="btn btn-secondary btn-sm btn-icon" th:href="${ctp.reference}" target="_blank"><i
+                            class="bi bi-file-earmark-check"></i><span>View proof</span></a>
+                    <form action="#"
+                        th:action="@{/ctp-relations/{relationId}/delete(redirect=${class.path}, relationId=${ctp.id})}"
+                        th:method="delete">
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
+                    </form>
                 </div>
-                <form action="#"
-                    th:action="@{/ctp-relations/{relationId}/delete(redirect='/classes/' + ${class.id}, relationId=${ctp.id})}"
-                    th:method="delete">
-                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
-                </form>
             </li>
         </ul>
     </th:block>
@@ -24,16 +24,16 @@
         <ul class="list-group">
             <li class="list-group-item d-flex align-items-center justify-content-between"
                 th:each="ctp : ${ctpRelations}">
-                <a th:text="${ctp.complexityClass.name}" th:href="@{'/classes/' + ${ctp.complexityClass.id}}"></a>
-                <div class="bg-secondary rounded-pill px-2 reference-link">
-                    <i class="bi bi-file-earmark-check"></i>
-                    <a th:href="${ctp.reference}" th:text="${ctp.reference}" target="_blank"></a>
+                <a th:text="${ctp.complexityClass.name}" th:href="@{${ctp.complexityClass.path}}"></a>
+                <div class="btn-menu">
+                    <a class="btn btn-secondary btn-sm btn-icon" th:href="${ctp.reference}" target="_blank"><i
+                            class="bi bi-file-earmark-check"></i><span>View proof</span></a>
+                    <form action="#"
+                        th:action="@{/ctp-relations/{relationId}/delete(redirect=${problem.path}, relationId=${ctp.id})}"
+                        th:method="delete">
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
+                    </form>
                 </div>
-                <form action="#"
-                    th:action="@{/ctp-relations/{relationId}/delete(redirect='/problems/' + ${problem.id}, relationId=${ctp.id})}"
-                    th:method="delete">
-                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
-                </form>
             </li>
         </ul>
     </th:block>

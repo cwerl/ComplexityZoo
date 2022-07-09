@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import de.cwerl.complexityzoo.model.TinyMCESuggestion;
 import de.cwerl.complexityzoo.model.data.ComplexityClass;
 import de.cwerl.complexityzoo.model.data.ComplexityDataType;
+import de.cwerl.complexityzoo.model.data.ComplexityDataType.Values;
 import de.cwerl.complexityzoo.model.data.normal.NormalComplexityClass;
 import de.cwerl.complexityzoo.model.data.para.ParaComplexityClass;
 import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
@@ -54,8 +55,12 @@ public class ComplexityClassController {
         ComplexityClass c = classRepository.getById(id);
         model.addAttribute("title", c.getName());
         model.addAttribute("class", c);
-        model.addAttribute("ctcCandidates", ctcRelationRepository.findAllRelationCandidatesOrdered(c));
-        model.addAttribute("ctpCandidates", ctpRelationRepository.findAllProblemCandidatesOrdered(c));
+        model.addAttribute("ctcCandidates", ctcRelationRepository.findAllRelationCandidatesOrdered(id));
+        if(Values.convert(c.getType()) == ComplexityDataType.PARAMETERIZED) {
+            model.addAttribute("ctpCandidates", ctpRelationRepository.findAllParaProblemCandidatesOrdered(id));
+        } else {
+            model.addAttribute("ctpCandidates", ctpRelationRepository.findAllProblemCandidatesOrdered(id));
+        }
         model.addAttribute("ctcRelations", ctcRelationRepository.findRelationsByComplexityClass(id));
         model.addAttribute("ctpRelations", ctpRelationRepository.findRelationsByComplexityClass(id));
         return "classes/view";
@@ -65,8 +70,8 @@ public class ComplexityClassController {
     public String create(Model model) {
         model.addAttribute("title", "Create new complexity class");
         List<TinyMCESuggestion> suggestions = new ArrayList<>();
-        suggestions.addAll(SuggestionParser.parse(classRepository.findAll()));
-        suggestions.addAll(SuggestionParser.parse(problemRepository.findAll()));
+        suggestions.addAll(SuggestionParser.parseComplexityClasses(classRepository.findAll()));
+        suggestions.addAll(SuggestionParser.parseProblems(problemRepository.findAll()));
         model.addAttribute("suggestions", suggestions);
         return "classes/new";
     }
@@ -92,8 +97,8 @@ public class ComplexityClassController {
     public String edit(Model model, @PathVariable long id) {
         ComplexityClass c = classRepository.getById(id);
         List<TinyMCESuggestion> suggestions = new ArrayList<>();
-        suggestions.addAll(SuggestionParser.parse(classRepository.findAll()));
-        suggestions.addAll(SuggestionParser.parse(problemRepository.findAll()));
+        suggestions.addAll(SuggestionParser.parseComplexityClasses(classRepository.findAll()));
+        suggestions.addAll(SuggestionParser.parseProblems(problemRepository.findAll()));
         model.addAttribute("suggestions", suggestions);
         model.addAttribute("class", c);
         model.addAttribute("title", "Edit complexity class " + c.getName());

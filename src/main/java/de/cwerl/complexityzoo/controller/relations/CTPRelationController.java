@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.cwerl.complexityzoo.model.data.ComplexityClass;
-import de.cwerl.complexityzoo.model.data.Problem;
+import de.cwerl.complexityzoo.model.data.AbstractProblem;
 import de.cwerl.complexityzoo.model.relations.CTPRelation;
 import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
 import de.cwerl.complexityzoo.repository.data.ProblemRepository;
@@ -30,7 +30,7 @@ public class CTPRelationController {
     @PostMapping(value="/ctp-relations/new/save")
     public String newCTPRelationSave(@RequestParam long classId, @RequestParam long problemId, @RequestParam String reference, @RequestParam String redirect) {
         ComplexityClass complexityClass = classRepository.getById(classId);
-        Problem problem = problemRepository.getById(problemId);
+        AbstractProblem problem = problemRepository.getById(problemId);
         CTPRelation relation = new CTPRelation();
         relation.setComplexityClass(complexityClass);
         relation.setProblem(problem);

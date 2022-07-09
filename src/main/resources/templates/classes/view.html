@@ -12,58 +12,52 @@
       <!-- Description -->
       <p th:utext="${class.description}"></p>
       <a class="btn btn-secondary mb-3" th:href="@{/classes/{id}/edit(id=${class.id})}">Edit</a>
-
-      <div class="row">
-         
-         <!-- Related problems -->
-         <div class="col">
-            <div class="d-flex justify-content-between align-items-start">
-               <div>
-                  <h3><span class="badge badge-prob"><i class="bi bi-braces"></i></span> Problems</h3>
-                  <p>Problems being a part of <span th:text="${class.name}"></span>.</p>
-               </div>
-
-               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#problemModal">
-                  Add
-               </button>
+      <div class="mb-3">
+         <!-- Related classes -->
+         <div class="d-flex justify-content-between align-items-start py-2 sticky-top bg-light">
+            <div>
+               <h3><span class="badge badge-rel"><i class="bi bi-diagram-2"></i></span> Related complexity classes
+               </h3>
+               <span>Other complexity classes that are somehow related to <span th:text="${class.name}"></span>.</span>
             </div>
 
-            <!-- List -->
-            <th:block th:replace="relations/ctp-relation/list :: class-view"></th:block>
-
-            <!-- New CTP relation modal -->
-            <div class="modal fade" id="problemModal" tabindex="-1" aria-labelledby="relationModalLabel"
-               aria-hidden="true">
-               <th:block th:replace="relations/ctp-relation/new :: class-view"></th:block>
-            </div>
-
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#classRelationModal">
+               Add
+            </button>
          </div>
 
-         <!-- Related classes -->
-         <div class="col">
-            <div class="d-flex justify-content-between align-items-start">
-               <div>
-                  <h3><span class="badge badge-rel"><i class="bi bi-diagram-2"></i></span> Related complexity classes
-                  </h3>
-                  <p>Other complexity classes that are somehow related to <span th:text="${class.name}"></span>.</p>
-               </div>
+         <!-- List -->
+         <th:block th:replace="relations/ctc-relation/list :: class-view"></th:block>
 
-               <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                  data-bs-target="#classRelationModal">
-                  Add
-               </button>
-            </div>
-
-            <!-- List -->
-            <th:block th:replace="relations/ctc-relation/list :: class-view"></th:block>
-
-            <!-- New CTC relation modal -->
-            <div class="modal fade" id="classRelationModal" tabindex="-1" aria-labelledby="relationModalLabel"
-               aria-hidden="true">
-               <th:block th:replace="relations/ctc-relation/new :: class-view"></th:block>
-            </div>
+         <!-- New CTC relation modal -->
+         <div class="modal fade" id="classRelationModal" tabindex="-1" aria-labelledby="relationModalLabel"
+            aria-hidden="true">
+            <th:block th:replace="relations/ctc-relation/new :: class-view"></th:block>
          </div>
       </div>
+      <!-- Related problems -->
+      <div class="mb-3">
+         <div class="d-flex justify-content-between align-items-start py-2 sticky-top bg-light">
+            <div>
+               <h3><span class="badge badge-prob"><i class="bi bi-braces"></i></span> Problems</h3>
+               <span>Problems being a part of <span th:text="${class.name}"></span>.</span>
+            </div>
+
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#problemModal">
+               Add
+            </button>
+         </div>
+
+         <!-- List -->
+         <th:block th:replace="relations/ctp-relation/list :: class-view"></th:block>
+
+         <!-- New CTP relation modal -->
+         <div class="modal fade" id="problemModal" tabindex="-1" aria-labelledby="relationModalLabel"
+            aria-hidden="true">
+            <th:block th:replace="relations/ctp-relation/new :: class-view"></th:block>
+         </div>
+      </div>
+
    </th:block>
 </body>
 

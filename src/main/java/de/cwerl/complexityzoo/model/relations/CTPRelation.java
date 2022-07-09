@@ -8,7 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import de.cwerl.complexityzoo.model.data.ComplexityClass;
-import de.cwerl.complexityzoo.model.data.Problem;
+import de.cwerl.complexityzoo.model.data.AbstractProblem;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,5 +25,5 @@ public class CTPRelation extends Relation {
     @JoinColumn(name = "problem_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Getter @Setter
-    private Problem problem;
+    private AbstractProblem problem;
 }

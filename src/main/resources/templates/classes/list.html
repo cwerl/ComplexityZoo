@@ -8,9 +8,9 @@
             <form class="mb-3 d-flex gap-2" th:action="@{/classes/search}">
                 <input type="search" class="form-control" id="search" placeholder="Complexity class name"
                     aria-label="Search" aria-describedby="search-bar" th:name="q" th:value="${query}">
-                    <button class="btn btn-primary" type="submit" id="button-addon2">
-                        Search
-                    </button>
+                <button class="btn btn-primary" type="submit" id="button-addon2">
+                    Search
+                </button>
             </form>
         </div>
 
@@ -23,8 +23,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${class.name}"></h5>
-                        <p class="card-text text-secondary"
-                            th:utext="${class.description}"></p>
+                        <p class="card-text text-secondary" th:utext="${class.description}"></p>
                         <div class="d-inline-flex">
                             <a class="btn btn-secondary" th:href="@{'/classes/' + ${class.id}}">Details</a>
                         </div>

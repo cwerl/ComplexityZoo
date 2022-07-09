@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import de.cwerl.complexityzoo.model.data.Problem;
+import de.cwerl.complexityzoo.model.data.AbstractProblem;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,13 +18,13 @@ public class PTPRelation extends Relation {
     @JoinColumn(name = "first_problem_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Getter @Setter
-    private Problem firstProblem;
+    private AbstractProblem firstProblem;
 
     @ManyToOne
     @JoinColumn(name = "second_problem_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Getter @Setter
-    private Problem secondProblem;
+    private AbstractProblem secondProblem;
 
     @Getter @Setter
     String relationType;

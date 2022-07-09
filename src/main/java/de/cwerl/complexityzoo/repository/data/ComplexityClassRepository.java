@@ -17,10 +17,6 @@ public interface ComplexityClassRepository extends JpaRepository<ComplexityClass
     @Query("SELECT c FROM ComplexityClass c ORDER BY LOWER(name)")
     public List<ComplexityClass> findAllOrdered();
 
-    public Boolean existsByNameIgnoreCase(String name);
-
-    public ComplexityClass findByNameIgnoreCase(String name);
-
     @Modifying
     @Query("UPDATE ComplexityClass c SET c.description = ?2 WHERE c.id = ?1")
     public void updateDescription(long id, String description);

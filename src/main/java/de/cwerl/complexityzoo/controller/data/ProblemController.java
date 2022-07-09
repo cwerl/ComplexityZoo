@@ -17,13 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.cwerl.complexityzoo.model.TinyMCESuggestion;
-import de.cwerl.complexityzoo.model.data.ComplexityDataType;
-import de.cwerl.complexityzoo.model.data.Problem;
-import de.cwerl.complexityzoo.model.data.normal.NormalProblem;
-import de.cwerl.complexityzoo.model.data.para.ParaProblem;
-import de.cwerl.complexityzoo.model.data.para.ParaSubProblem;
+import de.cwerl.complexityzoo.model.data.normal.Problem;
 import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
-import de.cwerl.complexityzoo.repository.data.ParaSubProblemRepository;
+import de.cwerl.complexityzoo.repository.data.ParameterizationRepository;
 import de.cwerl.complexityzoo.repository.data.ProblemRepository;
 import de.cwerl.complexityzoo.repository.relations.CTPRelationRepository;
 import de.cwerl.complexityzoo.repository.relations.PTPRelationRepository;
@@ -37,7 +33,7 @@ public class ProblemController {
     private ProblemRepository problemRepository;
 
     @Autowired
-    private ParaSubProblemRepository subProblemRepository;
+    private ParameterizationRepository parameterizationRepository;
 
     @Autowired
     private ComplexityClassRepository classRepository;
@@ -58,17 +54,15 @@ public class ProblemController {
     @GetMapping(path = "/{id}")
     public String view(Model model, @PathVariable long id) {
         Problem p = problemRepository.getById(id);
-        if(p.getType().equals(ComplexityDataType.PARAMETERIZED.name())) {
-            model.addAttribute("subproblems", problemRepository.getSubProblems(id));
-            model.addAttribute("parent", problemRepository.getById(id));
-        }
+        model.addAttribute("parameterizations", parameterizationRepository.getAllByProblemId(id));
         model.addAttribute("title", p.getName());
         model.addAttribute("problem", p);
+        model.addAttribute("isParam", false);
         model.addAttribute("ptpRelations", ptpRepository.findRelationsByProblem(id));
         model.addAttribute("ptpTypes", ptpRepository.findAllTypes());
-        model.addAttribute("ptpCandidates", ptpRepository.findAllRelationCandidatesOrdered(p));
+        model.addAttribute("ptpCandidates", ptpRepository.findAllRelationCandidatesOrdered(id));
         model.addAttribute("ctpRelations", ctpRepository.findRelationsByProblem(id));
-        model.addAttribute("ctpCandidates", ctpRepository.findAllComplexityClassCandidatesOrdered(p));
+        model.addAttribute("ctpCandidates", ctpRepository.findAllComplexityClassCandidatesOrdered(id));
         return "problems/view";
     }
 
@@ -76,24 +70,16 @@ public class ProblemController {
     public String create(Model model) {
         model.addAttribute("title", "Create new problem");
         List<TinyMCESuggestion> suggestions = new ArrayList<>();
-        suggestions.addAll(SuggestionParser.parse(classRepository.findAll()));
-        suggestions.addAll(SuggestionParser.parse(problemRepository.findAll()));
+        suggestions.addAll(SuggestionParser.parseComplexityClasses(classRepository.findAll()));
+        suggestions.addAll(SuggestionParser.parseProblems(problemRepository.findAll()));
         model.addAttribute("suggestions", suggestions);
         model.addAttribute("classes", classRepository.findAll());
         return "problems/new";
     }
 
     @PostMapping(path="/new/save")
-    public String newSave(@Valid @RequestParam String name, @RequestParam String description, @RequestParam ComplexityDataType type) {
-        if(problemRepository.existsByNameIgnoreCase(name)) {
-            return "redirect:/problems/" + problemRepository.findByNameIgnoreCase(name).getId() + "?redir";
-        }
-        Problem p;
-        if(type == ComplexityDataType.PARAMETERIZED) {
-            p = new ParaProblem();
-        } else {
-            p = new NormalProblem();
-        }
+    public String newSave(@Valid @RequestParam String name, @RequestParam String description) {
+        Problem p = new Problem();
         p.setName(name);
         p.setDescription(description);
         problemRepository.save(p);
@@ -104,8 +90,8 @@ public class ProblemController {
     public String edit(Model model, @PathVariable long id) {
         Problem p = problemRepository.getById(id);
         List<TinyMCESuggestion> suggestions = new ArrayList<>();
-        suggestions.addAll(SuggestionParser.parse(classRepository.findAll()));
-        suggestions.addAll(SuggestionParser.parse(problemRepository.findAll()));
+        suggestions.addAll(SuggestionParser.parseComplexityClasses(classRepository.findAll()));
+        suggestions.addAll(SuggestionParser.parseProblems(problemRepository.findAll()));
         model.addAttribute("suggestions", suggestions);
         model.addAttribute("problem", p);
         model.addAttribute("title", "Edit problem " + p.getName());
@@ -123,18 +109,6 @@ public class ProblemController {
     public String delete(@PathVariable long id) {
         problemRepository.deleteById(id);
         return "redirect:/problems";
-    }
-
-    @PostMapping(value = "/{id}/param/new/save")
-    public String newParamSave(@PathVariable long id, @RequestParam String description, @RequestParam String parameter, Model model) {
-        ParaProblem parentProblem = problemRepository.getParaById(id);
-        ParaSubProblem newProblem = new ParaSubProblem();
-        newProblem.setName(parentProblem.getName() + " (" + parameter + ")");
-        newProblem.setDescription(description);
-        newProblem.setParameter(parameter);
-        newProblem.setParentProblem(parentProblem);
-        subProblemRepository.save(newProblem);
-        return "redirect:/problems/" + newProblem.getId();
     }
 
     @RequestMapping(value="/search")

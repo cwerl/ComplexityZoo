@@ -5,8 +5,8 @@
     <th:block th:fragment="class-view">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form th:action="@{/ctp-relations/new/save(redirect= '/classes/' + ${class.id}, classId=${class.id})}"
-                    method="post">
+                <form th:action="@{/ctp-relations/new/save(redirect=${class.path}, classId=${class.id})}" method="post">
+
                     <!-- Modal header -->
                     <div class="modal-header d-flex align-items-center justify-content-center">
                         <span class="badge badge-prob fs-2"><i class="bi bi-braces"></i></span>
@@ -49,8 +49,9 @@
     <th:block th:fragment="problem-view">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form th:action="@{/ctp-relations/new/save(redirect= '/problems/' + ${problem.id}, problemId=${problem.id})}"
+                <form th:action="@{/ctp-relations/new/save(redirect=${problem.path}, problemId=${problem.id})}"
                     method="post">
+
                     <!-- Modal header -->
                     <div class="modal-header d-flex align-items-center justify-content-center">
                         <span class="badge badge-prob fs-2"><i class="bi bi-braces"></i></span>

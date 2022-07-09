@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <th:block th:fragment="problem-view">
+        <div class="row row-cols-1 row-cols-lg-3 g-3" th:unless="${parameterizations.isEmpty()}">
+            <div class="col" th:each="parameterization : ${parameterizations}">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${parameterization.parameter}"></h5>
+                        <p class="card-text text-secondary" th:utext="${parameterization.description}"></p>
+                        <div class="d-inline-flex">
+                            <a class="btn btn-secondary"
+                                th:href="@{'/problems/' + ${parameterization.parent.id} + '/params/' + ${parameterization.id}}">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</body>
+
+</html>
