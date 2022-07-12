@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import de.cwerl.complexityzoo.model.data.ComplexityClass;
-import de.cwerl.complexityzoo.model.relations.CTCRelation;
+import de.cwerl.complexityzoo.model.relations.CTCRelation.CTCRelation;
 
 @Repository
 public interface CTCRelationRepository extends JpaRepository<CTCRelation, Long> {
@@ -21,4 +22,8 @@ public interface CTCRelationRepository extends JpaRepository<CTCRelation, Long> 
 
     @Query("SELECT candidate FROM ComplexityClass candidate WHERE NOT candidate.id = ?1 AND NOT EXISTS (SELECT r FROM CTCRelation r WHERE (r.firstClass.id = ?1 AND r.secondClass.id = candidate.id) OR (r.firstClass.id = candidate.id AND r.secondClass.id = ?1)) ORDER BY LOWER(name)")
     public List<ComplexityClass> findAllRelationCandidatesOrdered(long classId);
+
+    @Modifying
+    @Query("UPDATE CTCRelation r SET r.reference = ?2 WHERE r.id = ?1")
+    public void updateReference(long id, String reference);
 }
