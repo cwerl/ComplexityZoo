@@ -5,7 +5,7 @@
     <th:block th:fragment="problem-view">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form th:action="@{/ptp-relations/new/save(redirect=${problem.path}, firstProblemId=${problem.id})}"
+                <form th:action="@{/relations/ptp/new/save(redirect=${problem.path}, firstProblemId=${problem.id})}"
                     method="post">
                     
                     <!-- Modal header -->
@@ -42,12 +42,10 @@
                             </div>
                         </div>
 
-                        <!-- Input for reference -->
-                        <div class="form-floating">
-                            <input type="url" maxlength="255" class="form-control" id="inputReferenceClass"
-                                placeholder="reference" name="reference" required autofocus>
-                            <label for="inputReferenceClass">Reference</label>
-                        </div>
+                        <!-- Reference with TinyMCE -->
+                        <textarea class="form-control" placeholder="Reference" name="reference"
+                            id="description-editor"></textarea>
+                        <th:block th:replace="fragments/tinyeditors :: description-editor"></th:block>
                     </div>
 
                     <!-- Buttons -->

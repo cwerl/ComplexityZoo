@@ -15,7 +15,7 @@
         </div>
 
         <!-- Create new problem -->
-        <a class="btn btn-primary mb-3" th:href="@{/problems/new}">Create</a>
+        <a class="btn btn-primary mb-3" th:href="@{/problems/new}" sec:authorize="isAuthenticated()">Create</a>
 
         <!-- Problem list -->
         <div class="row row-cols-1 row-cols-lg-3 g-3" th:unless="${problems.isEmpty()}">

@@ -15,7 +15,7 @@
         </div>
 
         <!-- Create new complexity class -->
-        <a class="btn btn-primary mb-3" th:href="@{/classes/new}">Create</a>
+        <a class="btn btn-primary mb-3" th:href="@{/classes/new}" sec:authorize="isAuthenticated()">Create</a>
 
         <!-- Complexity class list -->
         <div class="row row-cols-1 row-cols-lg-3 g-3" th:unless="${classes.isEmpty()}">

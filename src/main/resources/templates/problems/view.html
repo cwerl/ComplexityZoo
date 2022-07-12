@@ -15,7 +15,7 @@
 
       <!-- Description -->
       <p th:utext="${problem.description}"></p>
-      <a class="btn btn-secondary mb-3" th:href="@{/problems/{id}/edit(id=${problem.id})}">Edit</a>
+      <a class="btn btn-secondary mb-3" th:href="@{/problems/{id}/edit(id=${problem.id})}" sec:authorize="isAuthenticated()">Edit</a>
 
 
       <div class="mb-3">
@@ -25,7 +25,7 @@
                <h3><span class="badge badge-prob"><i class="bi bi-braces"></i></span> Complexity classes</h3>
                <span>Complexity classes that contain <span th:text="${problem.name}"></span>.</span>
             </div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#classModal">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#classModal" sec:authorize="isAuthenticated()">
                Add
             </button>
          </div>
@@ -34,7 +34,7 @@
          <th:block th:replace="relations/ctp-relation/list :: problem-view"></th:block>
 
          <!-- New CTP relation modal -->
-         <div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="relationModalLabel" aria-hidden="true">
+         <div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="relationModalLabel" aria-hidden="true" sec:authorize="isAuthenticated()">
             <th:block th:replace="relations/ctp-relation/new :: problem-view"></th:block>
          </div>
       </div>
@@ -46,7 +46,7 @@
                <h3><span class="badge badge-rel"><i class="bi bi-diagram-2"></i></span> Reductions</h3>
                <span>Problems that <span th:text="${problem.name}"></span> can be reduced to.</span>
             </div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ptpModal">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ptpModal" sec:authorize="isAuthenticated()">
                Add
             </button>
          </div>
@@ -55,7 +55,7 @@
          <th:block th:replace="relations/ptp-relation/list :: problem-view"></th:block>
 
          <!-- New PTP relation modal -->
-         <div class="modal fade" id="ptpModal" tabindex="-1" aria-labelledby="relationModalLabel" aria-hidden="true">
+         <div class="modal fade" id="ptpModal" tabindex="-1" aria-labelledby="relationModalLabel" aria-hidden="true" sec:authorize="isAuthenticated()">
             <th:block th:replace="relations/ptp-relation/new :: problem-view"></th:block>
          </div>
       </div>
@@ -67,7 +67,7 @@
                <h3><span class="badge badge-param"><i class="bi bi-alt"></i></span> Parameterizations</h3>
                <span>Parameterizations of <span th:text="${problem.name}"></span>.</span>
             </div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paraModal">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paraModal" sec:authorize="isAuthenticated()">
                Add
             </button>
          </div>
@@ -76,7 +76,7 @@
          <th:block th:replace="problems/params/list :: problem-view"></th:block>
 
          <!-- New param modal -->
-         <div class="modal fade" id="paraModal" tabindex="-1" aria-labelledby="paraModalLabel" aria-hidden="true">
+         <div class="modal fade" id="paraModal" tabindex="-1" aria-labelledby="paraModalLabel" aria-hidden="true" sec:authorize="isAuthenticated()">
             <th:block th:replace="problems/params/new :: problem-view"></th:block>
          </div>
       </div>

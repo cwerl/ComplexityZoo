@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:include="fragments/layout :: page">
+
+<body>
+   <th:block th:fragment="content">
+      <div class="d-flex gap-2">
+         <a th:href="@{${relation.first.path}}" class="bg-secondary rounded-pill px-3 py-1" th:text="${relation.first.name}"></a>
+         <span class="py-1" th:text="${relationTypeString}"></span>
+         <a th:href="@{${relation.second.path}}" class="bg-secondary rounded-pill px-3 py-1" th:text="${relation.second.name}"></a>
+      </div>
+
+      <!-- Description -->
+      <p th:utext="${relation.reference}"></p>
+      <a class="btn btn-secondary mb-3" th:href="@{${relation.path} + '/edit'}" sec:authorize="isAuthenticated()">Edit</a>
+   </th:block>
+</body>
+
+</html>
