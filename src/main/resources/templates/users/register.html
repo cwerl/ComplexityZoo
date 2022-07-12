@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:include="fragments/layout :: page">
+
+<body>
+    <th:block th:fragment="content">
+        <form th:action="@{/users/register}" th:object="${user}" method="POST" enctype="utf8">
+
+            <div class="form-floating mb-3">
+                <input type="text" maxlength="255" class="form-control"
+                    th:classappend="${#fields.hasErrors('username')}? is-invalid" id="username" placeholder="Username"
+                    th:field="*{username}" autofocus>
+                <label for="username">Username</label>
+            </div>
+            <p class="alert alert-danger" th:each="error : ${#fields.errors('username')}" th:text="${error}">Validation error</p>
+
+
+            <div class="form-floating mb-3">
+                <input type="email" maxlength="255" class="form-control"
+                    th:classappend="${#fields.hasErrors('email')}? is-invalid" id="email" placeholder="Email"
+                    th:field="*{email}">
+                <label for="email">Email</label>
+            </div>
+            <p class="alert alert-danger" th:each="error : ${#fields.errors('email')}" th:text="${error}">Validation error</p>
+
+            <div class="form-floating mb-3">
+                <input type="password" maxlength="20" class="form-control"
+                    th:classappend="${#fields.hasErrors('password')||#fields.hasErrors('matchingPassword')}  ? is-invalid"
+                    id="password" placeholder="Password" th:field="*{password}">
+                <label for="password">Password</label>
+            </div>
+            <p class="alert alert-danger" th:each="error : ${#fields.errors('password')}" th:text="${error}">Validation error</p>
+
+            <div class="form-floating mb-3">
+                <input type="password" maxlength="20" class="form-control"
+                    th:classappend="${#fields.hasErrors('matchingPassword')}? is-invalid" id="matchingPassword"
+                    placeholder="Matching password" th:field="*{matchingPassword}">
+                <label for="matchingPassword">Password confirmation</label>
+            </div>
+            <p class="alert alert-danger" th:each="error : ${#fields.errors('matchingPassword')}" th:text="${error}">Validation error</p>
+
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    </th:block>
+</body>
+
+</html>
