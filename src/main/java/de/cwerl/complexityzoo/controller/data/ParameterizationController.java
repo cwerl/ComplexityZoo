@@ -69,7 +69,7 @@ public class ParameterizationController {
         para.setName(name);
         para.setParent(p);
         parameterizationRepository.save(para);
-        return "redirect:/problems/" + id + "/params/" + para.getId();
+        return "redirect:/problems/" + id + "/params/" + para.getId() + "?success";
     }
 
     @PreAuthorize("isAuthenticated()")

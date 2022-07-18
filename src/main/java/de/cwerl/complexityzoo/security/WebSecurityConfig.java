@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/problems/**",
                     "/relations/**",
                     "/h2-console/**",
-                    "/users/**").permitAll()
+                    "/signup").permitAll()
                 .anyRequest().authenticated()
             .and().formLogin()
                 .loginPage("/login")
