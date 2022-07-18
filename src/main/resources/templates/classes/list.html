@@ -4,15 +4,13 @@
 <body>
     <th:block th:fragment="content">
         <!-- Search bar -->
-        <div class="bg-white sticky-top">
-            <form class="mb-3 d-flex gap-2" th:action="@{/classes/search}">
-                <input type="search" class="form-control" id="search" placeholder="Complexity class name"
-                    aria-label="Search" aria-describedby="search-bar" th:name="q" th:value="${query}">
-                <button class="btn btn-primary" type="submit" id="button-addon2">
-                    Search
-                </button>
-            </form>
-        </div>
+        <form class="mb-3 d-flex gap-2" th:action="@{/classes/search}">
+            <input type="search" class="form-control" id="search" placeholder="Complexity class name"
+                aria-label="Search" aria-describedby="search-bar" th:name="q" th:value="${query}">
+            <button class="btn btn-primary" type="submit" id="button-addon2">
+                Search
+            </button>
+        </form>
 
         <!-- Create new complexity class -->
         <a class="btn btn-primary mb-3" th:href="@{/classes/new}" sec:authorize="isAuthenticated()">Create</a>

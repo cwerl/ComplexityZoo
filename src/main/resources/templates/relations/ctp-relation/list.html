@@ -18,7 +18,7 @@
                             class="bi bi-file-earmark-check"></i><span>View proof</span></a>
                     <form action="#"
                         th:action="@{/relations/ctp/{relationId}/delete(redirect=${class.path}, relationId=${ctp.id})}"
-                        th:method="delete">
+                        th:method="delete" sec:authorize="isAuthenticated()">
                         <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
                     </form>
                 </div>
@@ -42,7 +42,7 @@
                             class="bi bi-file-earmark-check"></i><span>View proof</span></a>
                     <form action="#"
                         th:action="@{/relations/ctp/{relationId}/delete(redirect=${problem.path}, relationId=${ctp.id})}"
-                        th:method="delete">
+                        th:method="delete" sec:authorize="isAuthenticated()">
                         <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
                     </form>
                 </div>
