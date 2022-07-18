@@ -48,12 +48,19 @@
 	<link rel="stylesheet" th:href="@{/css/custom.css}" />
 </head>
 
-<body class="bg-light">
-	<th:block th:replace="fragments/navbar :: navbar"></th:block>
-	<!-- Content -->
-	<div class="container">
-		<h1 th:text="${title}"></h1>
-		<th:block th:include="this :: content"></th:block>
+<body>
+	<div class="d-lg-flex d-block">
+		<div class="col-lg-auto bg-light p-2">
+			<!-- Navbar -->
+			<th:block th:replace="fragments/navbar :: navbar"></th:block>
+		</div>
+		<div class="col p-2" style="min-height: 100vh">
+			<div class="container-fluid">
+			<!-- Content -->
+				<h1 th:text="${title}"></h1>
+				<th:block th:include="this :: content"></th:block>
+			</div>
+		</div>
 	</div>
 
 	<!-- LaTeX rendering script -->
