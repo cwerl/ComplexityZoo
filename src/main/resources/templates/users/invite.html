@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:include="fragments/layout :: page">
+
+<body>
+    <th:block th:fragment="content">
+        <div th:if="${param.success}" class="alert alert-success">
+            Successfully invited user.
+        </div>
+
+        <form th:action="@{/invite}" th:object="${user}" method="POST" enctype="utf8">
+            <div class="d-flex mb-3 gap-2">
+                <input type="email" maxlength="255" class="form-control"
+                    th:classappend="${#fields.hasErrors('email')}? is-invalid" id="email" placeholder="Email"
+                    th:field="*{email}">
+                <button class="btn btn-primary" type="submit">Invite</button>
+            </div>
+            <p class="alert alert-danger" th:each="error : ${#fields.errors('email')}" th:text="${error}">Validation
+                error</p>
+        </form>
+        <h2>Pending invitations</h2>
+
+        <ul class="list-group" th:unless="${invitations.isEmpty()}">
+            <li class="list-group-item d-flex align-items-center justify-content-between"
+                th:each="invitation : ${invitations}">
+                <span th:text="${invitation.email}"></span>
+                <form action="#" th:action="@{/invite/{email}/cancel(email=${invitation.email})}"
+                    th:method="delete">
+                    <button type="submit" class="btn btn-danger">Cancel</button>
+                </form>
+            </li>
+        </ul>
+
+        <p class="alert alert-secondary" th:if="${invitations.isEmpty()}">Currently no pending invitations.</p>
+
+    </th:block>
+</body>
+
+</html>

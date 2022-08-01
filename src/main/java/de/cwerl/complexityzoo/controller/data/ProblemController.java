@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -67,6 +68,7 @@ public class ProblemController {
         return "problems/view";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(path="/new")
     public String create(Model model) {
         model.addAttribute("title", "Create new problem");
@@ -78,6 +80,7 @@ public class ProblemController {
         return "problems/new";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(path="/new/save")
     public String newSave(@Valid @RequestParam String name, @RequestParam String description) {
         Problem p = new Problem();
@@ -87,6 +90,7 @@ public class ProblemController {
         return "redirect:/problems/" + p.getId() + "?success";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(path="/{id}/edit")
     public String edit(Model model, @PathVariable long id) {
         Problem p = problemRepository.getById(id);
@@ -99,6 +103,7 @@ public class ProblemController {
         return "problems/edit";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value="/{id}/edit/save")
     @Transactional
     public String editSave(@PathVariable long id, @RequestParam String description) {
@@ -106,6 +111,7 @@ public class ProblemController {
         return "redirect:/problems/" + id;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/{id}/edit/delete", method = RequestMethod.DELETE)
     public String delete(@PathVariable long id) {
         problemRepository.deleteById(id);

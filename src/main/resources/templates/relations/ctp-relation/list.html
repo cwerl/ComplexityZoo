@@ -6,13 +6,19 @@
         <ul class="list-group">
             <li class="list-group-item d-flex align-items-center justify-content-between"
                 th:each="ctp : ${ctpRelations}">
-                <a th:text="${ctp.problem.name}" th:href="@{${ctp.problem.path}}"></a>
+                <div>
+                    <th:block th:switch="${ctp.relationType.name()}">
+                        <span th:case="'IN'">$\ni$</span>
+                        <span th:case="'NOT_IN'">$\not\ni$</span>
+                    </th:block>
+                    <a th:text="${ctp.problem.name}" th:href="@{${ctp.problem.path}}"></a>
+                </div>
                 <div class="btn-menu">
-                    <a class="btn btn-secondary btn-sm btn-icon" th:href="${ctp.reference}" target="_blank"><i
+                    <a class="btn btn-secondary btn-sm btn-icon" th:href="@{/relations/ctp/{relationId}(relationId=${ctp.id})}"><i
                             class="bi bi-file-earmark-check"></i><span>View proof</span></a>
                     <form action="#"
-                        th:action="@{/ctp-relations/{relationId}/delete(redirect=${class.path}, relationId=${ctp.id})}"
-                        th:method="delete">
+                        th:action="@{/relations/ctp/{relationId}/delete(redirect=${class.path}, relationId=${ctp.id})}"
+                        th:method="delete" sec:authorize="isAuthenticated()">
                         <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
                     </form>
                 </div>
@@ -24,13 +30,19 @@
         <ul class="list-group">
             <li class="list-group-item d-flex align-items-center justify-content-between"
                 th:each="ctp : ${ctpRelations}">
-                <a th:text="${ctp.complexityClass.name}" th:href="@{${ctp.complexityClass.path}}"></a>
+                <div>
+                    <th:block th:switch="${ctp.relationType.name()}">
+                        <span th:case="'IN'">$\in$</span>
+                        <span th:case="'NOT_IN'">$\notin$</span>
+                    </th:block>
+                    <a th:text="${ctp.complexityClass.name}" th:href="@{${ctp.complexityClass.path}}"></a>
+                </div>
                 <div class="btn-menu">
-                    <a class="btn btn-secondary btn-sm btn-icon" th:href="${ctp.reference}" target="_blank"><i
+                    <a class="btn btn-secondary btn-sm btn-icon" th:href="@{/relations/ctp/{relationId}(relationId=${ctp.id})}"><i
                             class="bi bi-file-earmark-check"></i><span>View proof</span></a>
                     <form action="#"
-                        th:action="@{/ctp-relations/{relationId}/delete(redirect=${problem.path}, relationId=${ctp.id})}"
-                        th:method="delete">
+                        th:action="@{/relations/ctp/{relationId}/delete(redirect=${problem.path}, relationId=${ctp.id})}"
+                        th:method="delete" sec:authorize="isAuthenticated()">
                         <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
                     </form>
                 </div>

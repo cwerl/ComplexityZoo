@@ -5,7 +5,7 @@
     <th:block th:fragment="class-view">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form th:action="@{/ctp-relations/new/save(redirect=${class.path}, classId=${class.id})}" method="post">
+                <form th:action="@{/relations/ctp/new/save(redirect=${class.path}, classId=${class.id})}" method="post">
 
                     <!-- Modal header -->
                     <div class="modal-header d-flex align-items-center justify-content-center">
@@ -15,23 +15,37 @@
 
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <div class="mb-3">
-
-                            <!-- Select problem -->
-                            <select id="nocreate" name="problemId" required>
-                                <option value="">Problem</option>
-                                <th:block th:each="p : ${ctpCandidates}">
-                                    <option th:value="${p.id}" th:text="${p.name}"></option>
-                                </th:block>
-                            </select>
+                        <div class="row mb-3 align-items-center g-3">
+                            <div class="col">
+                                <!-- Select problem -->
+                                <select id="nocreate" name="problemId" required>
+                                    <option value="">Problem</option>
+                                    <th:block th:each="p : ${ctpCandidates}">
+                                        <option th:value="${p.id}" th:text="${p.name}"></option>
+                                    </th:block>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <!-- Select relation type -->
+                                <select id="nocreate" name="relationType" class="dropdown" data-bs-toggle="dropdown"
+                                    required>
+                                    <div class="dropdown-menu">
+                                        <option value="">Relation type</option>
+                                        <option value="IN">is an element of</option>
+                                        <option value="NOT_IN">isn't an element of</option>
+                                    </div>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <span class="fw-bold" th:text="${class.name}"></span>
+                            </div>
                         </div>
 
-                        <!-- Input for reference -->
-                        <div class="form-floating">
-                            <input type="url" maxlength="255" class="form-control" id="inputReferenceProblem"
-                                placeholder="reference" name="reference" required autofocus>
-                            <label for="inputReferenceProblem">Reference</label>
-                        </div>
+
+                        <!-- Reference with TinyMCE -->
+                        <textarea class="form-control" placeholder="Reference" name="reference"
+                            id="description-editor"></textarea>
+                        <th:block th:replace="fragments/tinyeditors :: description-editor"></th:block>
                     </div>
 
                     <!-- Buttons -->
@@ -49,7 +63,7 @@
     <th:block th:fragment="problem-view">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form th:action="@{/ctp-relations/new/save(redirect=${problem.path}, problemId=${problem.id})}"
+                <form th:action="@{/relations/ctp/new/save(redirect=${problem.path}, problemId=${problem.id})}"
                     method="post">
 
                     <!-- Modal header -->
@@ -60,23 +74,39 @@
 
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <div class="mb-3">
+                        <div class="row mb-3 align-items-center g-3">
 
-                            <!-- Select problem -->
-                            <select id="nocreate" name="classId" required>
-                                <option value="">Complexity class</option>
-                                <th:block th:each="c : ${ctpCandidates}">
-                                    <option th:value="${c.id}" th:text="${c.name}"></option>
-                                </th:block>
-                            </select>
+                            <div class="col-auto">
+                                <span class="fw-bold" th:text="${problem.name}"></span>
+                            </div>
+
+                            <div class="col">
+                                <!-- Select relation type -->
+                                <select id="nocreate" name="relationType" class="dropdown" data-bs-toggle="dropdown"
+                                    required>
+                                    <div class="dropdown-menu">
+                                        <option value="">Relation type</option>
+                                        <option value="IN">is an element of</option>
+                                        <option value="NOT_IN">isn't an element of</option>
+                                    </div>
+                                </select>
+                            </div>
+
+                            <div class="col">
+                                <!-- Select complexity class -->
+                                <select id="nocreate" name="classId" required>
+                                    <option value="">Complexity class</option>
+                                    <th:block th:each="c : ${ctpCandidates}">
+                                        <option th:value="${c.id}" th:text="${c.name}"></option>
+                                    </th:block>
+                                </select>
+                            </div>
                         </div>
 
-                        <!-- Input for reference -->
-                        <div class="form-floating">
-                            <input type="url" maxlength="255" class="form-control" id="inputReferenceProblem"
-                                placeholder="reference" name="reference" required autofocus>
-                            <label for="inputReferenceProblem">Reference</label>
-                        </div>
+                        <!-- Reference with TinyMCE -->
+                        <textarea class="form-control" placeholder="Reference" name="Reference"
+                            id="description-editor"></textarea>
+                        <th:block th:replace="fragments/tinyeditors :: description-editor"></th:block>
                     </div>
 
                     <!-- Buttons -->

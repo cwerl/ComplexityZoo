@@ -6,7 +6,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form
-                    th:action="@{/ctc-relations/new/save(redirect='/classes/' + ${class.id}, firstClassId=${class.id})}"
+                    th:action="@{/relations/ctc/new/save(redirect='/classes/' + ${class.id}, firstClassId=${class.id})}"
                     method="post">
 
                     <!-- Modal header -->
@@ -29,10 +29,13 @@
                                     <div class="dropdown-menu">
                                         <option value="">Relation type</option>
                                         <option value="EQUAL_TO">equal to (=)</option>
+                                        <option value="NOT_EQUAL_TO">not equal to (≠)</option>
                                         <option value="SUBSET_OF">a subset of (⊆)</option>
                                         <option value="PROPER_SUBSET_OF">a proper subset of (⊂)</option>
+                                        <option value="NOT_SUBSET_OF">not a subset of (⊄)</option>
                                         <option value="SUPERSET_OF">a superset of (⊇)</option>
                                         <option value="PROPER_SUPERSET_OF">a proper superset of (⊃)</option>
+                                        <option value="NOT_SUPERSET_OF">not a superset of (⊅)</option>
                                     </div>
                                 </select>
                             </div>
@@ -48,12 +51,10 @@
                             </div>
                         </div>
 
-                        <!-- Input for reference -->
-                        <div class="form-floating">
-                            <input type="url" maxlength="255" class="form-control" id="inputReferenceClass"
-                                placeholder="reference" name="reference" required autofocus>
-                            <label for="inputReferenceClass">Reference</label>
-                        </div>
+                        <!-- Reference with TinyMCE -->
+                        <textarea class="form-control" placeholder="Reference" name="reference"
+                            id="description-editor"></textarea>
+                        <th:block th:replace="fragments/tinyeditors :: description-editor"></th:block>
                     </div>
 
                     <!-- Buttons -->

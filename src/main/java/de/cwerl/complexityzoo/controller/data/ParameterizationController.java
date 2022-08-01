@@ -6,6 +6,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,17 +46,6 @@ public class ParameterizationController {
     @Autowired
     private CTPRelationRepository ctpRepository;
 
-    @PostMapping(value = "/new/save")
-    public String newParamSave(@PathVariable long id, @RequestParam String description, @RequestParam String name, Model model) {
-        Problem p = problemRepository.getById(id);
-        Parameterization para = new Parameterization();
-        para.setDescription(description);
-        para.setName(name);
-        para.setParent(p);
-        parameterizationRepository.save(para);
-        return "redirect:/problems/" + id + "/params/" + para.getId();
-    }
-
     @GetMapping(path="/{paramId}")
     public String viewParam(Model model, @PathVariable("id") long id, @PathVariable("paramId") long paramId) {
         Parameterization param = parameterizationRepository.getById(paramId);
@@ -70,6 +60,19 @@ public class ParameterizationController {
         return "problems/params/view";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(value = "/new/save")
+    public String newParamSave(@PathVariable long id, @RequestParam String description, @RequestParam String name, Model model) {
+        Problem p = problemRepository.getById(id);
+        Parameterization para = new Parameterization();
+        para.setDescription(description);
+        para.setName(name);
+        para.setParent(p);
+        parameterizationRepository.save(para);
+        return "redirect:/problems/" + id + "/params/" + para.getId() + "?success";
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(path="/{paramId}/edit")
     public String editParam(Model model, @PathVariable long id, @PathVariable long paramId) {
         Parameterization para = parameterizationRepository.getById(paramId);
@@ -82,6 +85,7 @@ public class ParameterizationController {
         return "problems/params/edit";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value="/{paramId}/edit/save")
     @Transactional
     public String editParamSave(@PathVariable long id, @PathVariable long paramId, @RequestParam String description) {
@@ -89,6 +93,7 @@ public class ParameterizationController {
         return "redirect:/problems/" + id + "/params/" + paramId;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/{paramId}/edit/delete", method = RequestMethod.DELETE)
     public String delete(@PathVariable long id, @PathVariable long paramId) {
         parameterizationRepository.deleteById(paramId);

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <th:block th:fragment="navbar">
+        <!-- <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">ComplexityZoo++</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                    </ul>
+                    <div th:with="currentUser=${#httpServletRequest.userPrincipal?.name}">
+                        <div class="d-flex align-items-center" th:if="${currentUser != null}">
+                            <span>Logged in as <span th:text="${currentUser}"></span></span>
+                            <form class="navbar-form navbar-right ms-2" th:action="@{/logout}" method="post">
+                                <input type="submit" class="btn btn-secondary" value="Logout" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav> -->
+
+        <nav class="navbar navbar-expand-lg sticky-top" style="z-index: 1021">
+            <div class="container-fluid">
+                <button class="navbar-toggler border-0 px-0" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+                    aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body flex-column">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 flex-column gap-2">
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/}" th:classappend="${#httpServletRequest.getRequestURI().matches('/')}? active">
+                                    <i class="bi bi-house"></i>
+                                    Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/classes}" th:classappend="${#httpServletRequest.getRequestURI().matches('/classes(.*)')}? active">
+                                    <i class="bi bi-diagram-2"></i> Complexity classes
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/problems}" th:classappend="${#httpServletRequest.getRequestURI().matches('/problems(.*)')}? active">
+                                    <i class="bi bi-braces"></i> Problems
+                                </a>
+                            </li>
+                            <li class="nav-item" sec:authorize="isAuthenticated()">
+                                <a class="nav-link" th:href="@{/invite}" th:classappend="${#httpServletRequest.getRequestURI().equals('/invite')}? active">
+                                    <i class="bi bi-envelope-plus"></i> Invite author
+                                </a>
+                            </li>
+                        </ul>
+                        <div th:with="currentUser=${#httpServletRequest.userPrincipal?.name}">
+                            <div class="mt-3 border-top" th:if="${currentUser != null}">
+                                <form class="navbar-form navbar-right mt-2" th:action="@{/logout}" method="post">
+                                    <span>Logged in as <span th:text="${currentUser}"></span> (<input type="submit" class="btn btn-ternary" value="logout" />)</span>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </th:block>
+</body>
+
+</html>

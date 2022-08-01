@@ -11,13 +11,13 @@
                     <a th:href="@{${ptp.secondProblem.path}}" th:text="${ptp.secondProblem.name}"></a>
                 </div>
                 <div class="btn-menu">
-                    <a class="btn btn-secondary btn-sm btn-icon" th:href="${ptp.reference}" target="_blank">
+                    <a class="btn btn-secondary btn-sm btn-icon" th:href="@{/relations/ptp/{relationId}(relationId=${ptp.id})}">
                         <i class="bi bi-file-earmark-check"></i>
                         <span>View proof</span>
                     </a>
                     <form action="#"
-                        th:action="@{/ptp-relations/{relationId}/delete(redirect=${problem.path}, relationId=${ptp.id})}"
-                        th:method="delete">
+                        th:action="@{/relations/ptp/{relationId}/delete(redirect=${problem.path}, relationId=${ptp.id})}"
+                        th:method="delete" sec:authorize="isAuthenticated()">
                         <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
                     </form>
                 </div>

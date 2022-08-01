@@ -9,33 +9,21 @@
 
                 <!-- Relation type and related class item menu -->
                 <div th:if="${ctc.firstClass.id == class.id}">
-                    <th:block th:switch="${ctc.relationType.name()}">
-                        <span th:case="'EQUAL_TO'">$=$</span>
-                        <span th:case="'SUBSET_OF'">$\subseteq$</span>
-                        <span th:case="'PROPER_SUBSET_OF'">$\subset$</span>
-                        <span th:case="'SUPERSET_OF'">$\supseteq$</span>
-                        <span th:case="'PROPER_SUPERSET_OF'">$\supset$</span>
-                    </th:block>
+                    <span th:text="${ctc.relationType.toLaTeX(false)}"></span>
                     <a th:text="${ctc.secondClass.name}" th:href="@{${ctc.secondClass.path}}"></a>
                 </div>
                 <div th:if="${ctc.secondClass.id == class.id}">
-                    <th:block th:switch="${ctc.relationType.name()}">
-                        <span th:case="'EQUAL_TO'">$=$</span>
-                        <span th:case="'SUBSET_OF'">$\supseteq$</span>
-                        <span th:case="'PROPER_SUBSET_OF'">$\supset$</span>
-                        <span th:case="'SUPERSET_OF'">$\subseteq$</span>
-                        <span th:case="'PROPER_SUPERSET_OF'">$\subset$</span>
-                    </th:block>
+                    <span th:text="${ctc.relationType.toLaTeX(true)}"></span>
                     <a th:text="${ctc.firstClass.name}" th:href="@{${ctc.firstClass.path}}"></a>
                 </div>
 
                 <!-- Buttons -->
                 <div class="btn-menu">
-                    <a class="btn btn-secondary btn-sm btn-icon" th:href="${ctc.reference}" target="_blank"><i
+                    <a class="btn btn-secondary btn-sm btn-icon" th:href="@{'/relations/ctc/' + ${ctc.id}}"><i
                             class="bi bi-file-earmark-check"></i><span>View proof</span></a>
                     <form action="#"
-                        th:action="@{/ctc-relations/{relationId}/delete(redirect=${class.path}, relationId=${ctc.id})}"
-                        th:method="delete">
+                        th:action="@{/relations/ctc/{relationId}/delete(redirect=${class.path}, relationId=${ctc.id})}"
+                        th:method="delete" sec:authorize="isAuthenticated()">
                         <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
                     </form>
                 </div>

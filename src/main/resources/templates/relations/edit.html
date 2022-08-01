@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:include="fragments/layout :: page">
+
+<body>
+  <th:block th:fragment="content">
+    <form th:action="@{${relation.path} + '/edit/save'}" th:object="${relation}" method="post">
+
+      <!-- Description input -->
+      <textarea id="description-editor" placeholder="Complexity class description" th:field="*{reference}">
+      </textarea>
+      <th:block th:replace="fragments/tinyeditors :: description-editor"></th:block>
+
+      <!-- Buttons -->
+      <div class="btn-menu mb-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </th:block>
+</body>
+
+</html>

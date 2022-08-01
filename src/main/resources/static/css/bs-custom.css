@@ -24,7 +24,7 @@
 }
 
 .btn-secondary {
-    color: #2650f6;
+    color: #1d41d1;
     background-color: #e5eaf7;
     border-color: #e5eaf7;
 }
@@ -131,7 +131,7 @@
 }
 
 .bg-secondary {
-    color: #2650f6;
+    color: #1d41d1;
     background-color: #e5eaf7 !important;
 }
 
@@ -156,4 +156,29 @@
 /* MISC */
 .list-group-item {
     padding: .5rem .5rem;
+}
+
+.form-control {
+    max-width: 30rem;
+}
+
+.nav-link {
+    padding: .3rem .8rem !important;
+    border-radius: .375rem;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    background-color: #e5eaf7;
+}
+
+.nav-link.active {
+    background-color: #e5eaf7;
+}
+
+.nav-link i {
+    margin-right: .6rem;
+    font-size: 1.3rem;
 }

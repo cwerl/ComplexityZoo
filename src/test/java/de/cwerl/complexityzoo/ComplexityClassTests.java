@@ -40,105 +40,105 @@ public class ComplexityClassTests {
 	private static final String ATTR_DESCR = "description";
 	private static final String ATTR_TYPE = "type";
 
-	@Test
-	public void viewClassTest() throws Exception {
-		ComplexityClass c = new NormalComplexityClass();
-		c.setName("A");
-		classRepository.save(c);
+	// @Test
+	// public void viewClassTest() throws Exception {
+	// 	ComplexityClass c = new NormalComplexityClass();
+	// 	c.setName("A");
+	// 	classRepository.save(c);
 
-		this.mockMvc.perform(
-			get("/classes/{id}", c.getId()))
-			.andExpect(status().isOk());
-	}
+	// 	this.mockMvc.perform(
+	// 		get("/classes/{id}", c.getId()))
+	// 		.andExpect(status().isOk());
+	// }
 
-    @Test
-    public void createClassTest() throws Exception {
-        this.mockMvc.perform(
-            post("/classes/new/save")
-			.param(ATTR_CLASSNAME, "name")
-			.param(ATTR_DESCR, "description")
-			.param(ATTR_TYPE, "NORMAL")
-		);
-		this.mockMvc.perform(get("/classes"))
-		.andExpect(model().attribute(ATTR_CLASSLIST, hasItem(
-			allOf(
-				hasProperty(ATTR_CLASSNAME, is("name")),
-				hasProperty(ATTR_DESCR, is("description"))
-			)
-		)))
-		.andExpect(status().isOk());
-    }
+    // @Test
+    // public void createClassTest() throws Exception {
+    //     this.mockMvc.perform(
+    //         post("/classes/new/save")
+	// 		.param(ATTR_CLASSNAME, "name")
+	// 		.param(ATTR_DESCR, "description")
+	// 		.param(ATTR_TYPE, "NORMAL")
+	// 	);
+	// 	this.mockMvc.perform(get("/classes"))
+	// 	.andExpect(model().attribute(ATTR_CLASSLIST, hasItem(
+	// 		allOf(
+	// 			hasProperty(ATTR_CLASSNAME, is("name")),
+	// 			hasProperty(ATTR_DESCR, is("description"))
+	// 		)
+	// 	)))
+	// 	.andExpect(status().isOk());
+    // }
 
-	@Test
-    public void deleteClassFilledDatabaseTest() throws Exception {
-		ComplexityClass c1 = new NormalComplexityClass();
-		c1.setName("name1");
-		classRepository.save(c1);
+	// @Test
+    // public void deleteClassFilledDatabaseTest() throws Exception {
+	// 	ComplexityClass c1 = new NormalComplexityClass();
+	// 	c1.setName("name1");
+	// 	classRepository.save(c1);
 
-		ComplexityClass c2 = new NormalComplexityClass();
-		c2.setName("name2");
-		classRepository.save(c2);
+	// 	ComplexityClass c2 = new NormalComplexityClass();
+	// 	c2.setName("name2");
+	// 	classRepository.save(c2);
 
-        this.mockMvc.perform(
-            MockMvcRequestBuilders.delete("/classes/{id}/edit/delete", c1.getId())
-		).andExpect(status().is(302));
+    //     this.mockMvc.perform(
+    //         MockMvcRequestBuilders.delete("/classes/{id}/edit/delete", c1.getId())
+	// 	).andExpect(status().is(302));
 
-		this.mockMvc.perform(get("/classes"))
-		.andExpect(model().attribute(ATTR_CLASSLIST, not(hasItem(
-			hasProperty(ATTR_ID, is(c1.getId()))
-		))))
-		.andExpect(model().attribute(ATTR_CLASSLIST, hasItem(
-			hasProperty(ATTR_ID, is(c2.getId()))
-		)))
-		.andExpect(status().isOk());
-    }
+	// 	this.mockMvc.perform(get("/classes"))
+	// 	.andExpect(model().attribute(ATTR_CLASSLIST, not(hasItem(
+	// 		hasProperty(ATTR_ID, is(c1.getId()))
+	// 	))))
+	// 	.andExpect(model().attribute(ATTR_CLASSLIST, hasItem(
+	// 		hasProperty(ATTR_ID, is(c2.getId()))
+	// 	)))
+	// 	.andExpect(status().isOk());
+    // }
 
-	@Test
-	public void searchClassTest() throws Exception {
-		ComplexityClass c1 = new NormalComplexityClass();
-		c1.setName("A");
-		classRepository.save(c1);
+	// @Test
+	// public void searchClassTest() throws Exception {
+	// 	ComplexityClass c1 = new NormalComplexityClass();
+	// 	c1.setName("A");
+	// 	classRepository.save(c1);
 
-		ComplexityClass c2 = new NormalComplexityClass();
-		c2.setName("B");
-		classRepository.save(c2);
+	// 	ComplexityClass c2 = new NormalComplexityClass();
+	// 	c2.setName("B");
+	// 	classRepository.save(c2);
 
-		this.mockMvc.perform(get("/classes/search?q=A"))
-		.andExpect(model().attribute(ATTR_CLASSLIST, hasItem(
-			hasProperty(ATTR_CLASSNAME, is(c1.getName()))
-		)))
-		.andExpect(model().attribute(ATTR_CLASSLIST, not(hasItem(
-			hasProperty(ATTR_CLASSNAME, is(c2.getName()))
-		))))
-		.andExpect(status().isOk());
-	}
+	// 	this.mockMvc.perform(get("/classes/search?q=A"))
+	// 	.andExpect(model().attribute(ATTR_CLASSLIST, hasItem(
+	// 		hasProperty(ATTR_CLASSNAME, is(c1.getName()))
+	// 	)))
+	// 	.andExpect(model().attribute(ATTR_CLASSLIST, not(hasItem(
+	// 		hasProperty(ATTR_CLASSNAME, is(c2.getName()))
+	// 	))))
+	// 	.andExpect(status().isOk());
+	// }
 
-	@Test
-	public void editClassTest() throws Exception {
-		ComplexityClass c = new NormalComplexityClass();
-		c.setName("name");
-		c.setDescription("old");
-		classRepository.save(c);
+	// @Test
+	// public void editClassTest() throws Exception {
+	// 	ComplexityClass c = new NormalComplexityClass();
+	// 	c.setName("name");
+	// 	c.setDescription("old");
+	// 	classRepository.save(c);
 
-		this.mockMvc.perform(get("/classes/{id}/edit", c.getId()))
-		.andExpect(model().attribute(ATTR_CLASS, allOf(
-			hasProperty(ATTR_DESCR, is("old"))
-			)));
+	// 	this.mockMvc.perform(get("/classes/{id}/edit", c.getId()))
+	// 	.andExpect(model().attribute(ATTR_CLASS, allOf(
+	// 		hasProperty(ATTR_DESCR, is("old"))
+	// 		)));
 			
-		this.mockMvc.perform(post("/classes/{id}/edit/save", c.getId()).param(ATTR_DESCR, "new"));
+	// 	this.mockMvc.perform(post("/classes/{id}/edit/save", c.getId()).param(ATTR_DESCR, "new"));
 
-		TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-			@Override
-			public void afterCommit() {
-				try {
-					mockMvc.perform(get("/classes/{id}", c.getId()))
-					.andExpect(model().attribute(ATTR_CLASS, allOf(
-						hasProperty(ATTR_DESCR, is("new"))
-						)));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	// 	TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+	// 		@Override
+	// 		public void afterCommit() {
+	// 			try {
+	// 				mockMvc.perform(get("/classes/{id}", c.getId()))
+	// 				.andExpect(model().attribute(ATTR_CLASS, allOf(
+	// 					hasProperty(ATTR_DESCR, is("new"))
+	// 					)));
+	// 			} catch (Exception e) {
+	// 				e.printStackTrace();
+	// 			}
+	// 		}
+	// 	});
+	// }
 }

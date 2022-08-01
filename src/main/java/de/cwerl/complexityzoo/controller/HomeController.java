@@ -9,7 +9,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String showHome(Model model) {
-        model.addAttribute("title", "Home");
-        return "redirect:/classes";
+        model.addAttribute("title", "Welcome");
+        return "home";
     }
 }
