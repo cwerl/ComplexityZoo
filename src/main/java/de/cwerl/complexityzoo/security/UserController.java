@@ -31,7 +31,7 @@ public class UserController {
         if(isAlreadyLoggedIn()) {
             return "redirect:/";
         }
-        model.addAttribute("title", "Log in");
+        model.addAttribute("title", "Login");
         return "users/login";
     }
 

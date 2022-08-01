@@ -44,7 +44,7 @@
                     <div class="offcanvas-body flex-column">
                         <ul class="navbar-nav justify-content-end flex-grow-1 flex-column gap-2">
                             <li class="nav-item">
-                                <a class="nav-link" th:href="@{/}">
+                                <a class="nav-link" th:href="@{/}" th:classappend="${#httpServletRequest.getRequestURI().matches('/')}? active">
                                     <i class="bi bi-house"></i>
                                     Home
                                 </a>
@@ -66,10 +66,9 @@
                             </li>
                         </ul>
                         <div th:with="currentUser=${#httpServletRequest.userPrincipal?.name}">
-                            <div th:if="${currentUser != null}">
-                                <span>Logged in as <span th:text="${currentUser}"></span></span>
+                            <div class="mt-3 border-top" th:if="${currentUser != null}">
                                 <form class="navbar-form navbar-right mt-2" th:action="@{/logout}" method="post">
-                                    <input type="submit" class="btn btn-secondary" value="Logout" />
+                                    <span>Logged in as <span th:text="${currentUser}"></span> (<input type="submit" class="btn btn-ternary" value="logout" />)</span>
                                 </form>
                             </div>
                         </div>

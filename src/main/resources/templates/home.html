@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:include="fragments/layout :: page">
+
+<body>
+    <th:block th:fragment="content">
+        <h3>What can you do here?</h3>
+        <div class="row row-col-3">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><span class="badge badge-neutral"><i class="bi bi-compass"></i></span> Browse complexity classes</h5>
+                        <p class="card-text">Learn more about which complexity classes are used to categorize problems and how they are related to eachother.</p>
+                        <a th:href="@{/classes}" class="btn btn-primary">Browse</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><span class="badge badge-neutral"><i class="bi bi-compass"></i></span> Browse problems</h5>
+                        <p class="card-text">Gather information about known problems of theoretical computer science, their parameterizations and their relations.</p>
+                        <a th:href="@{/problems}" class="btn btn-primary">Browse</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col" sec:authorize="!isAuthenticated()">
+                <div class="card" >
+                    <div class="card-body">
+                        <h5 class="card-title"><span class="badge badge-neutral"><i class="bi bi-pencil"></i></span> Edit contents</h5>
+                        <p class="card-text">Login or register to edit or create new content instead of just browsing.</p>
+                            <div class="btn-menu-align-left">
+                        <a th:href="@{/login}" class="btn btn-primary">Login</a>
+                        <a th:href="@{/signup}" class="btn btn-secondary">Register</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" sec:authorize="isAuthenticated()">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><span class="badge badge-neutral"><i class="bi bi-person-plus"></i></span> Connect with other researchers</h5>
+                        <p class="card-text">Invite new researchers via email. Only invited users can register for an account.</p>
+                            <div class="btn-menu-align-left">
+                        <a th:href="@{/invite}" class="btn btn-primary">Invite</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</body>
+
+</html>

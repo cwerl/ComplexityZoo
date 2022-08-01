@@ -21,19 +21,30 @@ input[type="search"] {
 }
 
 .badge-prob {
-    padding: .4rem;
+    padding: .4rem .44rem;
     background-color: #ffeac9;
     color: #ffac26;
 }
 
 .badge-param {
-    padding: .4rem;
+    padding: .4rem .44rem;
     background-color: #f7daec;
     color: #db3d99;
 }
 
+.badge-neutral {
+    padding: .4rem .44rem;
+    color: #1d41d1;
+    background-color: #e5eaf7;
+}
+
 .btn-menu {
     justify-content: flex-end;
+    display: flex;
+    gap: .5rem;
+}
+
+.btn-menu-align-left {
     display: flex;
     gap: .5rem;
 }
@@ -57,4 +68,13 @@ input[type="search"] {
 
 .btn-icon>i {
     margin-right: .25rem;
+}
+
+.btn-ternary {
+    text-decoration: underline;
+    color: #2650f6;
+    margin: auto;
+    padding: 0;
+    border: none;
+    vertical-align: baseline;
 }
