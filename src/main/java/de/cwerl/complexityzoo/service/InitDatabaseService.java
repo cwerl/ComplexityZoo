@@ -18,7 +18,7 @@ public class InitDatabaseService {
 
     public void init() {
         if(userRepository.count() == 0) {
-            User admin = new User("admin", "cwerl@outlook.de", encoder.encode("password"));
+            User admin = new User("admin", "cwerl@outlook.de", encoder.encode("r72tXz8!QbpY41G$7%Rx"));
             userRepository.save(admin);
         }
     }

@@ -31,7 +31,7 @@ public class CTCRelationController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value="/new/save")
-    public String newSave(@RequestParam long firstClassId, @RequestParam long secondClassId, @RequestParam CTCRelationType relationType, @RequestParam String reference, @RequestParam String redirect) {
+    public String newSave(@RequestParam long firstClassId, @RequestParam long secondClassId, @RequestParam CTCRelationType relationType, @RequestParam String redirect) {
         if(!(ctcRepository.existsByClassPair(firstClassId, secondClassId) || firstClassId == secondClassId)) {
             ComplexityClass firstClass = classRepository.getById(firstClassId);
             ComplexityClass secondClass = classRepository.getById(secondClassId);
@@ -39,8 +39,8 @@ public class CTCRelationController {
             relation.setFirstClass(firstClass);
             relation.setSecondClass(secondClass);
             relation.setRelationType(relationType);
-            relation.setReference(reference);
             ctcRepository.save(relation);
+            return "redirect:/relations/ctc/" + relation.getId() + "?success";
         }
         return "redirect:" + redirect;
     }
