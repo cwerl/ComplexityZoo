@@ -18,21 +18,19 @@ import lombok.Setter;
 @Entity
 @DiscriminatorValue(ComplexityDataType.Values.PARAMETERIZED)
 public class Parameterization extends AbstractProblem {
-    
-    @Setter
-    private String name;
 
     @Getter @Setter
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Problem parent;
 
+    @Override
     public String getName() {
-        return parent.getName() + " (" + this.name + ")";
+        return parent.getName() + " (" + super.getName() + ")";
     }
 
     public String getParameter() {
-        return this.name;
+        return super.getName();
     }
 
     @Override
