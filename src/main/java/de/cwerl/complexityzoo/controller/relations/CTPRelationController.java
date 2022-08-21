@@ -36,16 +36,15 @@ public class CTPRelationController {
     
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value="/new/save")
-    public String newCTPRelationSave(@RequestParam long classId, @RequestParam long problemId, @RequestParam CTPRelationType relationType, @RequestParam String reference, @RequestParam String redirect) {
+    public String newCTPRelationSave(@RequestParam long classId, @RequestParam long problemId, @RequestParam CTPRelationType relationType, @RequestParam String redirect) {
         ComplexityClass complexityClass = classRepository.getById(classId);
         AbstractProblem problem = problemRepository.getById(problemId);
         CTPRelation relation = new CTPRelation();
         relation.setComplexityClass(complexityClass);
         relation.setProblem(problem);
         relation.setRelationType(relationType);
-        relation.setReference(reference);
         ctpRepository.save(relation);
-        return "redirect:" + redirect;
+        return "redirect:/relations/ctp/" + relation.getId() + "?success";
     }
 
     @PreAuthorize("isAuthenticated()")

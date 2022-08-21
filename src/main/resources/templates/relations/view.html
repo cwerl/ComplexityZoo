@@ -3,6 +3,7 @@
 
 <body>
    <th:block th:fragment="content">
+      <p class="alert alert-success" th:if="${param.success}">Successfully created relation. Edit it here to add proof.</p>
       <div class="d-flex gap-2">
          <a th:href="@{${relation.first.path}}" class="bg-secondary rounded-pill px-3 py-1" th:text="${relation.first.name}"></a>
          <span class="py-1" th:text="${relationTypeString}"></span>

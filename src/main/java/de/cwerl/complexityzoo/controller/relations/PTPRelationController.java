@@ -29,14 +29,13 @@ public class PTPRelationController {
     
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value="/new/save")
-    public String newPTPRelationSave(@RequestParam long firstProblemId, @RequestParam long secondProblemId, @RequestParam String relationType, @RequestParam String reference, @RequestParam String redirect) {
+    public String newPTPRelationSave(@RequestParam long firstProblemId, @RequestParam long secondProblemId, @RequestParam String relationType, @RequestParam String redirect) {
         PTPRelation relation = new PTPRelation();
         relation.setFirstProblem(problemRepository.getById(firstProblemId));
         relation.setSecondProblem(problemRepository.getById(secondProblemId));
         relation.setRelationType(relationType);
-        relation.setReference(reference);
         ptpRepository.save(relation);
-        return "redirect:" + redirect;
+        return "redirect:/relations/ptp/" + relation.getId() + "?success";
     }
 
     @PreAuthorize("isAuthenticated()")
