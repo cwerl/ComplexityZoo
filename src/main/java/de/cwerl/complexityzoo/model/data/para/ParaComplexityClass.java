@@ -10,4 +10,9 @@ import de.cwerl.complexityzoo.model.data.ComplexityDataType;
 @DiscriminatorValue(ComplexityDataType.Values.PARAMETERIZED)
 public class ParaComplexityClass extends ComplexityClass {
     
+    public ParaComplexityClass() {}
+
+    public ParaComplexityClass(String name) {
+        super(name);
+    }
 }

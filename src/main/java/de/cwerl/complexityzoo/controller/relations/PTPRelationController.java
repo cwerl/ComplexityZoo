@@ -2,6 +2,8 @@ package de.cwerl.complexityzoo.controller.relations;
 
 import javax.transaction.Transactional;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import de.cwerl.complexityzoo.model.relations.PTPRelation.PTPRelation;
 import de.cwerl.complexityzoo.repository.data.ProblemRepository;
@@ -26,10 +29,11 @@ public class PTPRelationController {
 
     @Autowired
     private PTPRelationRepository ptpRepository;
-    
+
     @PreAuthorize("isAuthenticated()")
-    @PostMapping(value="/new/save")
-    public String newPTPRelationSave(@RequestParam long firstProblemId, @RequestParam long secondProblemId, @RequestParam String relationType, @RequestParam String redirect) {
+    @PostMapping(value = "/new/save")
+    public String newPTPRelationSave(@RequestParam long firstProblemId, @RequestParam long secondProblemId,
+            @RequestParam String relationType, @RequestParam String redirect) {
         PTPRelation relation = new PTPRelation();
         relation.setFirstProblem(problemRepository.getById(firstProblemId));
         relation.setSecondProblem(problemRepository.getById(secondProblemId));
@@ -39,7 +43,7 @@ public class PTPRelationController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value="/{relationId}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{relationId}/delete", method = RequestMethod.DELETE)
     public String deletePTPRelation(@PathVariable long relationId, @RequestParam String redirect) {
         ptpRepository.deleteById(relationId);
         return "redirect:" + redirect;
@@ -64,7 +68,9 @@ public class PTPRelationController {
     @Transactional
     @PostMapping(value = "/{id}/edit/save")
     public String editSave(Model model, @PathVariable long id, @RequestParam String reference) {
-        ptpRepository.updateReference(id, reference);
+        ptpRepository.updateReference(id,
+                Jsoup.clean(reference, ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString(),
+                        Safelist.relaxed().preserveRelativeLinks(true)));
         return "redirect:/relations/ptp/" + id;
     }
 }

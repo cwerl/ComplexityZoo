@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import de.cwerl.complexityzoo.model.TinyMCESuggestion;
 import de.cwerl.complexityzoo.model.data.ComplexityDataType;
@@ -30,7 +33,7 @@ import de.cwerl.complexityzoo.service.SuggestionParser;
 @Controller
 @RequestMapping(path = "/problems")
 public class ProblemController {
-    
+
     @Autowired
     private ProblemRepository problemRepository;
 
@@ -46,7 +49,7 @@ public class ProblemController {
     @Autowired
     private CTPRelationRepository ctpRepository;
 
-    @GetMapping(path="")
+    @GetMapping(path = "")
     public String list(Model model) {
         model.addAttribute("title", "Browse problems");
         model.addAttribute("problems", problemRepository.findAllOrdered());
@@ -64,12 +67,13 @@ public class ProblemController {
         model.addAttribute("ptpTypes", ptpRepository.findAllTypes());
         model.addAttribute("ptpCandidates", ptpRepository.findAllRelationCandidatesOrdered(id));
         model.addAttribute("ctpRelations", ctpRepository.findRelationsByProblem(id));
-        model.addAttribute("ctpCandidates", ctpRepository.findAllComplexityClassCandidatesOrdered(id, ComplexityDataType.Values.NORMAL));
+        model.addAttribute("ctpCandidates",
+                ctpRepository.findAllComplexityClassCandidatesOrdered(id, ComplexityDataType.Values.NORMAL));
         return "problems/view";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping(path="/new")
+    @GetMapping(path = "/new")
     public String create(Model model) {
         model.addAttribute("title", "Create new problem");
         List<TinyMCESuggestion> suggestions = new ArrayList<>();
@@ -81,7 +85,7 @@ public class ProblemController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping(path="/new/save")
+    @PostMapping(path = "/new/save")
     public String newSave(@Valid @RequestParam String name, @RequestParam String description) {
         Problem p = new Problem();
         p.setName(name);
@@ -91,7 +95,7 @@ public class ProblemController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping(path="/{id}/edit")
+    @GetMapping(path = "/{id}/edit")
     public String edit(Model model, @PathVariable long id) {
         Problem p = problemRepository.getById(id);
         List<TinyMCESuggestion> suggestions = new ArrayList<>();
@@ -104,23 +108,25 @@ public class ProblemController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping(value="/{id}/edit/save")
+    @PostMapping(value = "/{id}/edit/save")
     @Transactional
     public String editSave(@PathVariable long id, @RequestParam String description) {
-        problemRepository.updateDescription(id, description);
+        problemRepository.updateDescription(id,
+                Jsoup.clean(description, ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString(),
+                        Safelist.relaxed().preserveRelativeLinks(true)));
         return "redirect:/problems/" + id;
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value="/{id}/edit/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}/edit/delete", method = RequestMethod.DELETE)
     public String delete(@PathVariable long id) {
         problemRepository.deleteById(id);
         return "redirect:/problems";
     }
 
-    @RequestMapping(value="/search")
+    @RequestMapping(value = "/search")
     public String search(@RequestParam String q, Model model) {
-        if(q == null || q.isEmpty()) {
+        if (q == null || q.isEmpty()) {
             return "redirect:/problems";
         }
         model.addAttribute("title", "Problems containing \"" + q + "\"");
