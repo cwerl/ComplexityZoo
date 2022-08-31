@@ -11,13 +11,25 @@ public class SuggestionParser {
     
     public static List<TinyMCESuggestion> parseComplexityClasses(List<ComplexityClass> classes) {
         List<TinyMCESuggestion> suggestions = new ArrayList<>();
-        
+        for(ComplexityClass c : classes) {
+            TinyMCESuggestion suggestion = new TinyMCESuggestion();
+            suggestion.setText(c.getName());
+            suggestion.setType("Complexity class");
+            suggestion.setValue("<a href=\"" + c.getPath() + "\">" + c.getName() + "</a>");
+            suggestions.add(suggestion);
+        }
         return suggestions;
     }
 
     public static List<TinyMCESuggestion> parseProblems(List<Problem> problems) {
         List<TinyMCESuggestion> suggestions = new ArrayList<>();
-        
+        for(Problem p : problems) {
+            TinyMCESuggestion suggestion = new TinyMCESuggestion();
+            suggestion.setText(p.getName());
+            suggestion.setType("Complexity class");
+            suggestion.setValue("<a href=\"" + p.getPath() + "\">" + p.getName() + "</a>");
+            suggestions.add(suggestion);
+        }
         return suggestions;
     }
 }
