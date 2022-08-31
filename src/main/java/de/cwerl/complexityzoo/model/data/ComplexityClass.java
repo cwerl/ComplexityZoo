@@ -26,6 +26,12 @@ public abstract class ComplexityClass extends ComplexityData {
     @NotBlank(message = "Name is mandatory")
     private String name;
 
+    public ComplexityClass() {}
+
+    public ComplexityClass(String name) {
+        this.name = name;
+    }
+
     public TinyMCESuggestion toTinyMCESuggestion() {
         TinyMCESuggestion suggestion = new TinyMCESuggestion();
         suggestion.setText(this.getName());

@@ -10,4 +10,9 @@ import de.cwerl.complexityzoo.model.data.ComplexityDataType;
 @DiscriminatorValue(ComplexityDataType.Values.NORMAL)
 public class NormalComplexityClass extends ComplexityClass {
     
+    public NormalComplexityClass() {}
+
+    public NormalComplexityClass(String name) {
+        super(name);
+    }
 }
