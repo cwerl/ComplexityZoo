@@ -50,6 +50,7 @@ public class UserController {
     public ModelAndView registerUserAccount(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result) {
         if (result.hasErrors()) {
             ModelAndView mav = new ModelAndView("users/register", "user", userDto);
+            mav.addObject("title", "Register");
             return mav;
         }
         try {
@@ -58,13 +59,15 @@ public class UserController {
             ModelAndView mav = new ModelAndView("users/register", "user", userDto);
             result.rejectValue("username", "error.user", uae.getMessage());
             result.rejectValue("email", "error.user", uae.getMessage());
+            mav.addObject("title", "Register");
             return mav;
-        } catch (final UserNotInvitedException uni) {
+        } catch (final UserNotInvitedException unie) {
             ModelAndView mav = new ModelAndView("users/register", "user", userDto);
-            result.rejectValue("email", "error.user", uni.getMessage());
+            result.rejectValue("email", "error.user", unie.getMessage());
+            mav.addObject("title", "Register");
             return mav;
         }
-        return new ModelAndView("redirect:/login");
+        return new ModelAndView("redirect:/login?registerSuccess=true");
     }
 
     @PreAuthorize("isAuthenticated()")
