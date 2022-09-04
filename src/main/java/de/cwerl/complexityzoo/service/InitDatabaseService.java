@@ -53,10 +53,7 @@ public class InitDatabaseService {
     PasswordEncoder encoder;
 
     public void init() {
-        if(userRepository.count() == 0 && classRepository.count() == 0 && problemRepository.count() == 0 && parameterizationRepository.count() == 0) {
-            User admin = new User("user", "cwerl@outlook.de", encoder.encode("r72tXz8!QbpY41G$7%Rx"));
-            userRepository.save(admin);
-
+        if(classRepository.count() == 0 && problemRepository.count() == 0 && parameterizationRepository.count() == 0) {
             ComplexityClass np = initComplexityClass("NP", ComplexityDataType.NORMAL);
             ComplexityClass twoSat = initComplexityClass("2-SAT", ComplexityDataType.NORMAL);
             ComplexityClass ac = initComplexityClass("AC", ComplexityDataType.NORMAL);
