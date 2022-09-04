@@ -6,7 +6,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form
-                    th:action="@{/relations/ctc/new/save(redirect='/classes/' + ${class.id}, firstClassId=${class.id})}"
+                    th:action="@{/relations/ctc/new/save(firstClassId=${class.id})}"
                     method="post">
 
                     <!-- Modal header -->

@@ -5,7 +5,7 @@
     <th:block th:fragment="problem-view">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form th:action="@{/relations/ptp/new/save(redirect=${problem.path}, firstProblemId=${problem.id})}"
+                <form th:action="@{/relations/ptp/new/save(firstProblemId=${problem.id})}"
                     method="post">
                     
                     <!-- Modal header -->

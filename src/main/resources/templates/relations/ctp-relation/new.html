@@ -5,7 +5,7 @@
     <th:block th:fragment="class-view">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form th:action="@{/relations/ctp/new/save(redirect=${class.path}, classId=${class.id})}" method="post">
+                <form th:action="@{/relations/ctp/new/save(classId=${class.id})}" method="post">
 
                     <!-- Modal header -->
                     <div class="modal-header d-flex align-items-center justify-content-center">
@@ -57,7 +57,7 @@
     <th:block th:fragment="problem-view">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form th:action="@{/relations/ctp/new/save(redirect=${problem.path}, problemId=${problem.id})}"
+                <form th:action="@{/relations/ctp/new/save(problemId=${problem.id})}"
                     method="post">
 
                     <!-- Modal header -->

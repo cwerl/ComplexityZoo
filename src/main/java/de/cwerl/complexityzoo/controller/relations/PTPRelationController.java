@@ -5,12 +5,14 @@ import javax.transaction.Transactional;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +35,7 @@ public class PTPRelationController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/new/save")
     public String newPTPRelationSave(@RequestParam long firstProblemId, @RequestParam long secondProblemId,
-            @RequestParam String relationType, @RequestParam String redirect) {
+            @RequestParam String relationType, @RequestHeader(value = HttpHeaders.REFERER, required = false) final String redirect) {
         PTPRelation relation = new PTPRelation();
         relation.setFirstProblem(problemRepository.getById(firstProblemId));
         relation.setSecondProblem(problemRepository.getById(secondProblemId));
