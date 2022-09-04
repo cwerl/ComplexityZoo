@@ -5,12 +5,14 @@ import javax.transaction.Transactional;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +37,7 @@ public class CTCRelationController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/new/save")
     public String newSave(@RequestParam long firstClassId, @RequestParam long secondClassId,
-            @RequestParam CTCRelationType relationType, @RequestParam String redirect) {
+            @RequestParam CTCRelationType relationType, @RequestHeader(value = HttpHeaders.REFERER, required = false) final String redirect) {
         if (!(ctcRepository.existsByClassPair(firstClassId, secondClassId) || firstClassId == secondClassId)) {
             ComplexityClass firstClass = classRepository.getById(firstClassId);
             ComplexityClass secondClass = classRepository.getById(secondClassId);

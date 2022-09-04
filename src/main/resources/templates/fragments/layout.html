@@ -50,7 +50,7 @@
 
 <body>
 	<div class="d-lg-flex d-block">
-		<div class="col-lg-auto bg-light p-2">
+		<div class="col-lg-auto bg-light p-2" th:unless="${hideNavbar}">
 			<!-- Navbar -->
 			<th:block th:replace="fragments/navbar :: navbar"></th:block>
 		</div>

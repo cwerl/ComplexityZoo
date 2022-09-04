@@ -19,13 +19,16 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User registerNewUserAccount(UserDto userDto) throws UserAlreadyExistsException, UserNotInvitedException {
-        if(userExists(userDto.getUsername(), userDto.getEmail())) {
-            throw new UserAlreadyExistsException("User with this username or email already exists.");
-        } else if(!userIsInvited(userDto.getEmail())) {
-            throw new UserNotInvitedException("User with email " + userDto.getEmail() + " hasn't been invited yet.");
+        if (userRepository.count() != 0) {
+            if (userExists(userDto.getUsername(), userDto.getEmail())) {
+                throw new UserAlreadyExistsException("User with this username or email already exists.");
+            } else if (!userIsInvited(userDto.getEmail())) {
+                throw new UserNotInvitedException(
+                        "User with email " + userDto.getEmail() + " hasn't been invited yet.");
+            }
+            invitedUserRepository.deleteById(userDto.getEmail());
         }
         final User user = new User();
-        invitedUserRepository.deleteById(userDto.getEmail());
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -33,7 +36,7 @@ public class UserService {
     }
 
     public InvitedUser inviteUser(String email) throws UserAlreadyExistsException {
-        if(userExists(email) || userIsInvited(email)) {
+        if (userExists(email) || userIsInvited(email)) {
             throw new UserAlreadyExistsException("User with this email already exists or is already invited.");
         }
         final InvitedUser user = new InvitedUser();
