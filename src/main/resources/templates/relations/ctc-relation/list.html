@@ -9,11 +9,11 @@
 
                 <!-- Relation type and related class item menu -->
                 <div th:if="${ctc.firstClass.id == class.id}">
-                    <span th:text="${ctc.relationType.toLaTeX(false)}"></span>
+                    <span th:text="${ctc.relationType.toLaTeX()}"></span>
                     <a th:text="${ctc.secondClass.name}" th:href="@{${ctc.secondClass.path}}"></a>
                 </div>
                 <div th:if="${ctc.secondClass.id == class.id}">
-                    <span th:text="${ctc.relationType.toLaTeX(true)}"></span>
+                    <span th:text="${ctc.relationType.reverse().toLaTeX()}"></span>
                     <a th:text="${ctc.firstClass.name}" th:href="@{${ctc.firstClass.path}}"></a>
                 </div>
 

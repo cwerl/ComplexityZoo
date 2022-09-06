@@ -8,10 +8,11 @@
             const specialChars = /*[[${suggestions}]]*/ [];
             tinymce.init({
                 selector: 'textarea#description-editor',
-                plugins: 'code, importcss, lists, codesample',
+                plugins: 'code, importcss, lists, codesample, link',
                 content_css: '/css/custom.css',
                 menubar: '',
-                toolbar: 'undo redo | blocks bold italic | bullist numlist outdent indent | codesample',
+                toolbar: 'undo redo | blocks bold italic link | bullist numlist outdent indent | codesample',
+                default_link_target: '_blank',
                 noneditable_class: 'mention',
                 convert_urls: false,
                 height: 450,
