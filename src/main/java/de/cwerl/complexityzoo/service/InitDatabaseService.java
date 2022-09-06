@@ -22,7 +22,6 @@ import de.cwerl.complexityzoo.repository.data.ProblemRepository;
 import de.cwerl.complexityzoo.repository.relations.CTCRelationRepository;
 import de.cwerl.complexityzoo.repository.relations.CTPRelationRepository;
 import de.cwerl.complexityzoo.repository.relations.PTPRelationRepository;
-import de.cwerl.complexityzoo.security.User;
 import de.cwerl.complexityzoo.security.UserRepository;
 
 @Service

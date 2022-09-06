@@ -38,6 +38,15 @@ public class CTCRelation extends Relation {
     @NotNull
     private CTCRelationType relationType;
 
+    public CTCRelation() {}
+
+    public CTCRelation(long id, ComplexityClass firstClass, ComplexityClass secondClass, CTCRelationType relationType) {
+        this.setId(id);
+        this.setFirstClass(firstClass);
+        this.setSecondClass(secondClass);
+        this.setRelationType(relationType);
+    }
+
     @Override
     public String getPath() {
         return "/relations/ctc/" + this.getId();
