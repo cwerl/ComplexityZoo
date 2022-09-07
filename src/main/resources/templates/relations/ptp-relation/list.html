@@ -7,8 +7,9 @@
             <li class="list-group-item d-flex align-items-center justify-content-between"
                 th:each="ptp : ${ptpRelations}">
                 <div>
+                    <a th:href="@{${ptp.firstProblem.path}}" th:text="${ptp.firstProblem.name}" th:if="${ptp.firstProblem.id != problem.id}"></a>
                     <span th:text="${ptp.relationType}"></span>
-                    <a th:href="@{${ptp.secondProblem.path}}" th:text="${ptp.secondProblem.name}"></a>
+                    <a th:href="@{${ptp.secondProblem.path}}" th:text="${ptp.secondProblem.name}" th:if="${ptp.secondProblem.id != problem.id}"></a>
                 </div>
                 <div class="btn-menu">
                     <a class="btn btn-secondary btn-sm btn-icon" th:href="@{/relations/ptp/{relationId}(relationId=${ptp.id})}">
