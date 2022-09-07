@@ -14,7 +14,7 @@ import de.cwerl.complexityzoo.model.relations.PTPRelation.PTPRelation;
 @Repository
 public interface PTPRelationRepository extends JpaRepository<PTPRelation, Long> {
     
-    @Query("SELECT r FROM PTPRelation r WHERE r.firstProblem.id = ?1")
+    @Query("SELECT r FROM PTPRelation r WHERE r.firstProblem.id = ?1 OR r.secondProblem.id = ?1")
     public Set<PTPRelation> findRelationsByProblem(long problemId);
 
     @Query("SELECT DISTINCT r.relationType FROM PTPRelation r")
