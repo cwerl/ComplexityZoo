@@ -54,12 +54,6 @@ public class CTCRelationController {
             relation.setSecondClass(secondClass);
             relation.setRelationType(relationType);
             ctcRepository.save(relation);
-            List<List<CTCRelation>> paths = getAllPaths(firstClass, secondClass);
-            if(paths.size() > 1) {
-                mav = new ModelAndView("redirect:/relations/ctc/" + relation.getId());
-                redirectAttributes.addFlashAttribute("altpaths", paths);
-                return mav;
-            }
             return new ModelAndView("redirect:/relations/ctc/" + relation.getId() + "?success");
         }
         return new ModelAndView("redirect:" + redirect);
@@ -97,37 +91,37 @@ public class CTCRelationController {
         return "redirect:/relations/ctc/" + id;
     }
 
-    private List<List<CTCRelation>> getAllPaths(ComplexityClass s, ComplexityClass d) {
-        Set<ComplexityClass> visited = new HashSet<ComplexityClass>();
-        List<CTCRelation> pathList = new ArrayList<CTCRelation>();
-        List<List<CTCRelation>> paths = new ArrayList<List<CTCRelation>>();
-        getAllPathsUtil(s,d,visited, pathList, paths);
-        return paths;
-    }
+    // private List<List<CTCRelation>> getAllPaths(ComplexityClass s, ComplexityClass d) {
+    //     Set<ComplexityClass> visited = new HashSet<ComplexityClass>();
+    //     List<CTCRelation> pathList = new ArrayList<CTCRelation>();
+    //     List<List<CTCRelation>> paths = new ArrayList<List<CTCRelation>>();
+    //     getAllPathsUtil(s,d,visited, pathList, paths);
+    //     return paths;
+    // }
 
-    private void getAllPathsUtil(ComplexityClass u, ComplexityClass d, Set<ComplexityClass> visited, List<CTCRelation> pathList, List<List<CTCRelation>> paths) {
-        if(u.equals(d) && pathList.size() > 2) {
-            paths.add(new ArrayList<CTCRelation> (pathList));
-            return;
-        }
+    // private void getAllPathsUtil(ComplexityClass u, ComplexityClass d, Set<ComplexityClass> visited, List<CTCRelation> pathList, List<List<CTCRelation>> paths) {
+    //     if(u.equals(d) && pathList.size() > 2) {
+    //         paths.add(new ArrayList<CTCRelation> (pathList));
+    //         return;
+    //     }
 
-        visited.add(u);
-        ComplexityClass neighbor;
-        CTCRelation temp;
-        for(CTCRelation ctc : ctcRepository.findRelationsByComplexityClass(u.getId())) {
-            if(ctc.getFirstClass().equals(u)) {
-                neighbor = ctc.getSecondClass();
-                temp = ctc;
-            } else {
-                neighbor = ctc.getFirstClass();
-                temp = new CTCRelation(ctc.getId(), ctc.getSecondClass(), ctc.getFirstClass(), ctc.getRelationType().reverse());
-            }
-            if(!visited.contains(neighbor)) {
-                pathList.add(temp);
-                getAllPathsUtil(neighbor, d, visited, pathList, paths);
-                pathList.remove(temp);
-            }
-        }
-        visited.remove(u);
-    }
+    //     visited.add(u);
+    //     ComplexityClass neighbor;
+    //     CTCRelation temp;
+    //     for(CTCRelation ctc : ctcRepository.findRelationsByComplexityClass(u.getId())) {
+    //         if(ctc.getFirstClass().equals(u)) {
+    //             neighbor = ctc.getSecondClass();
+    //             temp = ctc;
+    //         } else {
+    //             neighbor = ctc.getFirstClass();
+    //             temp = new CTCRelation(ctc.getId(), ctc.getSecondClass(), ctc.getFirstClass(), ctc.getRelationType().reverse());
+    //         }
+    //         if(!visited.contains(neighbor)) {
+    //             pathList.add(temp);
+    //             getAllPathsUtil(neighbor, d, visited, pathList, paths);
+    //             pathList.remove(temp);
+    //         }
+    //     }
+    //     visited.remove(u);
+    // }
 }
