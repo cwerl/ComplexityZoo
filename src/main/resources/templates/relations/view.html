@@ -17,8 +17,8 @@
                   th:text="${r.second.name}"></a>
             </th:block>
          </div>
-         <span>=></span>
-         <div class="d-flex gap-2">
+         <div class="d-flex gap-2 mt-1 align-items-center">
+            <i class="bi bi-arrow-return-right"></i>
             <a th:href="@{${relation.first.path}}" class="bg-secondary rounded-pill px-3 py-1"
                th:text="${relation.first.name}"></a>
             <span class="py-1" th:text="${altpath.interpretedType.toLaTeX()}"></span>

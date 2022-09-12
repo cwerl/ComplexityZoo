@@ -50,7 +50,6 @@ public class CTCRelationController {
             @RequestParam CTCRelationType relationType,
             @RequestHeader(value = HttpHeaders.REFERER, required = false) final String redirect,
             final RedirectAttributes redirectAttributes) {
-        ModelAndView mav;
         if (!(ctcRepository.existsByClassPair(firstClassId, secondClassId) || firstClassId == secondClassId)) {
             ComplexityClass firstClass = classRepository.getById(firstClassId);
             ComplexityClass secondClass = classRepository.getById(secondClassId);
@@ -61,7 +60,7 @@ public class CTCRelationController {
             CTCInterpretation interpretation = getAllPaths(relation);
             ctcRepository.save(relation);
             if(interpretation != null) {
-                mav = new ModelAndView("redirect:/relations/ctc/" + relation.getId());
+                ModelAndView mav = new ModelAndView("redirect:/relations/ctc/" + relation.getId());
                 redirectAttributes.addFlashAttribute("altpath", interpretation);
                 return mav;
             }
