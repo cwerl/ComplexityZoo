@@ -81,6 +81,14 @@
     border-width: .25rem;
 }
 
+.alert-warning {
+    background-color: #fff9e4;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    border-width: .25rem;
+}
+
 /* BETTER ROUNDED CORNERS */
 .btn-sm, .option, .selectize-dropdown, .selectize-input, .selectize-input.dropdown-active, .create, .tox .tox-menu, .tox .tox-collection__item {
     border-radius: .5rem !important;
