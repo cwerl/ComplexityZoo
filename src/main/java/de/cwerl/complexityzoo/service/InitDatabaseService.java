@@ -54,7 +54,6 @@ public class InitDatabaseService {
     public void init() {
         if(classRepository.count() == 0 && problemRepository.count() == 0 && parameterizationRepository.count() == 0) {
             ComplexityClass np = initComplexityClass("NP", ComplexityDataType.NORMAL);
-            ComplexityClass twoSat = initComplexityClass("2-SAT", ComplexityDataType.NORMAL);
             ComplexityClass ac = initComplexityClass("AC", ComplexityDataType.NORMAL);
             ComplexityClass acZero = initComplexityClass("AC$^0$", ComplexityDataType.NORMAL);
             ComplexityClass acOne = initComplexityClass("AC$^1$", ComplexityDataType.NORMAL);
@@ -73,7 +72,7 @@ public class InitDatabaseService {
             ComplexityClass r = initComplexityClass("R", ComplexityDataType.NORMAL);
             ComplexityClass re = initComplexityClass("RE", ComplexityDataType.NORMAL);
             ComplexityClass reg = initComplexityClass("REG", ComplexityDataType.NORMAL);
-            ComplexityClass wOne = initComplexityClass("W[1]", ComplexityDataType.NORMAL);
+            ComplexityClass wOne = initComplexityClass("W[1]", ComplexityDataType.PARAMETERIZED);
             ComplexityClass fpt = initComplexityClass("FPT", ComplexityDataType.PARAMETERIZED);
             ComplexityClass paraACZero = initComplexityClass("para-AC$^0$", ComplexityDataType.PARAMETERIZED);
             ComplexityClass paraNP = initComplexityClass("para-NP", ComplexityDataType.PARAMETERIZED);
@@ -81,7 +80,7 @@ public class InitDatabaseService {
             ComplexityClass xacZero = initComplexityClass("XAC$^0$", ComplexityDataType.PARAMETERIZED);
             ComplexityClass wTwo = initComplexityClass("W[2]", ComplexityDataType.PARAMETERIZED);
             ComplexityClass xp = initComplexityClass("XP", ComplexityDataType.PARAMETERIZED);
-
+            
             initCTCRelation(ac, nc, CTCRelationType.EQUAL_TO);
             initCTCRelation(ac, acZero, CTCRelationType.SUPERSET_OF);
             initCTCRelation(ac, acOne, CTCRelationType.SUPERSET_OF);
@@ -118,7 +117,8 @@ public class InitDatabaseService {
             initCTCRelation(wTwo, wP, CTCRelationType.SUBSET_OF);
             initCTCRelation(wP, xp, CTCRelationType.SUBSET_OF);
             initCTCRelation(xacZero, xp, CTCRelationType.SUBSET_OF);
-
+            
+            Problem twoSat = initProblem("2-SAT");
             Problem clique = initProblem("clique");
             Problem cnfSat = initProblem("CNF-SAT");
             Problem cvp = initProblem("CVP");

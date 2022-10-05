@@ -78,3 +78,25 @@ input[type="search"] {
     border: none;
     vertical-align: baseline;
 }
+
+.form-page {
+    max-width: 30rem;
+}
+
+.description-short {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.description-short p {
+    display: contents;
+}
+
+.description-short p:after {
+    content: "\A";
+    white-space:pre;
+}

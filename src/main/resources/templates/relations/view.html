@@ -5,35 +5,32 @@
    <th:block th:fragment="content">
       <p class="alert alert-success" th:if="${param.success}">Successfully created relation. Edit it here to add proof.
       </p>
-      <!-- <div class="alert alert-primary" th:if="${altpaths != null}">
-         <div class="row align-items-center">
-            <div class="col">
-               We've found <span th:text="${altpaths.size()}"></span> alternative paths between <span
-                  th:text="${relation.first.name}"></span> and <span th:text="${relation.second.name}"></span>.
+      <div class="card mb-3" th:if="${altpath != null}">
+         <div class="card-body">
+            <h5 class="card-title">ConsistencyCheck <span class="badge text-bg-danger">Experimental</span></h5>
+            We've found a path between <span th:text="${relation.first.name}"></span> and <span
+               th:text="${relation.second.name}"></span> that does not match the relation you've just created. Click on
+            a node or a relation to examine the path.
+            <div class="d-flex gap-2 align-items-center">
+               <span>Path: </span>
+               <a th:href="@{${relation.first.path}}" target="_blank" class="bg-secondary rounded-pill px-3 py-1"
+                  th:text="${relation.first.name}"></a>
+               <th:block th:each="r : ${altpath.path}">
+                  <a th:href="@{${r.path}}" target="_blank" class="py-1" th:text="${r.relationType.toLaTeX()}"></a>
+                  <a th:href="@{${r.second.path}}" target="_blank" class="bg-secondary rounded-pill px-3 py-1"
+                     th:text="${r.second.name}"></a>
+               </th:block>
             </div>
-            <div class="col-auto">
-               <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button"
-                  aria-expanded="false" aria-controls="collapseExample">
-                  Check for contradictions
-               </a>
+            <div class="d-flex gap-2 mt-1 align-items-center">
+               <span>Result: </span>
+               <a th:href="@{${relation.first.path}}" class="bg-secondary rounded-pill px-3 py-1"
+                  th:text="${relation.first.name}"></a>
+               <span class="py-1" th:text="${altpath.interpretedType.toLaTeX()}"></span>
+               <a th:href="@{${relation.second.path}}" class="bg-secondary rounded-pill px-3 py-1"
+                  th:text="${relation.second.name}"></a>
             </div>
          </div>
-         <div class="collapse" id="collapseExample">
-            <th:block th:each="path :  ${altpaths}">
-               <div class="row">
-                  <div class="d-flex gap-2">
-                     <a th:href="@{${relation.first.path}}" target="_blank" class="bg-secondary rounded-pill px-3 py-1" th:text="${relation.first.name}"></a>
-                     <th:block th:each="r : ${path}">
-                        <a th:href="@{${r.path}}" target="_blank" class="py-1"
-                           th:text="${r.relationType.toLaTeX()}"></a>
-                        <a th:href="@{${r.second.path}}" target="_blank" class="bg-secondary rounded-pill px-3 py-1" th:text="${r.second.name}"></a>
-                     </th:block>
-                  </div>
-               </div>
-               </br>
-            </th:block>
-         </div>
-      </div> -->
+      </div>
 
       <div class="d-flex gap-2">
          <a th:href="@{${relation.first.path}}" class="bg-secondary rounded-pill px-3 py-1"

@@ -49,12 +49,12 @@
 </head>
 
 <body>
-	<div class="d-lg-flex d-block">
+	<div class="d-lg-flex d-block" style="min-height: 100vh" th:classappend="${(hideNavbar != null ? 'justify-content-center' : '') + (hideNavbar != null ? ' align-items-center' : '')}">
 		<div class="col-lg-auto bg-light p-2" th:unless="${hideNavbar}">
 			<!-- Navbar -->
 			<th:block th:replace="fragments/navbar :: navbar"></th:block>
 		</div>
-		<div class="col p-2" style="min-height: 100vh">
+		<div class="col p-2" th:classappend="${hideNavbar} ? form-page">
 			<div class="container-fluid">
 			<!-- Content -->
 				<h1 th:text="${title}"></h1>

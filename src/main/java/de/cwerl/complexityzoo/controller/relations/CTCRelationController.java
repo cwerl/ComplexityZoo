@@ -1,8 +1,10 @@
 package de.cwerl.complexityzoo.controller.relations;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -26,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import de.cwerl.complexityzoo.model.data.ComplexityClass;
+import de.cwerl.complexityzoo.model.relations.CTCRelation.CTCInterpretation;
 import de.cwerl.complexityzoo.model.relations.CTCRelation.CTCRelation;
 import de.cwerl.complexityzoo.model.relations.CTCRelation.CTCRelationType;
 import de.cwerl.complexityzoo.repository.data.ComplexityClassRepository;
@@ -44,8 +47,9 @@ public class CTCRelationController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/new/save")
     public ModelAndView newSave(@RequestParam long firstClassId, @RequestParam long secondClassId,
-            @RequestParam CTCRelationType relationType, @RequestHeader(value = HttpHeaders.REFERER, required = false) final String redirect, final RedirectAttributes redirectAttributes) {
-        ModelAndView mav;
+            @RequestParam CTCRelationType relationType,
+            @RequestHeader(value = HttpHeaders.REFERER, required = false) final String redirect,
+            final RedirectAttributes redirectAttributes) {
         if (!(ctcRepository.existsByClassPair(firstClassId, secondClassId) || firstClassId == secondClassId)) {
             ComplexityClass firstClass = classRepository.getById(firstClassId);
             ComplexityClass secondClass = classRepository.getById(secondClassId);
@@ -53,7 +57,11 @@ public class CTCRelationController {
             relation.setFirstClass(firstClass);
             relation.setSecondClass(secondClass);
             relation.setRelationType(relationType);
+            CTCInterpretation interpretation = getAllPaths(relation);
             ctcRepository.save(relation);
+            if(interpretation != null) {
+                redirectAttributes.addFlashAttribute("altpath", interpretation);
+            }
             return new ModelAndView("redirect:/relations/ctc/" + relation.getId() + "?success");
         }
         return new ModelAndView("redirect:" + redirect);
@@ -91,37 +99,165 @@ public class CTCRelationController {
         return "redirect:/relations/ctc/" + id;
     }
 
-    // private List<List<CTCRelation>> getAllPaths(ComplexityClass s, ComplexityClass d) {
-    //     Set<ComplexityClass> visited = new HashSet<ComplexityClass>();
-    //     List<CTCRelation> pathList = new ArrayList<CTCRelation>();
-    //     List<List<CTCRelation>> paths = new ArrayList<List<CTCRelation>>();
-    //     getAllPathsUtil(s,d,visited, pathList, paths);
-    //     return paths;
-    // }
+    /**
+     * Searches for contradictions regarding the newly created relation.
+     * @param r The newly created relation
+     * @return The contradicting path or null if no contradiction could be found.
+     */
+    private CTCInterpretation getAllPaths(CTCRelation r) {
+        Set<ComplexityClass> visited = new HashSet<ComplexityClass>();
+        List<CTCRelation> pathList = new ArrayList<CTCRelation>();
+        return getAllPathsUtil(r.getFirstClass(), r.getSecondClass(), visited, pathList, r.getRelationType());
+    }
 
-    // private void getAllPathsUtil(ComplexityClass u, ComplexityClass d, Set<ComplexityClass> visited, List<CTCRelation> pathList, List<List<CTCRelation>> paths) {
-    //     if(u.equals(d) && pathList.size() > 2) {
-    //         paths.add(new ArrayList<CTCRelation> (pathList));
-    //         return;
-    //     }
+    /**
+     * Util for getAllPaths()
+     * @param u The starting point
+     * @param d The end point
+     * @param visited Visited vertices
+     * @param pathList The path
+     * @param newType The newly created relation type.
+     * @return The contradicting path or null if no contradiction could be found.
+     */
+    private CTCInterpretation getAllPathsUtil(ComplexityClass u, ComplexityClass d,
+            Set<ComplexityClass> visited, List<CTCRelation> pathList, final CTCRelationType newType) {
+        if (u.equals(d) && pathList.size() > 1) {
+            CTCRelationType derived = pathInterpreter(pathList);
+            if(derived != null) {
+                if(!areCompatible(derived, newType)) {
+                    return new CTCInterpretation(derived, pathList);
+                }
+            }
+        }
 
-    //     visited.add(u);
-    //     ComplexityClass neighbor;
-    //     CTCRelation temp;
-    //     for(CTCRelation ctc : ctcRepository.findRelationsByComplexityClass(u.getId())) {
-    //         if(ctc.getFirstClass().equals(u)) {
-    //             neighbor = ctc.getSecondClass();
-    //             temp = ctc;
-    //         } else {
-    //             neighbor = ctc.getFirstClass();
-    //             temp = new CTCRelation(ctc.getId(), ctc.getSecondClass(), ctc.getFirstClass(), ctc.getRelationType().reverse());
-    //         }
-    //         if(!visited.contains(neighbor)) {
-    //             pathList.add(temp);
-    //             getAllPathsUtil(neighbor, d, visited, pathList, paths);
-    //             pathList.remove(temp);
-    //         }
-    //     }
-    //     visited.remove(u);
-    // }
+        visited.add(u);
+        ComplexityClass neighbor;
+        CTCRelation temp;
+        for (CTCRelation ctc : ctcRepository.findRelationsByComplexityClass(u.getId())) {
+            if (ctc.getFirstClass().equals(u)) {
+                neighbor = ctc.getSecondClass();
+                temp = ctc;
+            } else {
+                neighbor = ctc.getFirstClass();
+                temp = new CTCRelation(ctc.getId(), ctc.getSecondClass(),
+                        ctc.getFirstClass(), ctc.getRelationType().reverse());
+            }
+            if (!visited.contains(neighbor)) {
+                pathList.add(temp);
+                CTCInterpretation interpretation = getAllPathsUtil(neighbor, d, visited, pathList, newType);
+                if(interpretation != null) {
+                    return interpretation;
+                }
+                pathList.remove(temp);
+            }
+        }
+        visited.remove(u);
+        return null;
+    }
+
+    /**
+     * Interpretes a given path.
+     * @param path The path.
+     * @return The interpretation or null if path couldn't be interpreted.
+     */
+    private CTCRelationType pathInterpreter(List<CTCRelation> path) {
+        CTCRelationType derived = path.get(0).getRelationType();
+        for (CTCRelation r : path.subList(1, path.size())) {
+            switch (derived) {
+                case EQUAL_TO:
+                    derived = r.getRelationType();
+                    break;
+                case SUBSET_OF:
+                    switch (r.getRelationType()) {
+                        case SUBSET_OF:
+                            derived = CTCRelationType.SUBSET_OF;
+                            break;
+                        case PROPER_SUBSET_OF:
+                            derived = CTCRelationType.PROPER_SUBSET_OF;
+                            break;
+                        case EQUAL_TO:
+                            derived = CTCRelationType.SUBSET_OF;
+                            break;
+                        default:
+                            return null;
+                    }
+                    break;
+                case PROPER_SUBSET_OF:
+                    switch (r.getRelationType()) {
+                        case PROPER_SUBSET_OF:
+                            derived = CTCRelationType.PROPER_SUBSET_OF;
+                            break;
+                        case SUBSET_OF:
+                            derived = CTCRelationType.PROPER_SUBSET_OF;
+                            break;
+                        case EQUAL_TO:
+                            derived = CTCRelationType.PROPER_SUBSET_OF;
+                            break;
+                        default:
+                            return null;
+                    }
+                    break;
+                case SUPERSET_OF:
+                    switch (r.getRelationType()) {
+                        case SUPERSET_OF:
+                            derived = CTCRelationType.SUPERSET_OF;
+                            break;
+                        case PROPER_SUPERSET_OF:
+                            derived = CTCRelationType.PROPER_SUPERSET_OF;
+                            break;
+                        case EQUAL_TO:
+                            derived = CTCRelationType.SUPERSET_OF;
+                            break;
+                        default:
+                            return null;
+                    }
+                    break;
+                case PROPER_SUPERSET_OF:
+                    switch (r.getRelationType()) {
+                        case PROPER_SUPERSET_OF:
+                            derived = CTCRelationType.PROPER_SUPERSET_OF;
+                            break;
+                        case SUPERSET_OF:
+                            derived = CTCRelationType.PROPER_SUPERSET_OF;
+                            break;
+                        case EQUAL_TO:
+                            derived = CTCRelationType.PROPER_SUBSET_OF;
+                            break;
+                        default:
+                            return null;
+                    }
+                    break;
+                default:
+                    switch(r.getRelationType()) {
+                        case EQUAL_TO:
+                            break;
+                        default:
+                            return null;
+                    }
+                    break;
+            }
+        }
+        return derived;
+    }
+
+    /**
+     * Two relations are considered compatible if they are the same or if the newly created relation is just more specific than the derived relation.
+     * @param derived The relation that has been derived from a path.
+     * @param created The direct relation that has just been created.
+     * @return true if the relations are compatible or false if they are not.
+     */
+    private boolean areCompatible(CTCRelationType derived, CTCRelationType created) {
+        if(derived == created) {
+            return true;
+        } else if(derived == CTCRelationType.SUBSET_OF && created == CTCRelationType.EQUAL_TO || derived == CTCRelationType.SUPERSET_OF && created == CTCRelationType.EQUAL_TO) {
+            return true;
+        } else if(derived == CTCRelationType.SUBSET_OF && created == CTCRelationType.PROPER_SUBSET_OF || derived == CTCRelationType.SUPERSET_OF && created == CTCRelationType.PROPER_SUPERSET_OF) {
+            return true;
+        } else if(derived == CTCRelationType.SUBSET_OF && created == CTCRelationType.NOT_EQUAL_TO || derived == CTCRelationType.SUPERSET_OF && created == CTCRelationType.NOT_EQUAL_TO) {
+            return true;
+        } else if(derived == CTCRelationType.NOT_EQUAL_TO && created == CTCRelationType.PROPER_SUBSET_OF || derived == CTCRelationType.NOT_EQUAL_TO && created == CTCRelationType.PROPER_SUBSET_OF) {
+            return true;
+        }
+        return false;
+    }
 }

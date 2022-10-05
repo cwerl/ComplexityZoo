@@ -8,11 +8,11 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${parameterization.parameter}"></h5>
-                        <p class="card-text text-secondary" th:utext="${parameterization.description}"></p>
-                        <div class="d-inline-flex">
-                            <a class="btn btn-secondary"
-                                th:href="@{'/problems/' + ${parameterization.parent.id} + '/params/' + ${parameterization.id}}">Details</a>
+                        <div class="description-short">
+                            <span th:utext="${parameterization.description}"></span>
                         </div>
+                        <a class="btn btn-secondary mt-2"
+                            th:href="@{'/problems/' + ${parameterization.parent.id} + '/params/' + ${parameterization.id}}">Details</a>
                     </div>
                 </div>
             </div>

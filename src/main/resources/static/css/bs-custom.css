@@ -81,6 +81,20 @@
     border-width: .25rem;
 }
 
+.alert-warning {
+    background-color: #fff9e4;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    border-width: .25rem;
+}
+
+/* Text backgrounds */
+.text-bg-danger {
+    background-color: #f8d7da !important;
+    color: #dc3545 !important;
+}
+
 /* BETTER ROUNDED CORNERS */
 .btn-sm, .option, .selectize-dropdown, .selectize-input, .selectize-input.dropdown-active, .create, .tox .tox-menu, .tox .tox-collection__item {
     border-radius: .5rem !important;
@@ -103,6 +117,7 @@
 
 .badge {
     padding: .25em .4em;
+    font-weight: 500;
 }
 
 .tox-collection__group {
