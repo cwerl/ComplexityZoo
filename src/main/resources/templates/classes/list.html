@@ -21,10 +21,10 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${class.name}"></h5>
-                        <p class="card-text text-secondary" th:utext="${class.description}"></p>
-                        <div class="d-inline-flex">
-                            <a class="btn btn-secondary" th:href="@{'/classes/' + ${class.id}}">Details</a>
+                        <div class="description-short">
+                            <span th:utext="${class.description}"></span>
                         </div>
+                        <a class="btn btn-secondary mt-2" th:href="@{'/classes/' + ${class.id}}">Details</a>
                     </div>
                 </div>
             </div>

@@ -60,9 +60,7 @@ public class CTCRelationController {
             CTCInterpretation interpretation = getAllPaths(relation);
             ctcRepository.save(relation);
             if(interpretation != null) {
-                ModelAndView mav = new ModelAndView("redirect:/relations/ctc/" + relation.getId());
                 redirectAttributes.addFlashAttribute("altpath", interpretation);
-                return mav;
             }
             return new ModelAndView("redirect:/relations/ctc/" + relation.getId() + "?success");
         }
@@ -101,12 +99,26 @@ public class CTCRelationController {
         return "redirect:/relations/ctc/" + id;
     }
 
+    /**
+     * Searches for contradictions regarding the newly created relation.
+     * @param r The newly created relation
+     * @return The contradicting path or null if no contradiction could be found.
+     */
     private CTCInterpretation getAllPaths(CTCRelation r) {
         Set<ComplexityClass> visited = new HashSet<ComplexityClass>();
         List<CTCRelation> pathList = new ArrayList<CTCRelation>();
         return getAllPathsUtil(r.getFirstClass(), r.getSecondClass(), visited, pathList, r.getRelationType());
     }
 
+    /**
+     * Util for getAllPaths()
+     * @param u The starting point
+     * @param d The end point
+     * @param visited Visited vertices
+     * @param pathList The path
+     * @param newType The newly created relation type.
+     * @return The contradicting path or null if no contradiction could be found.
+     */
     private CTCInterpretation getAllPathsUtil(ComplexityClass u, ComplexityClass d,
             Set<ComplexityClass> visited, List<CTCRelation> pathList, final CTCRelationType newType) {
         if (u.equals(d) && pathList.size() > 1) {
@@ -143,11 +155,14 @@ public class CTCRelationController {
         return null;
     }
 
+    /**
+     * Interpretes a given path.
+     * @param path The path.
+     * @return The interpretation or null if path couldn't be interpreted.
+     */
     private CTCRelationType pathInterpreter(List<CTCRelation> path) {
         CTCRelationType derived = path.get(0).getRelationType();
-        List<CTCRelation> temp = new ArrayList<CTCRelation>(path);
-        temp.remove(derived);
-        for (CTCRelation r : temp) {
+        for (CTCRelation r : path.subList(1, path.size())) {
             switch (derived) {
                 case EQUAL_TO:
                     derived = r.getRelationType();
@@ -156,6 +171,9 @@ public class CTCRelationController {
                     switch (r.getRelationType()) {
                         case SUBSET_OF:
                             derived = CTCRelationType.SUBSET_OF;
+                            break;
+                        case PROPER_SUBSET_OF:
+                            derived = CTCRelationType.PROPER_SUBSET_OF;
                             break;
                         case EQUAL_TO:
                             derived = CTCRelationType.SUBSET_OF;
@@ -167,6 +185,9 @@ public class CTCRelationController {
                 case PROPER_SUBSET_OF:
                     switch (r.getRelationType()) {
                         case PROPER_SUBSET_OF:
+                            derived = CTCRelationType.PROPER_SUBSET_OF;
+                            break;
+                        case SUBSET_OF:
                             derived = CTCRelationType.PROPER_SUBSET_OF;
                             break;
                         case EQUAL_TO:
@@ -181,6 +202,9 @@ public class CTCRelationController {
                         case SUPERSET_OF:
                             derived = CTCRelationType.SUPERSET_OF;
                             break;
+                        case PROPER_SUPERSET_OF:
+                            derived = CTCRelationType.PROPER_SUPERSET_OF;
+                            break;
                         case EQUAL_TO:
                             derived = CTCRelationType.SUPERSET_OF;
                             break;
@@ -193,25 +217,34 @@ public class CTCRelationController {
                         case PROPER_SUPERSET_OF:
                             derived = CTCRelationType.PROPER_SUPERSET_OF;
                             break;
-                        case EQUAL_TO:
+                        case SUPERSET_OF:
                             derived = CTCRelationType.PROPER_SUPERSET_OF;
+                            break;
+                        case EQUAL_TO:
+                            derived = CTCRelationType.PROPER_SUBSET_OF;
                             break;
                         default:
                             return null;
                     }
                     break;
                 default:
-                    return null;
+                    switch(r.getRelationType()) {
+                        case EQUAL_TO:
+                            break;
+                        default:
+                            return null;
+                    }
+                    break;
             }
         }
         return derived;
     }
 
     /**
-     * Two relations are considered compatible if they are the same or if the newly created relation is more strict than the derived relation.
+     * Two relations are considered compatible if they are the same or if the newly created relation is just more specific than the derived relation.
      * @param derived The relation that has been derived from a path.
      * @param created The direct relation that has just been created.
-     * @return
+     * @return true if the relations are compatible or false if they are not.
      */
     private boolean areCompatible(CTCRelationType derived, CTCRelationType created) {
         if(derived == created) {
@@ -221,6 +254,8 @@ public class CTCRelationController {
         } else if(derived == CTCRelationType.SUBSET_OF && created == CTCRelationType.PROPER_SUBSET_OF || derived == CTCRelationType.SUPERSET_OF && created == CTCRelationType.PROPER_SUPERSET_OF) {
             return true;
         } else if(derived == CTCRelationType.SUBSET_OF && created == CTCRelationType.NOT_EQUAL_TO || derived == CTCRelationType.SUPERSET_OF && created == CTCRelationType.NOT_EQUAL_TO) {
+            return true;
+        } else if(derived == CTCRelationType.NOT_EQUAL_TO && created == CTCRelationType.PROPER_SUBSET_OF || derived == CTCRelationType.NOT_EQUAL_TO && created == CTCRelationType.PROPER_SUBSET_OF) {
             return true;
         }
         return false;
